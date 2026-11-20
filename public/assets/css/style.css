@@ -1075,13 +1075,10 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   touch-action: pan-y pinch-zoom; padding: 6.65rem 0 2rem;
 }
 .wish-carousel__track {
-  --ring-angle: 0deg;
   display: grid; justify-items: center; align-items: start;
   transform-style: preserve-3d;
-  transform: translateZ(calc(-1 * var(--ring-radius, 0px))) rotateY(var(--ring-angle));
-  transition: transform 1350ms cubic-bezier(.38, .05, .22, 1);
+  will-change: transform;
 }
-.wish-carousel__track--susun { transition: none; }
 .wish-carousel__track > .wish {
   grid-area: 1 / 1; width: min(86%, 480px); min-width: 0;
   transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius, 0px));

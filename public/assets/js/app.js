@@ -583,10 +583,16 @@ function pasangCarousel(id) {
   let sentuhan = null;
   let langkah = 0;
   let jumlahTerakhir = 0;
-  const jedaOtomatis = 5500;
+  let indeksTerakhir = -1;
+  let frame = 0;
+  let waktuLalu = null;
+  let gerakanManual = null;
+  let radius = 0;
+  const mediaHover = matchMedia("(hover: hover)");
   if (bisaDiputar) {
     new IntersectionObserver(([entry]) => {
       dalamLayar = entry.isIntersecting;
+      jadwalkan();
     }).observe(stage);
   }
   tombolPutar.hidden = !bisaDiputar;
@@ -596,42 +602,89 @@ function pasangCarousel(id) {
   };
   perbaruiPutar();
 
-  const aktif = (n) => n ? ((langkah % n) + n) % n : 0;
-  const sinkron = () => {
+  const aktif = (n) => n ? ((Math.round(langkah) % n) + n) % n : 0;
+  const gambar = () => {
     const n = track.children.length;
+    if (!n) return;
+    track.style.transform = `translateZ(${-radius}px) rotateY(${-langkah * 360 / n}deg)`;
     const i = aktif(n);
-    controls.hidden = n < 2;
+    if (i === indeksTerakhir) return;
+    indeksTerakhir = i;
     count.textContent = `${i + 1} / ${n}`;
-    const radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
-    stage.style.setProperty("--ring-radius", `${radius}px`);
-    stage.style.setProperty("--couple-scale", String(1 + radius / 850));
-    track.style.setProperty("--ring-angle", `${n ? -langkah * 360 / n : 0}deg`);
     Array.from(track.children).forEach((card, index) => {
-      card.style.setProperty("--card-angle", `${index * 360 / n}deg`);
       card.classList.toggle("wish--terlihat", index === i);
       card.setAttribute("aria-hidden", String(index !== i));
     });
   };
-  const geser = (arah) => {
-    if (track.children.length < 2) return;
-    langkah += arah;
-    sinkron();
+  const sinkron = () => {
+    const n = track.children.length;
+    controls.hidden = n < 2;
+    radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
+    stage.style.setProperty("--ring-radius", `${radius}px`);
+    stage.style.setProperty("--couple-scale", String(1 + radius / 850));
+    Array.from(track.children).forEach((card, index) => {
+      card.style.setProperty("--card-angle", `${index * 360 / n}deg`);
+    });
+    indeksTerakhir = -1;
+    gambar();
+  };
+
+  function jadwalkan() {
+    if (!frame && !document.hidden && (gerakanManual || (diputar && dalamLayar && track.children.length > 1))) {
+      frame = requestAnimationFrame(putar);
+    }
+  }
+  function putar(now) {
+    frame = 0;
+    const dt = waktuLalu === null ? 0 : Math.min(40, now - waktuLalu);
+    waktuLalu = now;
+    if (gerakanManual) {
+      const m = gerakanManual;
+      m.mulai ??= now;
+      const t = Math.min(1, (now - m.mulai) / 580);
+      langkah = m.dari + (m.ke - m.dari) * (1 - (1 - t) ** 3);
+      if (t === 1) gerakanManual = null;
+      gambar();
+    } else if (diputar && dalamLayar && !sentuhan && !(mediaHover.matches && stage.matches(":hover"))
+      && !track.contains(document.activeElement) && now >= tahanSampai) {
+      const n = track.children.length;
+      if (n > 1) {
+        // Kecepatan tetap, tanpa jeda di antara kartu; sudut bebas melewati 360°.
+        langkah += dt * Math.min(9 * n / 360, 1 / 5) / 1000;
+        gambar();
+      }
+    }
+    jadwalkan();
+    if (!frame) waktuLalu = null;
+  }
+  const menuju = (ke) => {
+    if (kurangiGerak() || langkah === ke) {
+      langkah = ke;
+      gerakanManual = null;
+      gambar();
+    } else {
+      gerakanManual = { dari: langkah, ke, mulai: null };
+      jadwalkan();
+    }
   };
   const manual = (arah) => {
-    tahanSampai = Date.now() + 10_000;
-    geser(arah);
+    if (track.children.length < 2) return;
+    tahanSampai = performance.now() + 10_000;
+    menuju((gerakanManual?.ke ?? Math.round(langkah)) + arah);
   };
   on(controls.querySelector('[data-slide="-1"]'), "click", () => manual(-1));
   on(controls.querySelector('[data-slide="1"]'), "click", () => manual(1));
   on(tombolPutar, "click", () => {
     diputar = !diputar;
-    tahanSampai = Date.now() + jedaOtomatis;
+    tahanSampai = 0;
+    if (!diputar) menuju(Math.round(langkah));
     perbaruiPutar();
+    jadwalkan();
   });
   on(stage, "pointerdown", (e) => {
     if (!e.isPrimary || e.button !== 0) return;
     sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY };
-    tahanSampai = Date.now() + 10_000;
+    tahanSampai = performance.now() + 10_000;
   });
   on(window, "pointerup", (e) => {
     if (sentuhan?.id !== e.pointerId) return;
@@ -646,12 +699,10 @@ function pasangCarousel(id) {
     e.preventDefault();
     manual(e.key === "ArrowLeft" ? -1 : 1);
   });
-  setInterval(() => {
-    const hover = matchMedia("(hover: hover)").matches && stage.matches(":hover");
-    if (!diputar || !dalamLayar || document.hidden || sentuhan || hover || track.contains(document.activeElement)
-      || Date.now() < tahanSampai) return;
-    geser(1);
-  }, jedaOtomatis);
+  on(document, "visibilitychange", () => {
+    waktuLalu = null;
+    jadwalkan();
+  });
   window.addEventListener("resize", sinkron, { passive: true });
 
   return (reset = false) => {
@@ -660,12 +711,10 @@ function pasangCarousel(id) {
     if (reset || n !== jumlahTerakhir) {
       langkah = reset ? 0 : aktif(jumlahTerakhir);
       jumlahTerakhir = n;
-      track.classList.add("wish-carousel__track--susun");
-      sinkron();
-      // Commit the rebuilt ring geometry before re-enabling rotation transitions.
-      track.getBoundingClientRect();
-      track.classList.remove("wish-carousel__track--susun");
-    } else sinkron();
+      gerakanManual = null;
+    }
+    sinkron();
+    jadwalkan();
   };
 }
 

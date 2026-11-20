@@ -1119,18 +1119,20 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   .wish--terlihat, .wish--terlihat .wish__reaction > span { animation: none; }
 }
 
-/* Mawar berputar di empat sudut, tidak menghalangi sentuhan atau teks. */
-.wish-carousel__track > .wish { position: relative; padding: 1.05rem .95rem; }
-.wish__roses { position: absolute; inset: 0; pointer-events: none; }
-.wish__roses > span {
-  position: absolute; font-size: .77rem; line-height: 1; opacity: .8;
-  animation: roseSpin 4.5s linear infinite paused;
+/* Ilustrasi botani di ruang tersendiri agar tidak menutupi isi kartu. */
+.wish-carousel__track > .wish { position: relative; padding: 1.05rem .95rem 4rem; overflow: hidden; }
+.wish-carousel__track > .wish::after {
+  content: ""; position: absolute; right: 0; bottom: 0;
+  width: min(46%, 126px); height: 3.65rem;
+  background: url("../img/sudut-bunga.svg") no-repeat right bottom / contain;
+  pointer-events: none; transform-origin: right bottom;
 }
-.wish--terlihat .wish__roses > span { animation-play-state: running; }
-.wish__roses > :nth-child(1) { top: .18rem; left: .22rem; }
-.wish__roses > :nth-child(2) { top: .18rem; right: .22rem; animation-delay: -1.1s; }
-.wish__roses > :nth-child(3) { bottom: .18rem; right: .22rem; animation-delay: -2.2s; }
-.wish__roses > :nth-child(4) { bottom: .18rem; left: .22rem; animation-delay: -3.3s; }
-@keyframes roseSpin { to { transform: rotate(360deg); } }
+.wish-carousel__track > .wish--terlihat::after { animation: floralSway 7s ease-in-out infinite; }
+@keyframes floralSway {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(2.5deg); }
+}
 .wish-carousel__controls [data-slide-play] { width: auto; padding-inline: .85rem; border-radius: 999px; font-size: .82rem; }
-@media (prefers-reduced-motion: reduce) { .wish__roses > span { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .wish-carousel__track > .wish--terlihat::after { animation: none; }
+}

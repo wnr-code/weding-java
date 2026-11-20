@@ -468,18 +468,6 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-function hiasMawar(kartu) {
-  const hiasan = document.createElement("span");
-  hiasan.className = "wish__roses";
-  hiasan.setAttribute("aria-hidden", "true");
-  for (let i = 0; i < 4; i++) {
-    const mawar = document.createElement("span");
-    mawar.textContent = "🌹";
-    hiasan.append(mawar);
-  }
-  kartu.append(hiasan);
-}
-
 function buatKartuUcapan(item) {
   const li = document.createElement("li");
   li.className = "wish";
@@ -526,7 +514,6 @@ function buatKartuUcapan(item) {
 
   body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
   li.append(av, body);
-  hiasMawar(li);
   return li;
 }
 
@@ -1004,7 +991,6 @@ async function tampilkanTandaKasih(sinkron) {
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
       kartu.append(avatar, isi);
-      hiasMawar(kartu);
       daftar.append(kartu);
     }
     bagian.hidden = false;

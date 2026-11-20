@@ -487,7 +487,7 @@ function pasangWajahKartu(kartu, avatar, isi, urutan) {
   ilustrasi.loading = "lazy";
   ilustrasi.decoding = "async";
   const adegan = ilustrasiMempelai[urutan % ilustrasiMempelai.length];
-  ilustrasi.src = new URL(`../img/ilustrasi-mirip-${adegan}.webp`, import.meta.url).href;
+  ilustrasi.src = new URL(`../img/ilustrasi-segar-${adegan}.webp`, import.meta.url).href;
   belakang.append(ilustrasi);
   kartu.append(depan, belakang);
 }

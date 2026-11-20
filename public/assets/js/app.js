@@ -4,6 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
+import { pilihBalasan } from "./balasan.js";
 import CONFIG from "./config.js?v=music-2";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
@@ -497,6 +498,24 @@ function buatKartuUcapan(item, i = 0) {
     body.appendChild(msg);
   }
 
+  const reply = document.createElement("div");
+  reply.className = "wish__reply";
+  const replyAvatar = document.createElement("span");
+  replyAvatar.className = "wish__reply-avatar";
+  replyAvatar.setAttribute("aria-hidden", "true");
+  replyAvatar.textContent = "♥";
+  const bubble = document.createElement("div");
+  bubble.className = "wish__reply-bubble";
+  const author = document.createElement("strong");
+  author.textContent = `${M.pria.panggilan} & ${M.wanita.panggilan}`;
+  const label = document.createElement("span");
+  label.className = "wish__reply-label";
+  label.textContent = "Balasan otomatis";
+  const text = document.createElement("p");
+  text.textContent = pilihBalasan(item);
+  bubble.append(author, label, text);
+  reply.append(replyAvatar, bubble);
+  body.append(reply);
   li.append(av, body);
   return li;
 }

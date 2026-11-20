@@ -776,9 +776,7 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wishes__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: .9rem; }
 .wishes__head h3 { font-family: "Cormorant Garamond", serif; font-size: 1.25rem; color: var(--ink); }
 .wishes__count { font-size: .72rem; letter-spacing: .1em; color: var(--ink-soft); }
-.wish-list { display: grid; gap: .7rem; max-height: 460px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--gold-soft) transparent; }
-.wish-list::-webkit-scrollbar { width: 5px; }
-.wish-list::-webkit-scrollbar-thumb { background: var(--gold-soft); border-radius: 99px; }
+.wish-list { display: grid; gap: 1rem; }
 .wish {
   padding: .85rem .95rem;
   border: 1px solid var(--gold-line); border-radius: 14px;
@@ -1031,3 +1029,25 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .page-ucapan .main { padding-bottom: 2rem; }
 .page-ucapan .toast { bottom: max(1rem, env(safe-area-inset-bottom)); }
 .dock__item[hidden] { display: none; }
+
+/* Linimasa dan satu balasan bercabang per ucapan. */
+.wish { background: var(--ivory); box-shadow: var(--shadow-sm); }
+.wish__name { font-size: .96rem; font-weight: 700; }
+.wish__msg { font-size: .95rem; white-space: pre-wrap; margin-top: .45rem; }
+.wish__reply {
+  position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr);
+  align-items: start; gap: .45rem; margin-top: .75rem; padding-left: .15rem;
+}
+.wish__reply::before {
+  content: ""; position: absolute; pointer-events: none;
+  left: calc(-.7rem - 19px); top: 0; width: calc(.7rem + 19px); height: 13px;
+  border: solid var(--gold-line); border-width: 0 0 2px 2px; border-radius: 0 0 0 12px;
+}
+.wish__reply-avatar {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: #ead9b9; color: #765523; font-size: .8rem;
+}
+.wish__reply-bubble { padding: .55rem .7rem; border-radius: 4px 15px 15px; background: #f4ead8; }
+.wish__reply-bubble strong { font-size: .85rem; }
+.wish__reply-label { display: block; color: var(--ink-soft); font-size: .72rem; }
+.wish__reply-bubble p { margin-top: .25rem; font-size: .9rem; line-height: 1.55; }

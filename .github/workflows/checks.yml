@@ -1,0 +1,25 @@
+# weding-java — tes API undangan & validasi konfigurasi Cloudflare.
+name: checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Tes validasi & API ucapan
+        run: node --test tests/*.test.mjs
+      - name: Validasi konfigurasi Worker (dry run)
+        run: npx --yes wrangler@4.165.0 deploy --dry-run

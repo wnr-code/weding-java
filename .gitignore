@@ -1,0 +1,6 @@
+# Undangan weding-java — berkas yang tidak perlu masuk repo
+.dev-data/
+node_modules/
+dist/
+.wrangler/
+.DS_Store

@@ -1,0 +1,33 @@
+# Undangan pernikahan Ja'far & Iklimah
+# Deploy: npx wrangler deploy
+
+name = "weding-java"
+main = "worker/index.js"
+compatibility_date = "2026-11-20"
+routes = [{ pattern = "wedding.cgs.my.id", custom_domain = true }]
+
+# Aset statis undangan (HTML, CSS, JS, gambar, font).
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+not_found_handling = "single-page-application"
+
+# Database ucapan & konfirmasi kehadiran.
+[[d1_databases]]
+binding = "javar"
+database_name = "weding-java"
+database_id = "309cf1bd-987c-4841-a442-f4d96e2a63ff"
+migrations_dir = "migrations"
+
+[vars]
+# Garam untuk anonimisasi IP (pembatasan laju). Ubah menjadi kalimat acak Anda.
+IP_SALT = "ganti-dengan-kalimat-acak-anda"
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = false

@@ -1190,3 +1190,44 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 
 .wish-carousel__stage--dragging { cursor: grabbing; user-select: none; }
 .wish-carousel__controls button[hidden] { display: none; }
+
+/* Bingkai khusus Tanda Kasih: ornamen berhadapan, di luar area teks. */
+.wish-slot.wish--hadiah .wish__front,
+.wish-slot.wish--hadiah .wish__back {
+  --sudut-hadiah: 4.45rem;
+  position: relative;
+  border-color: #c4a268;
+  background: linear-gradient(140deg, #fbf5e6, #fffefa 30%, #fffefa 68%, #fbf3e2);
+}
+.wish-slot.wish--hadiah .wish__front { padding-block: calc(var(--sudut-hadiah) + .4rem); }
+.wish-slot.wish--hadiah .wish__front::before,
+.wish-slot.wish--hadiah .wish__front::after,
+.wish-slot.wish--hadiah .wish__back::before,
+.wish-slot.wish--hadiah .wish__back::after {
+  content: "";
+  position: absolute;
+  width: min(51%, 110px);
+  height: var(--sudut-hadiah);
+  background: url("../img/sudut-emas.svg") left top / contain no-repeat;
+  pointer-events: none;
+  transform-origin: center;
+  animation: none;
+}
+.wish-slot.wish--hadiah .wish__front::before,
+.wish-slot.wish--hadiah .wish__back::before { top: .25rem; left: .25rem; }
+.wish-slot.wish--hadiah .wish__front::after,
+.wish-slot.wish--hadiah .wish__back::after {
+  right: .25rem; bottom: .25rem;
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wish-slot.wish--hadiah.wish--terlihat .wish__front::before,
+  .wish-slot.wish--hadiah.wish--terlihat .wish__back::before { animation: kilauEmas 5.8s ease-in-out infinite; }
+  .wish-slot.wish--hadiah.wish--terlihat .wish__front::after,
+  .wish-slot.wish--hadiah.wish--terlihat .wish__back::after { animation: kilauEmas 5.8s 1.7s ease-in-out infinite; }
+}
+@keyframes kilauEmas {
+  0%, 64%, 100% { filter: none; }
+  76% { filter: brightness(1.22) drop-shadow(0 0 3px #d9ad5899); }
+  87% { filter: brightness(1.06); }
+}

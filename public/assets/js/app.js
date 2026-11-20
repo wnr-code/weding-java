@@ -532,10 +532,12 @@ function buatReaksi() {
   reaksi.className = "wish__reaction";
   reaksi.setAttribute("role", "img");
   reaksi.setAttribute("aria-label", "Disukai kedua mempelai, ditampilkan otomatis");
-  const hati = document.createElement("span");
-  hati.setAttribute("aria-hidden", "true");
-  hati.textContent = "❤️";
-  reaksi.append(hati);
+  const cincin = document.createElement("img");
+  cincin.src = new URL("../img/cincin-emas.svg", import.meta.url).href;
+  cincin.alt = "";
+  cincin.width = 28;
+  cincin.height = 21;
+  reaksi.append(cincin);
   return reaksi;
 }
 

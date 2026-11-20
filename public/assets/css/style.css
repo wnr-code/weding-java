@@ -1138,19 +1138,19 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish__city { color: var(--ink-soft); font-size: .82rem; }
 .wish__reaction {
   display: flex; width: fit-content; margin: .55rem 0 0 auto; padding: .12rem .5rem;
-  border-radius: 999px; background: #f8e8eb; font-size: .83rem; line-height: 1.5;
+  border-radius: 999px; background: #f7ecd4; border: 1px solid #dfc896;
 }
 
 /* Mulai ketika kartu benar-benar masuk layar, bukan saat data dimuat. */
-.wish--terlihat .wish__reaction > span { animation: heartPop .55s .18s var(--ease) both; }
-@keyframes heartPop {
+.wish--terlihat .wish__reaction > img { animation: ringPop .55s .18s var(--ease) both; }
+@keyframes ringPop {
   0% { transform: scale(.78); }
   48% { transform: scale(1.32) rotate(-10deg); }
   75% { transform: scale(.94) rotate(3deg); }
   100% { transform: scale(1) rotate(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .wish--terlihat, .wish--terlihat .wish__reaction > span { animation: none; }
+  .wish--terlihat, .wish--terlihat .wish__reaction > img { animation: none; }
 }
 
 /* Ilustrasi botani di ruang tersendiri agar tidak menutupi isi kartu. */

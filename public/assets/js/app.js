@@ -503,7 +503,15 @@ function buatKartuUcapan(item, i = 0) {
   const replyAvatar = document.createElement("span");
   replyAvatar.className = "wish__reply-avatar";
   replyAvatar.setAttribute("aria-hidden", "true");
-  replyAvatar.textContent = "♥";
+  for (const pengantin of [M.pria, M.wanita]) {
+    const foto = document.createElement("img");
+    foto.src = new URL(`../../${pengantin.foto}`, import.meta.url).href;
+    foto.alt = "";
+    foto.loading = "lazy";
+    foto.width = 26;
+    foto.height = 26;
+    replyAvatar.append(foto);
+  }
   const bubble = document.createElement("div");
   bubble.className = "wish__reply-bubble";
   const author = document.createElement("strong");

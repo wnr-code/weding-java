@@ -23,7 +23,7 @@ seluler.
 | Kirim ucapan / kehadiran | Formulir *Hadir / Masih Ragu / Tidak Hadir* + jumlah tamu + doa, tersimpan di D1, lengkap dengan statistik |
 | Peta | Google Maps sematan (dimuat saat mendekati layar) + tombol petunjuk arah & salin alamat |
 | Foto-foto | Foto asli: potret per wajah untuk kedua mempelai + foto utuh dengan animasi dua panel menyatu, semuanya bisa diperbesar (lightbox) |
-| Musik Islami | Instrumental maqam Hijaz yang dibangkitkan Web Audio (tanpa berkas) **atau** ganti dengan MP3 nasheed Anda |
+| Musik Islami | Instrumental piano “Doa Bahagia” yang berulang otomatis setelah tamu membuka undangan |
 | Animasi hiasan Islami | Roset geometris berputar, bulan sabit mengapung, pembatas floral yang "tumbuh" saat digulir, kilau emas, partikel cahaya, bingkai mihrab |
 
 Tambahan yang sudah termasuk:
@@ -164,7 +164,7 @@ Animasi foto:
 
 ### Musik
 
-- **Bawaan:** instrumental Islami yang dihasilkan peramban (Web Audio). Tanpa berkas, tanpa hak cipta, hemat kuota. Nada mulai setelah tamu menekan *Buka Undangan* sesuai kebijakan autoplay peramban.
+- **Bawaan:** instrumental piano “Doa Bahagia” (`public/assets/audio/doa-bahagia.mp3`). Musik berulang setelah tamu menekan *Buka Undangan*, sesuai kebijakan autoplay peramban. Kosongkan `musik.berkas` untuk memakai instrumental Web Audio.
 - **Ganti dengan MP3 nasheed:** taruh berkas di `public/assets/audio/`, lalu isi `musik.berkas: "assets/audio/nasheed.mp3"`. Pastikan Anda memiliki izin penggunaan berkas tersebut.
 
 ---
@@ -175,9 +175,9 @@ Tautan sudah diatur di `config.js`:
 
 ```js
 trakteer: {
-  label: "Dukung kami di Trakteer",
+  label: "Kirim Tanda Kasih",
   url: "https://trakteer.id/-java",
-  keterangan: "Traktir kami sebagai ucapan selamat — seikhlasnya, sepenuh doa.",
+  keterangan: "Bagi Bapak/Ibu/Saudara/i yang berkenan, tanda kasih dapat disampaikan melalui tautan ini.",
 }
 ```
 

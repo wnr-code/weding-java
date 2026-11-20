@@ -4,7 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import CONFIG from "./config.js?v=mobile-1";
+import CONFIG from "./config.js?v=music-2";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
 import * as api from "./api.js";
@@ -694,6 +694,9 @@ function pasangMusik() {
   };
 
   musicUI().forEach((b) => on(b, "click", toggle));
+
+  // Audio berkas berjalan dalam loop native, termasuk saat tab di latar.
+  if (CONFIG.musik.berkas) return;
 
   document.addEventListener("visibilitychange", () => {
     if (!musik) return;

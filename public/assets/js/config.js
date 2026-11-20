@@ -146,9 +146,9 @@ export const CONFIG = {
       "Kehadiran dan doa restu Anda adalah hadiah terindah bagi kami. Bila ingin memberi tanda kasih, kami sediakan kanal berikut.",
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
-      label: "Dukung kami di Trakteer",
+      label: "Kirim Tanda Kasih",
       url: "https://trakteer.id/-java",
-      keterangan: "Traktir kami sebagai ucapan selamat — seikhlasnya, sepenuh doa.",
+      keterangan: "Bagi Bapak/Ibu/Saudara/i yang berkenan, tanda kasih dapat disampaikan melalui tautan ini.",
     },
     // Opsional. Kosongkan array untuk menyembunyikan kartu rekening.
     rekening: [
@@ -172,12 +172,12 @@ export const CONFIG = {
   /* -------------------------------- Musik -------------------------------- */
   musik: {
     aktif: true,
-    judul: "Nafas Doa",
+    judul: "Doa Bahagia",
     // Jika diisi (mis. "assets/audio/nasheed.mp3"), berkas itu yang diputar.
     // Bila kosong, undangan memakai musik instrumental islami yang dibangkitkan
     // langsung di peramban (Web Audio) sehingga tanpa berkas & bebas royalti.
-    berkas: "",
-    volume: 0.5,
+    berkas: "assets/audio/doa-bahagia.mp3",
+    volume: 0.65,
   },
 
   /* ------------------------------ Ucapan/RSVP ---------------------------- */

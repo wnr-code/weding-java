@@ -468,9 +468,19 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
+function pasangWajahKartu(kartu, avatar, isi) {
+  const depan = document.createElement("div");
+  depan.className = "wish wish__front";
+  depan.append(avatar, isi);
+  const belakang = document.createElement("div");
+  belakang.className = "wish__back";
+  belakang.setAttribute("aria-hidden", "true");
+  kartu.append(depan, belakang);
+}
+
 function buatKartuUcapan(item) {
   const li = document.createElement("li");
-  li.className = "wish";
+  li.className = "wish-slot";
 
   const av = document.createElement("div");
   av.className = "wish__avatar";
@@ -513,7 +523,7 @@ function buatKartuUcapan(item) {
   }
 
   body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
-  li.append(av, body);
+  pasangWajahKartu(li, av, body);
   return li;
 }
 
@@ -573,6 +583,7 @@ function pasangCarousel(id) {
   if (!root) return () => {};
   const stage = root.querySelector(".wish-carousel__stage");
   const track = root.querySelector(".wish-carousel__track");
+  const zona = root.querySelector(".wish-carousel__drag-zone");
   const controls = root.querySelector(".wish-carousel__controls");
   const count = controls.querySelector("[data-slide-count]");
   const tombolPutar = controls.querySelector("[data-slide-play]");
@@ -583,6 +594,8 @@ function pasangCarousel(id) {
   let tahanSampai = 0;
   let sentuhan = null;
   let langkah = 0;
+  let tilt = 0;
+  let tiltTerakhir = null;
   let jumlahTerakhir = 0;
   let indeksTerakhir = -1;
   let frame = 0;
@@ -608,6 +621,10 @@ function pasangCarousel(id) {
     const n = track.children.length;
     if (!n) return;
     track.style.transform = `translateZ(${-radius}px) rotateY(${-langkah * 360 / n}deg)`;
+    if (tilt !== tiltTerakhir) {
+      track.style.setProperty("--tilt", `${tilt}deg`);
+      tiltTerakhir = tilt;
+    }
     const i = aktif(n);
     if (i === indeksTerakhir) return;
     indeksTerakhir = i;
@@ -645,7 +662,9 @@ function pasangCarousel(id) {
       const m = gerakanManual;
       m.mulai ??= now;
       const t = Math.min(1, (now - m.mulai) / 580);
-      langkah = m.dari + (m.ke - m.dari) * (1 - (1 - t) ** 3);
+      const progres = 1 - (1 - t) ** 3;
+      langkah = m.dari + (m.ke - m.dari) * progres;
+      tilt = m.tiltDari + (m.tiltKe - m.tiltDari) * progres;
       if (t === 1) gerakanManual = null;
       gambar();
     } else if (diputar && dalamLayar && !sentuhan && !(mediaHover.matches && stage.matches(":hover"))
@@ -661,12 +680,14 @@ function pasangCarousel(id) {
     if (!frame) waktuLalu = null;
   }
   const menuju = (ke) => {
-    if (kurangiGerak() || langkah === ke) {
+    const tiltKe = Math.round(tilt / 360) * 360;
+    if (kurangiGerak() || (langkah === ke && tilt === tiltKe)) {
       langkah = ke;
+      tilt = tiltKe;
       gerakanManual = null;
       gambar();
     } else {
-      gerakanManual = { dari: langkah, ke, mulai: null };
+      gerakanManual = { dari: langkah, ke, tiltDari: tilt, tiltKe, mulai: null };
       jadwalkan();
     }
   };
@@ -684,37 +705,40 @@ function pasangCarousel(id) {
     perbaruiPutar();
     jadwalkan();
   });
-  on(stage, "pointerdown", (e) => {
+  on(zona, "pointerdown", (e) => {
     if (!e.isPrimary || e.button !== 0 || !track.children.length) return;
     gerakanManual = null;
-    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY, mulai: langkah, sudut: 0, mendatar: false };
+    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY, mulai: langkah, tilt, sudut: 0, bergerak: false };
     tahanSampai = performance.now() + 10_000;
+    zona.setPointerCapture(e.pointerId);
   });
   on(window, "pointermove", (e) => {
     if (sentuhan?.id !== e.pointerId) return;
     const dx = e.clientX - sentuhan.x;
     const dy = e.clientY - sentuhan.y;
-    if (!sentuhan.mendatar) {
-      if (Math.abs(dx) < 8 || Math.abs(dx) <= Math.abs(dy)) return;
-      sentuhan.mendatar = true;
+    if (!sentuhan.bergerak) {
+      if (Math.hypot(dx, dy) < 7) return;
+      sentuhan.bergerak = true;
       stage.classList.add("wish-carousel__stage--dragging");
     }
-    const jarak = Math.max(72, stage.clientWidth * .38);
-    sentuhan.sudut = Math.max(-90, Math.min(90, -dx * 90 / jarak));
+    const sudut = (nilai) => Math.max(-360, Math.min(360, nilai));
+    const jarak = Math.max(90, zona.clientWidth * .44);
+    sentuhan.sudut = sudut(-dx * 180 / jarak);
     langkah = sentuhan.mulai + (sentuhan.sudut * track.children.length) / 360;
+    tilt = sentuhan.tilt - sudut(dy * 180 / jarak);
     gambar();
   });
   const selesaiTarik = (e, batal = false) => {
     if (sentuhan?.id !== e.pointerId) return;
-    const { mulai, sudut, mendatar } = sentuhan;
+    const { mulai, sudut } = sentuhan;
     sentuhan = null;
     stage.classList.remove("wish-carousel__stage--dragging");
     tahanSampai = performance.now() + 10_000;
-    if (!mendatar) return;
     const asal = Math.round(mulai);
-    let tujuan = Math.round(langkah);
-    if (batal || track.children.length < 2) tujuan = asal;
-    else if (Math.abs(sudut) >= 18 && tujuan === asal) tujuan = asal + Math.sign(sudut);
+    let tujuan = batal || Math.abs(sudut) < 18 ? asal : Math.round(langkah);
+    if (!batal && track.children.length > 1 && Math.abs(sudut) >= 18 && tujuan === asal) {
+      tujuan = asal + Math.sign(sudut);
+    }
     menuju(tujuan);
   };
   on(window, "pointerup", (e) => selesaiTarik(e));
@@ -736,6 +760,7 @@ function pasangCarousel(id) {
     if (reset || n !== jumlahTerakhir) {
       langkah = reset ? 0 : aktif(jumlahTerakhir);
       jumlahTerakhir = n;
+      tilt = 0;
       gerakanManual = null;
     }
     sinkron();
@@ -1050,7 +1075,7 @@ async function tampilkanTandaKasih(sinkron) {
     if (data.uji) $("#statusKirimanHadiah").textContent = "Tampilan Percobaan";
     for (const item of data.items) {
       const kartu = document.createElement("li");
-      kartu.className = "wish wish--hadiah";
+      kartu.className = "wish-slot wish--hadiah";
       const avatar = document.createElement("span");
       avatar.className = "wish__avatar";
       avatar.setAttribute("aria-hidden", "true");
@@ -1068,7 +1093,7 @@ async function tampilkanTandaKasih(sinkron) {
       isi.append(buatReaksi(), buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
-      kartu.append(avatar, isi);
+      pasangWajahKartu(kartu, avatar, isi);
       daftar.append(kartu);
     }
     bagian.hidden = false;

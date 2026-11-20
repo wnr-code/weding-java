@@ -1072,36 +1072,51 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish-carousel__hint { font-size: .82rem; color: var(--ink-soft); margin-bottom: .6rem; }
 .wish-carousel__stage {
   position: relative; perspective: 850px; perspective-origin: center 3.4rem; overflow: clip;
-  touch-action: pan-y pinch-zoom; padding: 6.65rem 0 2rem;
+  padding: 6.65rem 0 2rem;
 }
 .wish-carousel__track {
   display: grid; justify-items: center; align-items: start;
   transform-style: preserve-3d;
   will-change: transform;
 }
-.wish-carousel__track > .wish {
-  grid-area: 1 / 1; width: min(86%, 480px); min-width: 0;
-  transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius, 0px));
-  backface-visibility: hidden;
+/* Dua sisi membentuk permukaan gulungan; zona luar tetap bisa menggulir halaman. */
+.wish-carousel__drag-zone { width: 92%; margin-inline: auto; touch-action: none; transform-style: preserve-3d; }
+.wish-carousel__track > .wish-slot {
+  grid-area: 1 / 1; width: min(94%, 480px); min-width: 0;
+  display: grid; transform-style: preserve-3d;
+  transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius, 0px)) rotateX(var(--tilt, 0deg));
+}
+.wish__front, .wish__back {
+  grid-area: 1 / 1; min-width: 0; backface-visibility: hidden;
   border-radius: 1.65rem / 2rem;
-  background: linear-gradient(100deg, #eee0c7 0%, #fffdf8 17%, #fffdf8 80%, #f0e4ce 100%);
   box-shadow: inset 0 2px 1px #fffefa, inset 0 -5px 12px #8f6a2b1b,
     0 14px 22px -10px #51391e66, 0 1px 3px #563b2030;
-  transition: background-color .4s ease, box-shadow .55s ease;
 }
-.wish-carousel__track > .wish[aria-hidden="true"] {
+.wish__front {
+  transform: translateZ(.5px);
+  background: linear-gradient(100deg, #eee0c7 0%, #fffdf8 17%, #fffdf8 80%, #f0e4ce 100%);
+}
+.wish-slot[aria-hidden="true"] .wish__front {
   background: linear-gradient(100deg, #d8c3a0, #f7eedf 31%, #f5ead9 71%, #d0b891);
+}
+.wish-slot.wish--hadiah .wish__front { border-color: #d8bf88; }
+.wish__back {
+  border: 1px solid var(--gold-line);
+  background: url("../img/sudut-bunga.svg") right bottom / min(48%, 145px) auto no-repeat,
+    var(--pattern), linear-gradient(95deg, #c9ae89, #f8edda 23%, #fff9ed 53%, #d7bb93);
+  box-shadow: inset 0 0 0 6px #fff8e980, 0 14px 22px -10px #51391e66;
+  transform: rotateY(180deg) translateZ(.5px);
 }
 .wish-carousel__stage::before {
   content: ""; position: absolute; inset-inline: 12%; bottom: .35rem; height: 1.5rem;
   border-radius: 50%; pointer-events: none;
   background: radial-gradient(ellipse, #79552b59 0%, #99714232 40%, #b68c5800 73%);
 }
-.wish-carousel__track > .wish:only-child { width: 100%; }
-.wish-carousel__track > .wish[aria-hidden="true"] { pointer-events: none; }
+.wish-carousel__track > .wish-slot:only-child { width: 100%; }
+.wish-carousel__track > .wish-slot[aria-hidden="true"] { pointer-events: none; }
 @media (prefers-reduced-motion: reduce) {
-  .wish-carousel__track, .wish-carousel__track > .wish { transition: none; }
-  .wish-carousel__track > .wish[aria-hidden="true"] { visibility: hidden; }
+  .wish-carousel__track, .wish-carousel__track > .wish-slot { transition: none; }
+  .wish-carousel__track > .wish-slot[aria-hidden="true"] { visibility: hidden; }
 }
 .wish-carousel__controls { display: flex; align-items: center; justify-content: center; gap: .85rem; color: var(--ink-soft); }
 .wish-carousel__controls[hidden] { display: none; }
@@ -1113,9 +1128,9 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish-carousel__controls button:active:not(:disabled) { transform: scale(.9); background: var(--gold-soft); }
 .wish-carousel__controls button:disabled { opacity: .4; cursor: default; }
 .wish-carousel__controls [data-slide-count] { font-size: .82rem; font-variant-numeric: tabular-nums; }
-.wish[data-kehadiran="hadir"] { border-inline-start: 3px solid #4b8058; }
-.wish[data-kehadiran="tidak_hadir"] { border-inline-start: 3px solid #b5575a; }
-.wish[data-kehadiran="ragu"] { border-inline-start: 3px solid #ad7928; }
+.wish-slot[data-kehadiran="hadir"] .wish__front { border-inline-start: 3px solid #4b8058; }
+.wish-slot[data-kehadiran="tidak_hadir"] .wish__front { border-inline-start: 3px solid #b5575a; }
+.wish-slot[data-kehadiran="ragu"] .wish__front { border-inline-start: 3px solid #ad7928; }
 .wish__badge--hadir { color: #245135; background: #e1f0e3; border-color: #b0cdb6; }
 .wish__badge--tidak { color: #852f36; background: #f8e4e4; border-color: #e5b8b9; }
 .wish__badge--ragu { color: #745012; background: #fbefd6; border-color: #e5ce9f; }
@@ -1139,21 +1154,21 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 }
 
 /* Ilustrasi botani di ruang tersendiri agar tidak menutupi isi kartu. */
-.wish-carousel__track > .wish { position: relative; padding: 1.05rem .95rem 4rem; overflow: hidden; }
-.wish-carousel__track > .wish::after {
+.wish__front { position: relative; padding: 1.05rem .95rem 4rem; overflow: hidden; }
+.wish__front::after {
   content: ""; position: absolute; right: 0; bottom: 0;
   width: min(46%, 126px); height: 3.65rem;
   background: url("../img/sudut-bunga.svg") no-repeat right bottom / contain;
   pointer-events: none; transform-origin: right bottom;
 }
-.wish-carousel__track > .wish--terlihat::after { animation: floralSway 7s ease-in-out infinite; }
+.wish--terlihat .wish__front::after { animation: floralSway 7s ease-in-out infinite; }
 @keyframes floralSway {
   0%, 100% { transform: rotate(0); }
   50% { transform: rotate(2.5deg); }
 }
 .wish-carousel__controls [data-slide-play] { width: auto; padding-inline: .85rem; border-radius: 999px; font-size: .82rem; }
 @media (prefers-reduced-motion: reduce) {
-  .wish-carousel__track > .wish--terlihat::after { animation: none; }
+  .wish--terlihat .wish__front::after { animation: none; }
 }
 
 /* Potret tetap diam di pusat lingkaran, di atas area baca kartu. */
@@ -1173,15 +1188,5 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   font: 600 1.25rem/1.15 "Cormorant Garamond", serif; color: var(--gold-deep); margin-top: .35rem;
 }
 
-/* Punggung kartu untuk putaran dengan satu kiriman. */
-.wish-carousel__track:has(> .wish:only-child)::before {
-  content: ""; grid-area: 1 / 1; width: 100%; align-self: stretch;
-  border: 1px solid var(--gold-line); border-radius: 1.65rem / 2rem;
-  background: url("../img/sudut-bunga.svg") right bottom / min(46%, 126px) auto no-repeat,
-    var(--pattern), linear-gradient(135deg, #fffaf0, #e9d8ba);
-  box-shadow: inset 0 0 0 6px #fff8e9, 0 14px 22px -10px #51391e66;
-  backface-visibility: hidden; transform: rotateY(180deg) translateZ(.5px);
-  pointer-events: none;
-}
 .wish-carousel__stage--dragging { cursor: grabbing; user-select: none; }
 .wish-carousel__controls button[hidden] { display: none; }

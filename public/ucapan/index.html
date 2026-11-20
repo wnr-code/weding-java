@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=sentuh-21" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=gulungan-22" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -65,7 +65,7 @@
             <span class="wishes__count" id="wishesCount"></span>
           </div>
           <div class="wish-carousel" id="carouselUcapan" hidden>
-            <p class="wish-carousel__hint" id="petunjukUcapan">Kartu berputar dalam lingkaran 3D. Tarik kartu untuk memutarnya, atau pilih Jeda untuk membaca.</p>
+            <p class="wish-carousel__hint" id="petunjukUcapan">Tarik kartu ke atas, bawah, kiri, atau kanan untuk melihat sisi belakang. Untuk menggulir halaman, usap di luar kartu.</p>
             <div class="wish-carousel__stage">
               <figure class="wish-carousel__couple" aria-label="Ja’far dan Iklimah, kedua mempelai">
                 <div class="wish-carousel__portraits">
@@ -74,7 +74,7 @@
                 </div>
                 <figcaption>Ja’far &amp; Iklimah</figcaption>
               </figure>
-              <ul class="wish-list wish-carousel__track" id="daftarUcapan" tabindex="0" aria-label="Kartu ucapan" aria-describedby="petunjukUcapan" aria-live="polite"></ul>
+              <div class="wish-carousel__drag-zone"><ul class="wish-list wish-carousel__track" id="daftarUcapan" tabindex="0" aria-label="Kartu ucapan" aria-describedby="petunjukUcapan" aria-live="polite"></ul></div>
             </div>
             <div class="wish-carousel__controls" hidden>
               <button type="button" data-slide="-1" aria-label="Ucapan sebelumnya" aria-controls="daftarUcapan">←</button>
@@ -104,7 +104,7 @@
               </div>
               <figcaption>Ja’far &amp; Iklimah</figcaption>
             </figure>
-            <ul class="wish-list wish-carousel__track" id="daftarHadiah" tabindex="0" aria-label="Kartu tanda kasih"></ul>
+            <div class="wish-carousel__drag-zone"><ul class="wish-list wish-carousel__track" id="daftarHadiah" tabindex="0" aria-label="Kartu tanda kasih"></ul></div>
           </div>
           <div class="wish-carousel__controls" hidden>
             <button type="button" data-slide="-1" aria-label="Kiriman sebelumnya" aria-controls="daftarHadiah">←</button>
@@ -118,6 +118,6 @@
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=sentuh-21"></script>
+  <script type="module" src="/assets/js/app.js?v=gulungan-22"></script>
 </body>
 </html>

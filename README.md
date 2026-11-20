@@ -311,3 +311,24 @@ npx wrangler@4.165.0 deploy                      # terbit
 
 Dibuat dengan cinta untuk Ja'far & Iklimah. Barakallahu lakuma wa baraka
 'alaikuma wa jama'a bainakuma fii khair.
+
+### Webhook Trakteer (uji)
+
+Endpoint `POST /api/trakteer-webhook` mengenali `X-Webhook-Token` seperti proyek
+Quran. Pasang token pada **Worker `weding-java`** melalui Cloudflare Dashboard →
+Workers & Pages → weding-java → Settings → Variables and Secrets → **Secret**
+dengan nama `TRAKTEER_WEBHOOK_TOKEN`. Jangan tempel token ke repo atau chat.
+
+Jangan ganti webhook aktif Quran bila akun hanya mendukung satu URL. Bila
+tersedia pengujian ke URL terpisah, arahkan event uji ke
+`https://wedding.cgs.my.id/api/trakteer-webhook`; jika tidak, uji dengan mengirim
+payload sintetis ber-ID `test-...` ke URL itu memakai token Worker, tanpa
+mengubah pengaturan Quran. Mode `test` mengabaikan transaksi riil dan hanya
+menampilkan event ber-ID uji, berlabel **Percobaan**.
+
+Saat akun khusus undangan siap: ganti secret Worker, arahkan webhook **akun
+baru** ke URL di atas, lalu deploy dengan `TRAKTEER_MODE = "live"` dan perbarui
+link hadiah di `config.js`. Mode live hanya menampilkan transaksi non-uji.
+Pastikan pengirim mengetahui nama tampilan dan pesan akan dipublikasikan.
+Feed menyimpan ID hanya untuk deduplikasi; tidak menyimpan email atau nominal,
+dan tidak mengubah statistik RSVP.

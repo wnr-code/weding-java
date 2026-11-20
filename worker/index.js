@@ -19,6 +19,8 @@ import {
   validasiUcapan,
 } from "./ucapan.js";
 
+import { ambilTandaKasih, terimaTrakteer } from "./trakteer.js";
+
 const HEADER_KEAMANAN = {
   "x-content-type-options": "nosniff",
   "referrer-policy": "strict-origin-when-cross-origin",
@@ -74,6 +76,8 @@ export default {
         );
       }
 
+      if (rute === "POST /api/trakteer-webhook") return await terimaTrakteer(request, env, json);
+      if (rute === "GET /api/tanda-kasih") return await ambilTandaKasih(env, json);
       if (rute === "GET /api/ucapan") return await ambilUcapan(url, env, cors);
       if (rute === "POST /api/ucapan") return await simpanUcapan(request, env, cors);
 

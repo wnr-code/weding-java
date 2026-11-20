@@ -856,6 +856,40 @@ function pasangGulir() {
   });
 }
 
+async function tampilkanTandaKasih() {
+  const bagian = $("#kirimanHadiah");
+  const daftar = $("#daftarHadiah");
+  if (!bagian || !daftar) return;
+  try {
+    const res = await fetch("/api/tanda-kasih");
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data.items) || !data.items.length) return;
+    if (data.uji) $("#statusKirimanHadiah").textContent = "Percobaan · Trakteer";
+    for (const item of data.items) {
+      const kartu = document.createElement("li");
+      kartu.className = "wish";
+      const avatar = document.createElement("span");
+      avatar.className = "wish__avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.textContent = "♡";
+      const isi = document.createElement("div");
+      isi.className = "wish__body";
+      const nama = document.createElement("strong");
+      nama.className = "wish__name";
+      nama.textContent = item.nama;
+      const pesan = document.createElement("p");
+      pesan.className = "wish__msg";
+      pesan.textContent = item.pesan;
+      isi.append(nama);
+      if (item.pesan) isi.append(pesan);
+      kartu.append(avatar, isi);
+      daftar.append(kartu);
+    }
+    bagian.hidden = false;
+  } catch { /* Feed tambahan tidak menghalangi formulir ucapan. */ }
+}
+
 /* --------------------------------- Inisialisasi -------------------------- */
 function mulai() {
   injectOrnaments();
@@ -870,6 +904,7 @@ function mulai() {
     kembali.href = personalisasi(kembali.getAttribute("href"));
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     pasangFormUcapan();
+    tampilkanTandaKasih();
     return;
   }
   $$("[data-ucapan-link]").forEach((a) => {

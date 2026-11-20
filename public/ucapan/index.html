@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=label-9" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=geser-11" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -30,16 +30,6 @@
           <div class="field">
             <label for="inNama">Nama</label>
             <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
-          </div>
-
-          <div class="field">
-            <label for="inJenisPengirim">Pengirim ucapan</label>
-            <select id="inJenisPengirim" name="jenis_pengirim" required>
-              <option value="" selected disabled>Pilih Laki-laki atau Perempuan</option>
-              <option value="laki_laki">Laki-laki</option>
-              <option value="perempuan">Perempuan</option>
-            </select>
-            <p class="field__hint">Pilihan ini menentukan mempelai yang mengirim balasan otomatis.</p>
           </div>
 
           <fieldset class="field">
@@ -82,7 +72,15 @@
             <h3>Linimasa Ucapan</h3>
             <span class="wishes__count" id="wishesCount"></span>
           </div>
-          <ul class="wish-list" id="daftarUcapan" aria-live="polite"></ul>
+          <div class="wish-carousel" id="carouselUcapan" hidden>
+            <p class="wish-carousel__hint" id="petunjukUcapan">Geser kartu ke samping untuk membaca ucapan lainnya.</p>
+            <ul class="wish-list wish-carousel__track" id="daftarUcapan" tabindex="0" aria-label="Kartu ucapan" aria-describedby="petunjukUcapan" aria-live="polite"></ul>
+            <div class="wish-carousel__controls" hidden>
+              <button type="button" data-slide="-1" aria-label="Ucapan sebelumnya" aria-controls="daftarUcapan">←</button>
+              <span data-slide-count aria-hidden="true"></span>
+              <button type="button" data-slide="1" aria-label="Ucapan berikutnya" aria-controls="daftarUcapan">→</button>
+            </div>
+          </div>
           <p class="wishes__empty" id="wishesEmpty" hidden>Belum ada ucapan. Jadilah yang pertama mendoakan. 🤍</p>
           <button class="btn btn--ghost btn--sm" id="btnMuatLagi" type="button" hidden>Lihat ucapan lainnya</button>
         </div>
@@ -95,12 +93,19 @@
           <span class="eyebrow" id="statusKirimanHadiah">Ungkapan Syukur</span>
           <h2 class="section__title">Kiriman Tanda Kasih</h2>
         </header>
-        <ul class="wish-list" id="daftarHadiah"></ul>
+        <div class="wish-carousel" id="carouselHadiah">
+          <ul class="wish-list wish-carousel__track" id="daftarHadiah" tabindex="0" aria-label="Kartu tanda kasih"></ul>
+          <div class="wish-carousel__controls" hidden>
+            <button type="button" data-slide="-1" aria-label="Kiriman sebelumnya" aria-controls="daftarHadiah">←</button>
+            <span data-slide-count aria-hidden="true"></span>
+            <button type="button" data-slide="1" aria-label="Kiriman berikutnya" aria-controls="daftarHadiah">→</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=bahasa-10"></script>
+  <script type="module" src="/assets/js/app.js?v=geser-11"></script>
 </body>
 </html>

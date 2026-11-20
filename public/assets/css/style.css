@@ -801,8 +801,6 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   padding: .14rem .5rem; border-radius: 999px; border: 1px solid var(--gold-line);
   color: var(--gold-deep); background: rgba(231, 213, 173, .3);
 }
-.wish__badge--tidak { color: #8a6a5a; border-color: rgba(138, 106, 90, .28); background: rgba(180, 150, 130, .14); }
-.wish__badge--ragu { color: #8a7a3a; }
 .wish__time { font-size: .65rem; color: var(--ink-soft); opacity: .8; margin-left: auto; }
 .wish__msg { font-size: .84rem; line-height: 1.7; color: var(--ink-soft); margin-top: .2rem; overflow-wrap: anywhere; }
 .wishes__empty { text-align: center; font-size: .82rem; color: var(--ink-soft); padding: 1.4rem 0; }
@@ -1059,8 +1057,6 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish__reply-label { display: block; color: var(--ink-soft); font-size: .72rem; }
 .wish__reply-bubble p { margin-top: .25rem; font-size: .9rem; line-height: 1.55; }
 
-.wish__reply[data-avatars="1"] { grid-template-columns: 26px minmax(0, 1fr); }
-.field__hint { font-size: .82rem; color: var(--ink-soft); }
 
 /* Jenis kiriman dipisahkan dari status RSVP. */
 .wish__kind {
@@ -1072,3 +1068,32 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish__kind--hadiah { background: #f2dfb8; color: #694719; }
 .wish__kind--uji { background: #eee9e0; color: #5d5549; border-color: #dacfc0; }
 .wish--hadiah { border-color: #d8bf88; }
+
+/* Kartu dapat digeser tanpa membuat seluruh halaman bergeser. */
+.wish-carousel { min-width: 0; }
+.wish-carousel__hint { font-size: .82rem; color: var(--ink-soft); margin-bottom: .6rem; }
+.wish-carousel__track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 88%; gap: .8rem;
+  align-items: start; overflow-x: auto; overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory; padding-block: .25rem .65rem;
+  scrollbar-width: thin; scrollbar-color: var(--gold-soft) transparent;
+}
+.wish-carousel__track > .wish { scroll-snap-align: start; min-width: 0; }
+.wish-carousel__track > .wish:only-child { grid-column: 1 / -1; }
+.wish-carousel__track:has(> :only-child) { grid-auto-columns: 100%; }
+.wish-carousel__controls { display: flex; align-items: center; justify-content: center; gap: .85rem; color: var(--ink-soft); }
+.wish-carousel__controls[hidden] { display: none; }
+.wish-carousel__controls button {
+  width: 44px; height: 44px; border: 1px solid var(--gold-line); border-radius: 50%;
+  background: var(--ivory); color: var(--gold-deep); cursor: pointer;
+  transition: background-color .25s ease, transform .25s var(--ease);
+}
+.wish-carousel__controls button:active:not(:disabled) { transform: scale(.9); background: var(--gold-soft); }
+.wish-carousel__controls button:disabled { opacity: .4; cursor: default; }
+.wish-carousel__controls [data-slide-count] { font-size: .82rem; font-variant-numeric: tabular-nums; }
+.wish[data-kehadiran="hadir"] { border-inline-start: 3px solid #4b8058; }
+.wish[data-kehadiran="tidak_hadir"] { border-inline-start: 3px solid #b5575a; }
+.wish[data-kehadiran="ragu"] { border-inline-start: 3px solid #ad7928; }
+.wish__badge--hadir { color: #245135; background: #e1f0e3; border-color: #b0cdb6; }
+.wish__badge--tidak { color: #852f36; background: #f8e4e4; border-color: #e5b8b9; }
+.wish__badge--ragu { color: #745012; background: #fbefd6; border-color: #e5ce9f; }

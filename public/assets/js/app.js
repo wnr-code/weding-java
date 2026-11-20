@@ -454,7 +454,7 @@ const state = { offset: 0, limit: 6, total: 0, memuat: false };
 
 function badgeKehadiran(item) {
   const map = {
-    hadir: { teks: item.jumlah > 1 ? `Hadir · ${item.jumlah} orang` : "Hadir", cls: "" },
+    hadir: { teks: item.jumlah > 1 ? `Hadir · ${item.jumlah} orang` : "Hadir", cls: "wish__badge--hadir" },
     tidak_hadir: { teks: "Tidak hadir", cls: "wish__badge--tidak" },
     ragu: { teks: "Masih ragu", cls: "wish__badge--ragu" },
   };
@@ -490,6 +490,7 @@ function buatKartuUcapan(item, i = 0) {
   const b = badgeKehadiran(item);
   const badge = document.createElement("span");
   badge.className = `wish__badge ${b.cls}`;
+  li.dataset.kehadiran = item.kehadiran;
   badge.textContent = b.teks;
 
   const time = document.createElement("span");
@@ -511,9 +512,7 @@ function buatKartuUcapan(item, i = 0) {
   const replyAvatar = document.createElement("span");
   replyAvatar.className = "wish__reply-avatar";
   replyAvatar.setAttribute("aria-hidden", "true");
-  const pengantinPembalas = item.jenis_pengirim === "laki_laki" ? [M.pria]
-    : item.jenis_pengirim === "perempuan" ? [M.wanita] : [M.pria, M.wanita];
-  reply.dataset.avatars = String(pengantinPembalas.length);
+  const pengantinPembalas = [M.pria, M.wanita];
   for (const pengantin of pengantinPembalas) {
     const foto = document.createElement("img");
     foto.src = new URL(`../../${pengantin.foto}`, import.meta.url).href;
@@ -548,6 +547,52 @@ function perbaruiStatistik(data) {
   if (c) c.textContent = data.total ? `${data.total} ucapan` : "";
 }
 
+function pasangCarousel(id) {
+  const root = document.getElementById(id);
+  if (!root) return () => {};
+  const track = root.querySelector(".wish-carousel__track");
+  const controls = root.querySelector(".wish-carousel__controls");
+  const prev = controls.querySelector('[data-slide="-1"]');
+  const next = controls.querySelector('[data-slide="1"]');
+  const count = controls.querySelector("[data-slide-count]");
+  const posisi = (card) => card.getBoundingClientRect().left - track.getBoundingClientRect().left;
+  const indeks = () => {
+    const terakhir = track.scrollWidth - track.clientWidth;
+    if (terakhir > 2 && track.scrollLeft >= terakhir - 2) return track.children.length - 1;
+    return Array.from(track.children).reduce((a, card, i) => {
+      return Math.abs(posisi(card)) < Math.abs(posisi(track.children[a])) ? i : a;
+    }, 0);
+  };
+  const sinkron = () => {
+    const n = track.children.length;
+    const i = indeks();
+    controls.hidden = n < 2 || track.scrollWidth <= track.clientWidth + 2;
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    count.textContent = `${i + 1} / ${n}`;
+  };
+  const geser = (arah) => {
+    const card = track.children[indeks() + arah];
+    if (card) track.scrollBy({ left: posisi(card), behavior: kurangiGerak() ? "instant" : "smooth" });
+  };
+  on(prev, "click", () => geser(-1));
+  on(next, "click", () => geser(1));
+  on(track, "keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    geser(event.key === "ArrowLeft" ? -1 : 1);
+  });
+  track.addEventListener("scroll", sinkron, { passive: true });
+  window.addEventListener("resize", sinkron, { passive: true });
+  return (reset = false) => {
+    root.hidden = !track.children.length;
+    if (reset) track.scrollLeft = 0;
+    sinkron();
+  };
+}
+
+let sinkronUcapan = () => {};
+
 async function muatUcapan({ reset = false } = {}) {
   const list = $("#daftarUcapan");
   if (!list || state.memuat) return;
@@ -558,6 +603,7 @@ async function muatUcapan({ reset = false } = {}) {
     const data = await api.ambilUcapan({ limit: state.limit, offset: state.offset });
     if (reset) list.innerHTML = "";
     (data.items || []).forEach((it, i) => list.appendChild(buatKartuUcapan(it, i)));
+    sinkronUcapan(reset);
     state.offset += (data.items || []).length;
     state.total = data.total ?? 0;
     perbaruiStatistik(data);
@@ -582,7 +628,6 @@ function pasangFormUcapan() {
 
   const form = $("#formUcapan");
   const nama = $("#inNama");
-  const jenis = $("#inJenisPengirim");
   const pesan = $("#inPesan");
   const jumlah = $("#inJumlah");
   const fieldJumlah = $("#fieldJumlah");
@@ -626,12 +671,6 @@ function pasangFormUcapan() {
       nama.focus();
       return;
     }
-    if (!jenis.value) {
-      status.textContent = "Mohon pilih Laki-laki atau Perempuan.";
-      status.className = "form-status is-err";
-      jenis.focus();
-      return;
-    }
     if (pesanVal.length > (U.batasPesan || 500)) {
       status.textContent = "Ucapan terlalu panjang.";
       status.className = "form-status is-err";
@@ -644,7 +683,7 @@ function pasangFormUcapan() {
     status.className = "form-status";
 
     try {
-      const hasil = await api.kirimUcapan({ nama: namaVal, jenis_pengirim: jenis.value, kehadiran, jumlah: jml, pesan: pesanVal });
+      const hasil = await api.kirimUcapan({ nama: namaVal, kehadiran, jumlah: jml, pesan: pesanVal });
       status.textContent =
         hasil.mode === "lokal"
           ? "Ucapan tersimpan di perangkat ini (mode pratinjau — server belum aktif)."
@@ -864,7 +903,7 @@ function pasangGulir() {
   });
 }
 
-async function tampilkanTandaKasih() {
+async function tampilkanTandaKasih(sinkron) {
   const bagian = $("#kirimanHadiah");
   const daftar = $("#daftarHadiah");
   if (!bagian || !daftar) return;
@@ -895,6 +934,7 @@ async function tampilkanTandaKasih() {
       daftar.append(kartu);
     }
     bagian.hidden = false;
+    sinkron(true);
   } catch { /* Feed tambahan tidak menghalangi formulir ucapan. */ }
 }
 
@@ -911,8 +951,9 @@ function mulai() {
   if (kembali) {
     kembali.href = personalisasi(kembali.getAttribute("href"));
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
+    sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
-    tampilkanTandaKasih();
+    tampilkanTandaKasih(pasangCarousel("carouselHadiah"));
     return;
   }
   $$("[data-ucapan-link]").forEach((a) => {

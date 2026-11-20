@@ -1,4 +1,4 @@
-# weding-java — publikasi undangan hanya lewat konfirmasi manual.
+# Publikasi hanya dengan konfirmasi manual atau commit deploy khusus di branch Arena.
 name: deploy
 
 on:
@@ -23,7 +23,7 @@ env:
 
 jobs:
   deploy:
-    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.confirm_deploy == 'DEPLOY-weding-java') || (github.event_name == 'push' && github.event.head_commit.message == 'DEPLOY-weding-java') }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.confirm_deploy == 'DEPLOY-weding-java') || (github.event_name == 'push' && startsWith(github.event.head_commit.message, 'DEPLOY-weding-java:')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

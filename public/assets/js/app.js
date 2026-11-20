@@ -454,7 +454,7 @@ const state = { offset: 0, limit: 6, total: 0, memuat: false };
 
 function badgeKehadiran(item) {
   const map = {
-    hadir: { teks: item.jumlah > 1 ? `Hadir · ${item.jumlah} orang` : "Hadir", cls: "wish__badge--hadir" },
+    hadir: { teks: "Hadir", cls: "wish__badge--hadir" },
     tidak_hadir: { teks: "Tidak hadir", cls: "wish__badge--tidak" },
     ragu: { teks: "Masih ragu", cls: "wish__badge--ragu" },
   };
@@ -468,10 +468,9 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-function buatKartuUcapan(item, i = 0) {
+function buatKartuUcapan(item) {
   const li = document.createElement("li");
   li.className = "wish";
-  li.style.animationDelay = `${Math.min(i * 60, 360)}ms`;
 
   const av = document.createElement("div");
   av.className = "wish__avatar";
@@ -522,10 +521,10 @@ function buatReaksi() {
   const reaksi = document.createElement("span");
   reaksi.className = "wish__reaction";
   reaksi.setAttribute("role", "img");
-  reaksi.setAttribute("aria-label", "Dua tanda kasih dari kedua mempelai, ditampilkan otomatis");
+  reaksi.setAttribute("aria-label", "Disukai kedua mempelai, ditampilkan otomatis");
   const hati = document.createElement("span");
   hati.setAttribute("aria-hidden", "true");
-  hati.textContent = "💞 💞";
+  hati.textContent = "❤️";
   reaksi.append(hati);
   return reaksi;
 }
@@ -577,6 +576,16 @@ function pasangCarousel(id) {
   const prev = controls.querySelector('[data-slide="-1"]');
   const next = controls.querySelector('[data-slide="1"]');
   const count = controls.querySelector("[data-slide-count]");
+  let terlihat;
+  if ("IntersectionObserver" in window && !kurangiGerak()) {
+    terlihat = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!track.contains(entry.target)) continue;
+        if (entry.intersectionRatio >= .45) entry.target.classList.add("wish--terlihat");
+        else if (!entry.isIntersecting) entry.target.classList.remove("wish--terlihat");
+      }
+    }, { threshold: [0, .45] });
+  }
   const posisi = (card) => card.getBoundingClientRect().left - track.getBoundingClientRect().left;
   const indeks = () => {
     const terakhir = track.scrollWidth - track.clientWidth;
@@ -609,6 +618,10 @@ function pasangCarousel(id) {
   return (reset = false) => {
     root.hidden = !track.children.length;
     if (reset) track.scrollLeft = 0;
+    if (terlihat) {
+      terlihat.disconnect();
+      for (const card of track.children) terlihat.observe(card);
+    }
     sinkron();
   };
 }
@@ -624,7 +637,7 @@ async function muatUcapan({ reset = false } = {}) {
   try {
     const data = await api.ambilUcapan({ limit: state.limit, offset: state.offset });
     if (reset) list.innerHTML = "";
-    (data.items || []).forEach((it, i) => list.appendChild(buatKartuUcapan(it, i)));
+    (data.items || []).forEach((it) => list.appendChild(buatKartuUcapan(it)));
     sinkronUcapan(reset);
     state.offset += (data.items || []).length;
     state.total = data.total ?? 0;
@@ -652,8 +665,6 @@ function pasangFormUcapan() {
   const nama = $("#inNama");
   const kota = $("#inKota");
   const pesan = $("#inPesan");
-  const jumlah = $("#inJumlah");
-  const fieldJumlah = $("#fieldJumlah");
   const status = $("#formStatus");
   const btn = $("#btnKirim");
   const label = $("#btnKirimLabel");
@@ -667,26 +678,11 @@ function pasangFormUcapan() {
     if (c) c.textContent = `${pesan.value.length}/${pesan.maxLength}`;
   });
 
-  const aturJumlah = () => {
-    const dipilih = form.querySelector('input[name="kehadiran"]:checked')?.value;
-    const perlu = dipilih === "hadir";
-    if (fieldJumlah) {
-      fieldJumlah.style.opacity = perlu ? "1" : ".45";
-      fieldJumlah.style.pointerEvents = perlu ? "auto" : "none";
-    }
-    if (jumlah) jumlah.disabled = !perlu;
-  };
-  on(form, "change", (e) => {
-    if (e.target.name === "kehadiran") aturJumlah();
-  });
-  aturJumlah();
-
   on(form, "submit", async (e) => {
     e.preventDefault();
     const namaVal = (nama.value || "").trim();
     const kehadiran = form.querySelector('input[name="kehadiran"]:checked')?.value || "ragu";
     const pesanVal = (pesan.value || "").trim();
-    const jml = kehadiran === "hadir" ? Number(jumlah.value || 1) : 0;
 
     if (namaVal.length < 2) {
       status.textContent = "Mohon isi nama Anda (minimal 2 huruf).";
@@ -706,7 +702,7 @@ function pasangFormUcapan() {
     status.className = "form-status";
 
     try {
-      const hasil = await api.kirimUcapan({ nama: namaVal, kota: kota.value.trim(), kehadiran, jumlah: jml, pesan: pesanVal });
+      const hasil = await api.kirimUcapan({ nama: namaVal, kota: kota.value.trim(), kehadiran, jumlah: kehadiran === "hadir" ? 1 : 0, pesan: pesanVal });
       status.textContent =
         hasil.mode === "lokal"
           ? "Ucapan tersimpan di perangkat ini (mode pratinjau — server belum aktif)."
@@ -715,7 +711,6 @@ function pasangFormUcapan() {
       pesan.value = "";
       const c = $("#counterPesan");
       if (c) c.textContent = `0/${pesan.maxLength}`;
-      aturJumlah();
       await muatUcapan({ reset: true });
       toast(hasil.mode === "lokal" ? "Tersimpan di perangkat (mode pratinjau)" : "Terima kasih atas doanya 🤍");
     } catch (err) {

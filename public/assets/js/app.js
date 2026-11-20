@@ -571,97 +571,99 @@ function perbaruiStatistik(data) {
 function pasangCarousel(id) {
   const root = document.getElementById(id);
   if (!root) return () => {};
+  const stage = root.querySelector(".wish-carousel__stage");
   const track = root.querySelector(".wish-carousel__track");
   const controls = root.querySelector(".wish-carousel__controls");
-  const prev = controls.querySelector('[data-slide="-1"]');
-  const next = controls.querySelector('[data-slide="1"]');
   const count = controls.querySelector("[data-slide-count]");
   const tombolPutar = controls.querySelector("[data-slide-play]");
   const bisaDiputar = "IntersectionObserver" in window;
-  let diputar = !kurangiGerak() && bisaDiputar;
-  tombolPutar.hidden = !bisaDiputar;
+  let diputar = bisaDiputar && !kurangiGerak();
   let dalamLayar = false;
   let tahanSampai = 0;
-  let disentuh = false;
-  if ("IntersectionObserver" in window) {
+  let sentuhan = null;
+  let langkah = 0;
+  let jumlahTerakhir = 0;
+  if (bisaDiputar) {
     new IntersectionObserver(([entry]) => {
       dalamLayar = entry.isIntersecting;
-    }).observe(track);
+    }).observe(stage);
   }
+  tombolPutar.hidden = !bisaDiputar;
   const perbaruiPutar = () => {
     tombolPutar.textContent = diputar ? "Jeda" : "Putar";
     tombolPutar.setAttribute("aria-label", diputar ? "Jeda putaran kartu" : "Putar kartu otomatis");
   };
   perbaruiPutar();
-  let terlihat;
-  if ("IntersectionObserver" in window && !kurangiGerak()) {
-    terlihat = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (!track.contains(entry.target)) continue;
-        if (entry.intersectionRatio >= .45) entry.target.classList.add("wish--terlihat");
-        else if (!entry.isIntersecting) entry.target.classList.remove("wish--terlihat");
-      }
-    }, { threshold: [0, .45] });
-  }
-  const posisi = (card) => card.offsetLeft - track.scrollLeft;
-  const indeks = () => {
-    const terakhir = track.scrollWidth - track.clientWidth;
-    if (terakhir > 2 && track.scrollLeft >= terakhir - 2) return track.children.length - 1;
-    return Array.from(track.children).reduce((a, card, i) => {
-      return Math.abs(posisi(card)) < Math.abs(posisi(track.children[a])) ? i : a;
-    }, 0);
-  };
+
+  const aktif = (n) => n ? ((langkah % n) + n) % n : 0;
   const sinkron = () => {
     const n = track.children.length;
-    const i = indeks();
-    controls.hidden = n < 2 || track.scrollWidth <= track.clientWidth + 2;
-    prev.disabled = track.scrollLeft <= 2;
-    next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    const i = aktif(n);
+    controls.hidden = n < 2;
     count.textContent = `${i + 1} / ${n}`;
+    const radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
+    track.style.setProperty("--ring-radius", `${radius}px`);
+    track.style.setProperty("--ring-angle", `${n ? -langkah * 360 / n : 0}deg`);
+    Array.from(track.children).forEach((card, index) => {
+      card.style.setProperty("--card-angle", `${index * 360 / n}deg`);
+      card.classList.toggle("wish--terlihat", index === i);
+      card.setAttribute("aria-hidden", String(index !== i));
+    });
   };
   const geser = (arah) => {
-    const card = track.children[indeks() + arah];
-    if (card) track.scrollBy({ left: posisi(card), behavior: kurangiGerak() ? "instant" : "smooth" });
+    if (track.children.length < 2) return;
+    langkah += arah;
+    sinkron();
   };
-  const tahanPutaran = () => { tahanSampai = Date.now() + 10_000; };
-  on(prev, "click", () => { tahanPutaran(); geser(-1); });
-  on(next, "click", () => { tahanPutaran(); geser(1); });
+  const manual = (arah) => {
+    tahanSampai = Date.now() + 10_000;
+    geser(arah);
+  };
+  on(controls.querySelector('[data-slide="-1"]'), "click", () => manual(-1));
+  on(controls.querySelector('[data-slide="1"]'), "click", () => manual(1));
   on(tombolPutar, "click", () => {
     diputar = !diputar;
-    tahanSampai = 0;
+    tahanSampai = Date.now() + 7000;
     perbaruiPutar();
   });
-  track.addEventListener("pointerdown", () => { disentuh = true; tahanPutaran(); });
-  const selesaiSentuh = () => {
-    if (!disentuh) return;
-    disentuh = false;
-    tahanPutaran();
-  };
-  window.addEventListener("pointerup", selesaiSentuh);
-  window.addEventListener("pointercancel", selesaiSentuh);
-  setInterval(() => {
-    const mouseDiAtas = matchMedia("(hover: hover)").matches && track.matches(":hover");
-    if (!diputar || !dalamLayar || document.hidden || controls.hidden || disentuh || mouseDiAtas
-      || track.contains(document.activeElement) || Date.now() < tahanSampai) return;
-    if (next.disabled) track.scrollLeft = 0;
-    else geser(1);
-  }, 7000);
-  on(track, "keydown", (event) => {
-    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-    event.preventDefault();
-    tahanPutaran();
-    geser(event.key === "ArrowLeft" ? -1 : 1);
+  on(stage, "pointerdown", (e) => {
+    if (!e.isPrimary || e.button !== 0) return;
+    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    tahanSampai = Date.now() + 10_000;
   });
-  track.addEventListener("scroll", sinkron, { passive: true });
+  on(window, "pointerup", (e) => {
+    if (sentuhan?.id !== e.pointerId) return;
+    const dx = e.clientX - sentuhan.x;
+    const dy = e.clientY - sentuhan.y;
+    sentuhan = null;
+    if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy)) manual(dx < 0 ? 1 : -1);
+  });
+  on(window, "pointercancel", (e) => { if (sentuhan?.id === e.pointerId) sentuhan = null; });
+  on(track, "keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    manual(e.key === "ArrowLeft" ? -1 : 1);
+  });
+  setInterval(() => {
+    const hover = matchMedia("(hover: hover)").matches && stage.matches(":hover");
+    if (!diputar || !dalamLayar || document.hidden || sentuhan || hover || track.contains(document.activeElement)
+      || Date.now() < tahanSampai) return;
+    geser(1);
+  }, 7000);
   window.addEventListener("resize", sinkron, { passive: true });
+
   return (reset = false) => {
-    root.hidden = !track.children.length;
-    if (reset) track.scrollLeft = 0;
-    if (terlihat) {
-      terlihat.disconnect();
-      for (const card of track.children) terlihat.observe(card);
-    }
-    sinkron();
+    const n = track.children.length;
+    root.hidden = n === 0;
+    if (reset || n !== jumlahTerakhir) {
+      langkah = reset ? 0 : aktif(jumlahTerakhir);
+      jumlahTerakhir = n;
+      track.classList.add("wish-carousel__track--susun");
+      sinkron();
+      // Commit the rebuilt ring geometry before re-enabling rotation transitions.
+      track.getBoundingClientRect();
+      track.classList.remove("wish-carousel__track--susun");
+    } else sinkron();
   };
 }
 

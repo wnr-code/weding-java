@@ -1067,18 +1067,32 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish__kind--uji { background: #eee9e0; color: #5d5549; border-color: #dacfc0; }
 .wish--hadiah { border-color: #d8bf88; }
 
-/* Kartu dapat digeser tanpa membuat seluruh halaman bergeser. */
+/* Kartu berada pada lingkaran 3D, dengan wajah aktif rata di depan. */
 .wish-carousel { min-width: 0; }
 .wish-carousel__hint { font-size: .82rem; color: var(--ink-soft); margin-bottom: .6rem; }
-.wish-carousel__track {
-  position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 88%; gap: .8rem;
-  align-items: start; overflow-x: auto; overscroll-behavior-inline: contain;
-  scroll-snap-type: x mandatory; padding-block: .25rem .65rem;
-  scrollbar-width: thin; scrollbar-color: var(--gold-soft) transparent;
+.wish-carousel__stage {
+  position: relative; perspective: 850px; overflow: clip;
+  touch-action: pan-y pinch-zoom; padding: .4rem 0 .8rem;
 }
-.wish-carousel__track > .wish { scroll-snap-align: start; min-width: 0; }
-.wish-carousel__track > .wish:only-child { grid-column: 1 / -1; }
-.wish-carousel__track:has(> :only-child) { grid-auto-columns: 100%; }
+.wish-carousel__track {
+  --ring-radius: 0px; --ring-angle: 0deg;
+  display: grid; justify-items: center; align-items: start;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(-1 * var(--ring-radius))) rotateY(var(--ring-angle));
+  transition: transform 850ms cubic-bezier(.31, .1, .22, 1);
+}
+.wish-carousel__track--susun { transition: none; }
+.wish-carousel__track > .wish {
+  grid-area: 1 / 1; width: min(86%, 480px); min-width: 0;
+  transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius));
+  backface-visibility: hidden;
+}
+.wish-carousel__track > .wish:only-child { width: 100%; }
+.wish-carousel__track > .wish[aria-hidden="true"] { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .wish-carousel__track { transition: none; }
+  .wish-carousel__track > .wish[aria-hidden="true"] { visibility: hidden; }
+}
 .wish-carousel__controls { display: flex; align-items: center; justify-content: center; gap: .85rem; color: var(--ink-soft); }
 .wish-carousel__controls[hidden] { display: none; }
 .wish-carousel__controls button {
@@ -1103,12 +1117,7 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 }
 
 /* Mulai ketika kartu benar-benar masuk layar, bukan saat data dimuat. */
-.wish--terlihat { animation: wishPop .55s var(--ease) both; }
 .wish--terlihat .wish__reaction > span { animation: heartPop .55s .18s var(--ease) both; }
-@keyframes wishPop {
-  from { opacity: .65; transform: perspective(700px) rotateY(-20deg) translateY(7px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 @keyframes heartPop {
   0% { transform: scale(.78); }
   48% { transform: scale(1.32) rotate(-10deg); }

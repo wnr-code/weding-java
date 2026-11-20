@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6efe1" />
+  <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=pages-3" />
+</head>
+<body class="page-ucapan">
+  <main class="main">
+    <div class="wrap page-ucapan__back"><a class="btn btn--outline" id="kembaliUndangan" href="/#salam">← Kembali ke undangan</a></div>
+    <section class="section section--ucapan" id="ucapan" hidden>
+      <div class="wrap">
+        <header class="section__head">
+          <span class="eyebrow">Doa &amp; Restu</span>
+          <h1 class="section__title" data-bind="ucapanJudul">Ucapan &amp; Kehadiran</h1>
+          <div class="divider" data-orn="divider" aria-hidden="true"></div>
+        </header>
+        <p class="lead" data-bind="ucapanPembuka"></p>
+
+        <div class="stats" id="stats" aria-live="polite">
+          <div class="stats__item"><strong id="statHadir">0</strong><span>Hadir</span></div>
+          <div class="stats__item"><strong id="statUcapan">0</strong><span>Ucapan</span></div>
+          <div class="stats__item"><strong id="statTidakHadir">0</strong><span>Berhalangan</span></div>
+        </div>
+
+        <form class="wish-form" id="formUcapan" novalidate>
+          <div class="field">
+            <label for="inNama">Nama</label>
+            <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+          </div>
+
+          <fieldset class="field">
+            <legend>Konfirmasi kehadiran</legend>
+            <div class="pills" role="radiogroup" aria-label="Konfirmasi kehadiran">
+              <label class="pill"><input type="radio" name="kehadiran" value="hadir" checked /><span>Hadir</span></label>
+              <label class="pill"><input type="radio" name="kehadiran" value="ragu" /><span>Masih Ragu</span></label>
+              <label class="pill"><input type="radio" name="kehadiran" value="tidak_hadir" /><span>Tidak Hadir</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field" id="fieldJumlah">
+            <label for="inJumlah">Jumlah orang</label>
+            <select id="inJumlah" name="jumlah">
+              <option value="1">1 orang</option>
+              <option value="2">2 orang</option>
+              <option value="3">3 orang</option>
+              <option value="4">4 orang</option>
+              <option value="5">5 orang</option>
+              <option value="6">6 orang</option>
+              <option value="8">8 orang</option>
+              <option value="10">10 orang</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="inPesan">Ucapan &amp; doa <span class="muted">(opsional)</span></label>
+            <textarea id="inPesan" name="pesan" rows="4" maxlength="500" placeholder="Tulis doa dan ucapan untuk kedua mempelai…"></textarea>
+            <span class="counter" id="counterPesan">0/500</span>
+          </div>
+
+          <button class="btn btn--gold btn--block" type="submit" id="btnKirim">
+            <span id="btnKirimLabel">Kirim Ucapan</span>
+          </button>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </form>
+
+        <div class="wishes">
+          <div class="wishes__head">
+            <h3>Doa yang tercurah</h3>
+            <span class="wishes__count" id="wishesCount"></span>
+          </div>
+          <ul class="wish-list" id="daftarUcapan" aria-live="polite"></ul>
+          <p class="wishes__empty" id="wishesEmpty" hidden>Belum ada ucapan. Jadilah yang pertama mendoakan. 🤍</p>
+          <button class="btn btn--ghost btn--sm" id="btnMuatLagi" type="button" hidden>Lihat ucapan lainnya</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
+  <script type="module" src="/assets/js/app.js?v=pages-3"></script>
+</body>
+</html>

@@ -20,8 +20,8 @@ seluler.
 | Data pengantin | Nama, urutan anak, orang tua (termasuk gelar `(alm)`) dari `assets/js/config.js` |
 | Tanggal 25 Rajab | Tampil berdampingan dengan 3 Januari 2027 di sampul, hitung mundur, dan acara |
 | Terhubung Trakteer | Kartu **Tanda Kasih** → `https://trakteer.id/-java` |
-| Kirim ucapan / kehadiran | Formulir *Hadir / Masih Ragu / Tidak Hadir* + jumlah tamu + doa, tersimpan di D1, lengkap dengan statistik |
-| Peta | Google Maps sematan (dimuat saat mendekati layar) + tombol petunjuk arah & salin alamat |
+| Kirim ucapan / kehadiran | Formulir di `/ucapan/`: *Hadir / Masih Ragu / Tidak Hadir* + jumlah tamu + doa, tersimpan di D1, lengkap dengan statistik |
+| Peta | Menu Lokasi, sematan Google Maps, serta tombol buka peta, petunjuk arah & salin alamat |
 | Foto-foto | Foto asli: potret per wajah untuk kedua mempelai + foto utuh dengan animasi dua panel menyatu, semuanya bisa diperbesar (lightbox) |
 | Musik Islami | Instrumental piano “Doa Bahagia” yang berulang otomatis setelah tamu membuka undangan |
 | Animasi hiasan Islami | Roset geometris berputar, bulan sabit mengapung, pembatas floral yang "tumbuh" saat digulir, kilau emas, partikel cahaya, bingkai mihrab |

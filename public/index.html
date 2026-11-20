@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/great-vibes-latin-400-normal.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin />
-  <link rel="stylesheet" href="assets/css/style.css?v=mobile-1" />
+  <link rel="stylesheet" href="assets/css/style.css?v=pages-3" />
   <!-- Tandai JS aktif lebih awal agar animasi tidak berkedip saat modul dimuat. -->
   <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -265,19 +265,15 @@
           <div class="divider" data-orn="divider" aria-hidden="true"></div>
         </header>
 
-        <div class="map reveal" id="mapWrap">
-          <div class="map__placeholder" id="mapPlaceholder">
-            <div class="map__placeholder-orn" data-orn="crescent" aria-hidden="true"></div>
-            <p>Peta Google Maps dimuat di sini</p>
-            <button class="btn btn--outline btn--sm" id="btnMuattPeta" type="button">Muat Peta</button>
-          </div>
+        <div class="map__card">
+          <p class="map__title" data-bind="lokasiNama">Gedung Islamic Center</p>
+          <p class="map__desc" data-bind="lokasiDetail">Singaparna, Tasikmalaya</p>
+          <a class="btn btn--gold" id="btnMaps2" href="https://www.google.com/maps/search/?api=1&amp;query=Gedung+Islamic+Center+Singaparna%2C+Tasikmalaya" target="_blank" rel="noopener noreferrer">Buka Google Maps ↗</a>
         </div>
-
-        <div class="map__card reveal">
-          <p class="map__title" data-bind="lokasiNama"></p>
-          <p class="map__desc" data-bind="lokasiDetail"></p>
-          <a class="map__link" id="btnMaps2" target="_blank" rel="noopener noreferrer">Buka di Google Maps →</a>
+        <div class="map" id="mapWrap">
+          <iframe src="https://www.google.com/maps?q=Gedung%20Islamic%20Center%20Singaparna%2C%20Tasikmalaya&amp;z=16&amp;hl=id&amp;output=embed" title="Peta Gedung Islamic Center Singaparna" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         </div>
+        <p class="map__fallback">Jika peta tidak tampil di browser HP, ketuk <strong>Buka Google Maps</strong> di atas.</p>
       </div>
     </section>
 
@@ -326,72 +322,12 @@
       </div>
     </section>
 
-    <!-- Ucapan & kehadiran -->
-    <section class="section section--ucapan" id="ucapan" hidden>
-      <div class="wrap">
-        <header class="section__head reveal">
-          <span class="eyebrow">Doa &amp; Restu</span>
-          <h2 class="section__title" data-bind="ucapanJudul">Ucapan &amp; Kehadiran</h2>
-          <div class="divider" data-orn="divider" aria-hidden="true"></div>
-        </header>
-        <p class="lead reveal" data-bind="ucapanPembuka"></p>
-
-        <div class="stats reveal" id="stats" aria-live="polite">
-          <div class="stats__item"><strong id="statHadir">0</strong><span>Hadir</span></div>
-          <div class="stats__item"><strong id="statUcapan">0</strong><span>Ucapan</span></div>
-          <div class="stats__item"><strong id="statTidakHadir">0</strong><span>Berhalangan</span></div>
-        </div>
-
-        <form class="wish-form reveal" id="formUcapan" novalidate>
-          <div class="field">
-            <label for="inNama">Nama</label>
-            <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
-          </div>
-
-          <fieldset class="field">
-            <legend>Konfirmasi kehadiran</legend>
-            <div class="pills" role="radiogroup" aria-label="Konfirmasi kehadiran">
-              <label class="pill"><input type="radio" name="kehadiran" value="hadir" checked /><span>Hadir</span></label>
-              <label class="pill"><input type="radio" name="kehadiran" value="ragu" /><span>Masih Ragu</span></label>
-              <label class="pill"><input type="radio" name="kehadiran" value="tidak_hadir" /><span>Tidak Hadir</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field" id="fieldJumlah">
-            <label for="inJumlah">Jumlah orang</label>
-            <select id="inJumlah" name="jumlah">
-              <option value="1">1 orang</option>
-              <option value="2">2 orang</option>
-              <option value="3">3 orang</option>
-              <option value="4">4 orang</option>
-              <option value="5">5 orang</option>
-              <option value="6">6 orang</option>
-              <option value="8">8 orang</option>
-              <option value="10">10 orang</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="inPesan">Ucapan &amp; doa <span class="muted">(opsional)</span></label>
-            <textarea id="inPesan" name="pesan" rows="4" maxlength="500" placeholder="Tulis doa dan ucapan untuk kedua mempelai…"></textarea>
-            <span class="counter" id="counterPesan">0/500</span>
-          </div>
-
-          <button class="btn btn--gold btn--block" type="submit" id="btnKirim">
-            <span id="btnKirimLabel">Kirim Ucapan</span>
-          </button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </form>
-
-        <div class="wishes reveal">
-          <div class="wishes__head">
-            <h3>Doa yang tercurah</h3>
-            <span class="wishes__count" id="wishesCount"></span>
-          </div>
-          <ul class="wish-list" id="daftarUcapan" aria-live="polite"></ul>
-          <p class="wishes__empty" id="wishesEmpty" hidden>Belum ada ucapan. Jadilah yang pertama mendoakan. 🤍</p>
-          <button class="btn btn--ghost btn--sm" id="btnMuatLagi" type="button" hidden>Lihat ucapan lainnya</button>
-        </div>
+    <!-- Tautan ke halaman ucapan -->
+    <section class="section" id="ucapan" hidden>
+      <div class="wrap ucapan-link">
+        <h2 class="section__title">Ucapan &amp; Kehadiran</h2>
+        <p class="lead">Sampaikan doa dan konfirmasi kehadiran Anda di halaman ucapan.</p>
+        <a class="btn btn--gold" href="/ucapan/" data-ucapan-link>Buka Form Ucapan</a>
       </div>
     </section>
 
@@ -449,11 +385,11 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h18M8 3v4M16 3v4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>Acara</span>
     </a>
-    <a href="#galeri" class="dock__item" data-nav="galeri" aria-label="Galeri">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8.7" cy="9.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m4 17 4.6-4.2a2 2 0 0 1 2.7 0l2.2 2 2-1.7a2 2 0 0 1 2.6 0L21 15.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span>Galeri</span>
+    <a href="#peta" class="dock__item" data-nav="peta" aria-label="Lokasi">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 10c0 4-7 10-7 10S5 14 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <span>Lokasi</span>
     </a>
-    <a href="#ucapan" class="dock__item" data-nav="ucapan" aria-label="Ucapan">
+    <a href="/ucapan/" class="dock__item" data-ucapan-link aria-label="Ucapan">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 12.3c0 4-3.8 7.2-8.5 7.2-1 0-2-.1-2.9-.4L4 21l1.2-3.4a6.8 6.8 0 0 1-1.7-4.5c0-4 3.8-7.2 8.5-7.2s8.5 3.2 8.5 7.4Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
       <span>Ucapan</span>
     </a>
@@ -491,6 +427,6 @@
     </div>
   </noscript>
 
-  <script type="module" src="assets/js/app.js?v=music-2"></script>
+  <script type="module" src="assets/js/app.js?v=pages-3"></script>
 </body>
 </html>

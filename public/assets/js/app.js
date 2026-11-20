@@ -394,41 +394,7 @@ function pasangPeta() {
     });
   });
 
-  const wrap = $("#mapWrap");
-  if (!wrap) return;
-  let dimuat = false;
 
-  const muat = () => {
-    if (dimuat) return;
-    dimuat = true;
-    const q = encodeURIComponent(L.kueriPeta);
-    const src = `https://maps.google.com/maps?q=${q}&z=${L.zoom || 16}&hl=id&output=embed`;
-    const frame = document.createElement("iframe");
-    frame.src = src;
-    frame.title = `Peta lokasi ${L.nama}`;
-    frame.loading = "lazy";
-    frame.referrerPolicy = "no-referrer-when-downgrade";
-    frame.allowFullscreen = true;
-    frame.setAttribute("allow", "clipboard-write");
-    wrap.innerHTML = "";
-    wrap.appendChild(frame);
-  };
-
-  on($("#btnMuattPeta"), "click", muat);
-
-  // Muat otomatis saat bagian peta hampir terlihat.
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          muat();
-          io.disconnect();
-        }
-      },
-      { rootMargin: "300px" }
-    );
-    io.observe(wrap);
-  }
 }
 
 /* ------------------------------ Tanda kasih ------------------------------- */
@@ -797,7 +763,7 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
 }
 
 /* --------------------------- Gulir & navigasi ---------------------------- */
-const SECTION_NAV = ["salam", "mempelai", "acara", "galeri", "ucapan"];
+const SECTION_NAV = ["salam", "mempelai", "acara", "peta"];
 let ticking = false;
 
 function perbaruiGulir() {
@@ -844,7 +810,9 @@ function pasangGulir() {
   on($("#dock"), "click", (e) => {
     const a = e.target.closest(".dock__item");
     if (!a) return;
-    const target = document.querySelector(a.getAttribute("href"));
+    const href = a.getAttribute("href");
+    if (!href?.startsWith("#")) return;
+    const target = document.getElementById(href.slice(1));
     if (!target) return;
     e.preventDefault();
     window.scrollTo({ top: target.offsetTop - 8, behavior: kurangiGerak() ? "auto" : "smooth" });
@@ -854,10 +822,28 @@ function pasangGulir() {
 /* --------------------------------- Inisialisasi -------------------------- */
 function mulai() {
   injectOrnaments();
+  isiTeks();
+  const personalisasi = (href) => {
+    const url = new URL(href, location.origin);
+    if (namaTamu) url.searchParams.set("to", namaTamu);
+    return url.pathname + url.search + url.hash;
+  };
+  const kembali = $("#kembaliUndangan");
+  if (kembali) {
+    kembali.href = personalisasi(kembali.getAttribute("href"));
+    document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
+    pasangFormUcapan();
+    return;
+  }
+  $$("[data-ucapan-link]").forEach((a) => {
+    a.hidden = U.aktif === false;
+    a.href = personalisasi(a.getAttribute("href"));
+  });
+  const ajakanUcapan = $("#ucapan");
+  if (ajakanUcapan) ajakanUcapan.hidden = U.aktif === false;
   $$(".cover__rosette svg").forEach((s) => s.classList.add("spin-slow"));
   $$(".loader__ring svg").forEach((s) => s.classList.add("spin-slow"));
 
-  isiTeks();
   renderAcara();
   renderGaleri();
   pasangLightbox();
@@ -866,13 +852,13 @@ function mulai() {
   pasangKalender();
   pasangPeta();
   pasangHadiah();
-  pasangFormUcapan();
   pasangMusik();
   pasangPartikel();
   pasangGulir();
   siapkanReveal();
 
   on($("#btnBuka"), "click", () => bukaUndangan());
+  if (location.hash === "#salam") bukaUndangan({ mulaiMusik: false });
 
   perbaruiGulir();
 

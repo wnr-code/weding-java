@@ -623,14 +623,6 @@ body::before {
   display: grid;
 }
 .map iframe { width: 100%; height: 100%; min-height: 300px; border: 0; display: block; filter: saturate(.92); }
-.map__placeholder {
-  display: grid; place-content: center; justify-items: center; gap: .55rem;
-  padding: 2.2rem 1rem;
-  text-align: center; font-size: .82rem; color: var(--ink-soft);
-  background-image: var(--pattern); background-size: 96px 96px;
-}
-.map__placeholder-orn { width: 58px; color: var(--gold); opacity: .7; }
-.map__placeholder-orn svg { width: 100%; height: auto; }
 .map__card {
   margin-top: 1rem; padding: 1.1rem 1.25rem;
   border: 1px solid var(--gold-line); border-radius: 16px;
@@ -639,7 +631,6 @@ body::before {
 }
 .map__title { font-family: "Cormorant Garamond", serif; font-size: 1.15rem; color: var(--gold-deep); font-weight: 600; }
 .map__desc { font-size: .8rem; color: var(--ink-soft); margin-top: .2rem; }
-.map__link { display: inline-block; margin-top: .6rem; font-size: .78rem; font-weight: 600; letter-spacing: .06em; border-bottom: 1px solid var(--gold-line); padding-bottom: 1px; }
 
 /* -------------------------------- Galeri --------------------------------- */
 .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
@@ -1025,7 +1016,18 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   #inNama, #inPesan, .field select { font-size: 1.0625rem; min-width: 0; }
   .countdown { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .countdown__cell span, .stats__item span { font-size: .75rem; letter-spacing: .03em; }
-  .wish__name, .map__desc, .map__link, .trakteer__body small { font-size: .92rem; }
+  .wish__name, .map__desc, .trakteer__body small { font-size: .92rem; }
   .dock__item span { font-size: clamp(.65rem, 3.2vw, .8rem); }
   .to-top, .music-toggle--float { min-width: 44px; min-height: 44px; }
 }
+
+.section--peta .map { margin-top: 1rem; }
+.section--peta .map__card .btn { margin-top: .85rem; }
+.map__fallback { margin-top: .75rem; text-align: center; font-size: .9rem; color: var(--ink-soft); }
+.ucapan-link { text-align: center; }
+.ucapan-link .btn { margin-top: 1.15rem; }
+.page-ucapan__back { padding-top: max(1rem, env(safe-area-inset-top)); }
+.page-ucapan .section--ucapan { padding-top: 1.75rem; }
+.page-ucapan .main { padding-bottom: 2rem; }
+.page-ucapan .toast { bottom: max(1rem, env(safe-area-inset-bottom)); }
+.dock__item[hidden] { display: none; }

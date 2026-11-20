@@ -1071,20 +1071,20 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish-carousel { min-width: 0; }
 .wish-carousel__hint { font-size: .82rem; color: var(--ink-soft); margin-bottom: .6rem; }
 .wish-carousel__stage {
-  position: relative; perspective: 850px; overflow: clip;
-  touch-action: pan-y pinch-zoom; padding: .4rem 0 .8rem;
+  position: relative; perspective: 850px; perspective-origin: center 3.4rem; overflow: clip;
+  touch-action: pan-y pinch-zoom; padding: 6.65rem 0 .8rem;
 }
 .wish-carousel__track {
-  --ring-radius: 0px; --ring-angle: 0deg;
+  --ring-angle: 0deg;
   display: grid; justify-items: center; align-items: start;
   transform-style: preserve-3d;
-  transform: translateZ(calc(-1 * var(--ring-radius))) rotateY(var(--ring-angle));
+  transform: translateZ(calc(-1 * var(--ring-radius, 0px))) rotateY(var(--ring-angle));
   transition: transform 850ms cubic-bezier(.31, .1, .22, 1);
 }
 .wish-carousel__track--susun { transition: none; }
 .wish-carousel__track > .wish {
   grid-area: 1 / 1; width: min(86%, 480px); min-width: 0;
-  transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius));
+  transform: rotateY(var(--card-angle, 0deg)) translateZ(var(--ring-radius, 0px));
   backface-visibility: hidden;
 }
 .wish-carousel__track > .wish:only-child { width: 100%; }
@@ -1144,4 +1144,21 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish-carousel__controls [data-slide-play] { width: auto; padding-inline: .85rem; border-radius: 999px; font-size: .82rem; }
 @media (prefers-reduced-motion: reduce) {
   .wish-carousel__track > .wish--terlihat::after { animation: none; }
+}
+
+/* Potret tetap diam di pusat lingkaran, di atas area baca kartu. */
+.wish-carousel__couple {
+  position: absolute; top: .3rem; left: 50%; width: max-content; margin: 0;
+  transform: translateX(-50%) translateZ(calc(-1 * var(--ring-radius, 0px))) scale(var(--couple-scale, 1));
+  transform-origin: center top; text-align: center;
+}
+.wish-carousel__portraits { display: flex; justify-content: center; }
+.wish-carousel__portraits img {
+  width: 56px; height: 56px; object-fit: cover; object-position: center 35%;
+  border-radius: 50%; border: 3px solid var(--ivory); box-shadow: 0 0 0 1px var(--gold-soft), var(--shadow-sm);
+  background: var(--cream-deep);
+}
+.wish-carousel__portraits img + img { margin-inline-start: -.45rem; }
+.wish-carousel__couple figcaption {
+  font: 600 1.25rem/1.15 "Cormorant Garamond", serif; color: var(--gold-deep); margin-top: .35rem;
 }

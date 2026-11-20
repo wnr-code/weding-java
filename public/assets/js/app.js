@@ -602,7 +602,8 @@ function pasangCarousel(id) {
     controls.hidden = n < 2;
     count.textContent = `${i + 1} / ${n}`;
     const radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
-    track.style.setProperty("--ring-radius", `${radius}px`);
+    stage.style.setProperty("--ring-radius", `${radius}px`);
+    stage.style.setProperty("--couple-scale", String(1 + radius / 850));
     track.style.setProperty("--ring-angle", `${n ? -langkah * 360 / n : 0}deg`);
     Array.from(track.children).forEach((card, index) => {
       card.style.setProperty("--card-angle", `${index * 360 / n}deg`);

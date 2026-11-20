@@ -21,7 +21,7 @@
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/great-vibes-latin-400-normal.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin />
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/style.css?v=mobile-1" />
   <!-- Tandai JS aktif lebih awal agar animasi tidak berkedip saat modul dimuat. -->
   <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -29,7 +29,7 @@
 
   <!-- Ornamen dekoratif global (diisi oleh assets/js/ornament.js) -->
   <div class="ambient" aria-hidden="true">
-    <canvas id="particles"></canvas>
+    <div id="particles"></div>
     <div class="ambient__glow"></div>
   </div>
 
@@ -491,6 +491,6 @@
     </div>
   </noscript>
 
-  <script type="module" src="assets/js/app.js"></script>
+  <script type="module" src="assets/js/app.js?v=mobile-1"></script>
 </body>
 </html>

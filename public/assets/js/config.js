@@ -137,16 +137,6 @@ export const CONFIG = {
       judul: "Iklimah",
       ket: "Calon mempelai wanita",
     },
-    {
-      src: "assets/img/kartu-1.jpg",
-      judul: "Kartu Undangan",
-      ket: "Halaman utama undangan cetak",
-    },
-    {
-      src: "assets/img/kartu-2.jpg",
-      judul: "Peta Cetak",
-      ket: "Denah lokasi acara",
-    },
   ],
 
   /* ------------------------------ Tanda kasih ---------------------------- */

@@ -4,7 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import CONFIG from "./config.js";
+import CONFIG from "./config.js?v=mobile-1";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
 import * as api from "./api.js";
@@ -750,61 +750,17 @@ setTimeout(paksaTampil, 1600);
 
 /* ---------------------------- Partikel dekoratif -------------------------- */
 function pasangPartikel() {
-  const canvas = $("#particles");
-  if (!canvas || kurangiGerak()) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  let w = 0, h = 0, dpr = 1, raf = 0;
-  const titik = Array.from({ length: 42 }, () => ({
-    x: Math.random(),
-    y: Math.random(),
-    r: 0.6 + Math.random() * 1.8,
-    sp: 0.00004 + Math.random() * 0.00013,
-    ph: Math.random() * Math.PI * 2,
-    al: 0.12 + Math.random() * 0.4,
-  }));
-
-  const ukuran = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = canvas.clientWidth;
-    h = canvas.clientHeight;
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
-
-  let last = performance.now();
-  const gambar = (now) => {
-    const dt = Math.min(64, now - last);
-    last = now;
-    ctx.clearRect(0, 0, w, h);
-    for (const p of titik) {
-      p.y -= p.sp * dt;
-      if (p.y < -0.05) {
-        p.y = 1.05;
-        p.x = Math.random();
-      }
-      const tw = 0.55 + 0.45 * Math.sin(now * 0.0011 + p.ph);
-      ctx.beginPath();
-      ctx.arc(p.x * w, p.y * h, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(178,138,65,${(p.al * tw).toFixed(3)})`;
-      ctx.fill();
-    }
-    raf = requestAnimationFrame(gambar);
-  };
-
-  ukuran();
-  window.addEventListener("resize", ukuran, { passive: true });
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      cancelAnimationFrame(raf);
-    } else {
-      last = performance.now();
-      raf = requestAnimationFrame(gambar);
-    }
-  });
-  raf = requestAnimationFrame(gambar);
+  const layer = $("#particles");
+  if (!layer || kurangiGerak()) return;
+  for (let i = 0; i < 14; i++) {
+    const bentuk = document.createElement("span");
+    bentuk.className = `ambient__petal ambient__petal--${i % 2 ? "heart" : "flower"}`;
+    bentuk.textContent = i % 2 ? "♥" : "✿";
+    bentuk.style.setProperty("--x", `${5 + (i * 37) % 90}%`);
+    bentuk.style.setProperty("--delay", `${-i * 2.7}s`);
+    bentuk.style.setProperty("--duration", `${19 + i % 7}s`);
+    layer.append(bentuk);
+  }
 }
 
 /* ----------------------------- Buka undangan ----------------------------- */
@@ -857,12 +813,12 @@ function perbaruiGulir() {
     const sec = document.getElementById(id);
     if (sec && sec.offsetTop <= tengah) aktif = id;
   });
-  $$(".dock__item").forEach((a) => a.classList.toggle("is-active", a.dataset.nav === aktif));
-
-  const penutup = $("#penutup");
-  const dock = $("#dock");
-  const diDasar = penutup && window.scrollY > penutup.offsetTop + penutup.offsetHeight - window.innerHeight * 0.6;
-  dock?.classList.toggle("is-hidden", Boolean(diDasar && sudahDibuka));
+  $$(".dock__item").forEach((a) => {
+    const terpilih = a.dataset.nav === aktif;
+    a.classList.toggle("is-active", terpilih);
+    if (terpilih) a.setAttribute("aria-current", "location");
+    else a.removeAttribute("aria-current");
+  });
 }
 
 function pasangGulir() {

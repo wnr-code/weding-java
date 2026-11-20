@@ -55,8 +55,7 @@ Tambahan yang sudah termasuk:
 │     └─ img/                     # foto asli, kartu undangan, favicon
 │        ├─ foto-bersama.jpg      # foto utuh (tidak dipecah)
 │        ├─ mempelai-pria.jpg     # potret wajah Ja'far
-│        ├─ mempelai-wanita.jpg   # potret wajah Iklimah
-│        └─ kartu-1.jpg, kartu-2.jpg
+│        └─ mempelai-wanita.jpg   # potret wajah Iklimah
 ├─ worker/
 │  ├─ index.js                    # API /api/*
 │  └─ ucapan.js                   # validasi bersama (dipakai server dev & tes)

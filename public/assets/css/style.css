@@ -1061,3 +1061,14 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 
 .wish__reply[data-avatars="1"] { grid-template-columns: 26px minmax(0, 1fr); }
 .field__hint { font-size: .82rem; color: var(--ink-soft); }
+
+/* Jenis kiriman dipisahkan dari status RSVP. */
+.wish__kind {
+  display: table; margin-bottom: .35rem; padding: .16rem .55rem;
+  border: 1px solid transparent; border-radius: 999px;
+  font-size: .75rem; font-weight: 700; line-height: 1.4;
+}
+.wish__kind--doa { background: #e8eee7; color: #38563f; }
+.wish__kind--hadiah { background: #f2dfb8; color: #694719; }
+.wish__kind--uji { background: #eee9e0; color: #5d5549; border-color: #dacfc0; }
+.wish--hadiah { border-color: #d8bf88; }

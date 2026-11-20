@@ -460,6 +460,13 @@ function badgeKehadiran(item) {
   return map[item.kehadiran] || map.ragu;
 }
 
+function labelKiriman(teks, gaya) {
+  const label = document.createElement("span");
+  label.className = `wish__kind wish__kind--${gaya}`;
+  label.textContent = teks;
+  return label;
+}
+
 function buatKartuUcapan(item, i = 0) {
   const li = document.createElement("li");
   li.className = "wish";
@@ -489,7 +496,7 @@ function buatKartuUcapan(item, i = 0) {
   time.textContent = waktuRelatif(item.created_at);
 
   top.append(nm, badge, time);
-  body.appendChild(top);
+  body.append(labelKiriman("Ucapan & Doa", "doa"), top);
 
   if (item.pesan) {
     const msg = document.createElement("p");
@@ -868,7 +875,7 @@ async function tampilkanTandaKasih() {
     if (data.uji) $("#statusKirimanHadiah").textContent = "Percobaan · Trakteer";
     for (const item of data.items) {
       const kartu = document.createElement("li");
-      kartu.className = "wish";
+      kartu.className = "wish wish--hadiah";
       const avatar = document.createElement("span");
       avatar.className = "wish__avatar";
       avatar.setAttribute("aria-hidden", "true");
@@ -881,7 +888,7 @@ async function tampilkanTandaKasih() {
       const pesan = document.createElement("p");
       pesan.className = "wish__msg";
       pesan.textContent = item.pesan;
-      isi.append(nama);
+      isi.append(labelKiriman(data.uji ? "Uji Trakteer · Bukan hadiah asli" : "Tanda Kasih · Trakteer", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
       kartu.append(avatar, isi);
       daftar.append(kartu);

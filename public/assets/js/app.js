@@ -468,36 +468,30 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-function pasangLipatan(kartu, avatar, muka, isi, kelompok) {
-  const lipatan = document.createElement("details");
-  lipatan.className = "wish__fold";
-  lipatan.name = kelompok;
-  const ringkas = document.createElement("summary");
-  ringkas.className = "wish__face";
-  avatar.setAttribute("aria-hidden", "true");
-  const petunjuk = document.createElement("span");
-  petunjuk.className = "wish__fold-hint";
-  petunjuk.innerHTML = '<span class="wish__fold-open">Buka kartu</span><span class="wish__fold-close">Tutup kartu</span><span class="wish__fold-arrow" aria-hidden="true">⌄</span>';
-  ringkas.append(avatar, muka, petunjuk);
-  isi.classList.add("wish__fold-content");
-  lipatan.append(ringkas, isi);
-  kartu.append(lipatan);
+function hiasMawar(kartu) {
+  const hiasan = document.createElement("span");
+  hiasan.className = "wish__roses";
+  hiasan.setAttribute("aria-hidden", "true");
+  for (let i = 0; i < 4; i++) {
+    const mawar = document.createElement("span");
+    mawar.textContent = "🌹";
+    hiasan.append(mawar);
+  }
+  kartu.append(hiasan);
 }
 
 function buatKartuUcapan(item) {
   const li = document.createElement("li");
   li.className = "wish";
 
-  const av = document.createElement("span");
+  const av = document.createElement("div");
   av.className = "wish__avatar";
   av.textContent = inisial(item.nama);
 
   const body = document.createElement("div");
   body.className = "wish__body";
 
-  const muka = document.createElement("span");
-  muka.className = "wish__face-info";
-  const top = document.createElement("span");
+  const top = document.createElement("div");
   top.className = "wish__top";
 
   const nm = document.createElement("span");
@@ -515,7 +509,7 @@ function buatKartuUcapan(item) {
   time.textContent = waktuRelatif(item.created_at);
 
   top.append(nm, badge, time);
-  muka.append(labelKiriman("Ucapan & Doa", "doa"), top);
+  body.append(labelKiriman("Ucapan & Doa", "doa"), top);
   if (item.kota) {
     const kota = document.createElement("p");
     kota.className = "wish__city";
@@ -531,7 +525,8 @@ function buatKartuUcapan(item) {
   }
 
   body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
-  pasangLipatan(li, av, muka, body, "lipatan-ucapan");
+  li.append(av, body);
+  hiasMawar(li);
   return li;
 }
 
@@ -594,6 +589,23 @@ function pasangCarousel(id) {
   const prev = controls.querySelector('[data-slide="-1"]');
   const next = controls.querySelector('[data-slide="1"]');
   const count = controls.querySelector("[data-slide-count]");
+  const tombolPutar = controls.querySelector("[data-slide-play]");
+  const bisaDiputar = "IntersectionObserver" in window;
+  let diputar = !kurangiGerak() && bisaDiputar;
+  tombolPutar.hidden = !bisaDiputar;
+  let dalamLayar = false;
+  let tahanSampai = 0;
+  let disentuh = false;
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      dalamLayar = entry.isIntersecting;
+    }).observe(track);
+  }
+  const perbaruiPutar = () => {
+    tombolPutar.textContent = diputar ? "Jeda" : "Putar";
+    tombolPutar.setAttribute("aria-label", diputar ? "Jeda putaran kartu" : "Putar kartu otomatis");
+  };
+  perbaruiPutar();
   let terlihat;
   if ("IntersectionObserver" in window && !kurangiGerak()) {
     terlihat = new IntersectionObserver((entries) => {
@@ -604,7 +616,7 @@ function pasangCarousel(id) {
       }
     }, { threshold: [0, .45] });
   }
-  const posisi = (card) => card.getBoundingClientRect().left - track.getBoundingClientRect().left;
+  const posisi = (card) => card.offsetLeft - track.scrollLeft;
   const indeks = () => {
     const terakhir = track.scrollWidth - track.clientWidth;
     if (terakhir > 2 && track.scrollLeft >= terakhir - 2) return track.children.length - 1;
@@ -624,11 +636,33 @@ function pasangCarousel(id) {
     const card = track.children[indeks() + arah];
     if (card) track.scrollBy({ left: posisi(card), behavior: kurangiGerak() ? "instant" : "smooth" });
   };
-  on(prev, "click", () => geser(-1));
-  on(next, "click", () => geser(1));
+  const tahanPutaran = () => { tahanSampai = Date.now() + 10_000; };
+  on(prev, "click", () => { tahanPutaran(); geser(-1); });
+  on(next, "click", () => { tahanPutaran(); geser(1); });
+  on(tombolPutar, "click", () => {
+    diputar = !diputar;
+    tahanSampai = 0;
+    perbaruiPutar();
+  });
+  track.addEventListener("pointerdown", () => { disentuh = true; tahanPutaran(); });
+  const selesaiSentuh = () => {
+    if (!disentuh) return;
+    disentuh = false;
+    tahanPutaran();
+  };
+  window.addEventListener("pointerup", selesaiSentuh);
+  window.addEventListener("pointercancel", selesaiSentuh);
+  setInterval(() => {
+    const mouseDiAtas = matchMedia("(hover: hover)").matches && track.matches(":hover");
+    if (!diputar || !dalamLayar || document.hidden || controls.hidden || disentuh || mouseDiAtas
+      || track.contains(document.activeElement) || Date.now() < tahanSampai) return;
+    if (next.disabled) track.scrollLeft = 0;
+    else geser(1);
+  }, 7000);
   on(track, "keydown", (event) => {
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
     event.preventDefault();
+    tahanPutaran();
     geser(event.key === "ArrowLeft" ? -1 : 1);
   });
   track.addEventListener("scroll", sinkron, { passive: true });
@@ -638,10 +672,7 @@ function pasangCarousel(id) {
     if (reset) track.scrollLeft = 0;
     if (terlihat) {
       terlihat.disconnect();
-      Array.from(track.children).forEach((card, i) => {
-        card.style.setProperty("--wish-delay", `${(i % 4) * 70}ms`);
-        terlihat.observe(card);
-      });
+      for (const card of track.children) terlihat.observe(card);
     }
     sinkron();
   };
@@ -961,20 +992,19 @@ async function tampilkanTandaKasih(sinkron) {
       avatar.textContent = "♡";
       const isi = document.createElement("div");
       isi.className = "wish__body";
-      const muka = document.createElement("span");
-      muka.className = "wish__face-info";
       const nama = document.createElement("strong");
       nama.className = "wish__name";
       nama.textContent = item.nama;
       const pesan = document.createElement("p");
       pesan.className = "wish__msg";
       pesan.textContent = item.pesan;
-      muka.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
+      isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
       isi.append(buatReaksi(), buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
-      pasangLipatan(kartu, avatar, muka, isi, "lipatan-tanda-kasih");
+      kartu.append(avatar, isi);
+      hiasMawar(kartu);
       daftar.append(kartu);
     }
     bagian.hidden = false;

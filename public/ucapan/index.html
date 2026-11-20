@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=lipat-14" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=mawar-15" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -65,11 +65,12 @@
             <span class="wishes__count" id="wishesCount"></span>
           </div>
           <div class="wish-carousel" id="carouselUcapan" hidden>
-            <p class="wish-carousel__hint" id="petunjukUcapan">Geser ke samping untuk memilih kartu, lalu ketuk untuk membukanya.</p>
+            <p class="wish-carousel__hint" id="petunjukUcapan">Kartu berganti otomatis. Geser ke samping atau pilih Jeda untuk membaca lebih lama.</p>
             <ul class="wish-list wish-carousel__track" id="daftarUcapan" tabindex="0" aria-label="Kartu ucapan" aria-describedby="petunjukUcapan" aria-live="polite"></ul>
             <div class="wish-carousel__controls" hidden>
               <button type="button" data-slide="-1" aria-label="Ucapan sebelumnya" aria-controls="daftarUcapan">←</button>
               <span data-slide-count aria-hidden="true"></span>
+              <button type="button" data-slide-play>Jeda</button>
               <button type="button" data-slide="1" aria-label="Ucapan berikutnya" aria-controls="daftarUcapan">→</button>
             </div>
           </div>
@@ -90,6 +91,7 @@
           <div class="wish-carousel__controls" hidden>
             <button type="button" data-slide="-1" aria-label="Kiriman sebelumnya" aria-controls="daftarHadiah">←</button>
             <span data-slide-count aria-hidden="true"></span>
+              <button type="button" data-slide-play>Jeda</button>
             <button type="button" data-slide="1" aria-label="Kiriman berikutnya" aria-controls="daftarHadiah">→</button>
           </div>
         </div>
@@ -98,6 +100,6 @@
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=lipat-14"></script>
+  <script type="module" src="/assets/js/app.js?v=mawar-15"></script>
 </body>
 </html>

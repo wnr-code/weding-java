@@ -583,6 +583,7 @@ function pasangCarousel(id) {
   let sentuhan = null;
   let langkah = 0;
   let jumlahTerakhir = 0;
+  const jedaOtomatis = 5500;
   if (bisaDiputar) {
     new IntersectionObserver(([entry]) => {
       dalamLayar = entry.isIntersecting;
@@ -624,7 +625,7 @@ function pasangCarousel(id) {
   on(controls.querySelector('[data-slide="1"]'), "click", () => manual(1));
   on(tombolPutar, "click", () => {
     diputar = !diputar;
-    tahanSampai = Date.now() + 7000;
+    tahanSampai = Date.now() + jedaOtomatis;
     perbaruiPutar();
   });
   on(stage, "pointerdown", (e) => {
@@ -650,7 +651,7 @@ function pasangCarousel(id) {
     if (!diputar || !dalamLayar || document.hidden || sentuhan || hover || track.contains(document.activeElement)
       || Date.now() < tahanSampai) return;
     geser(1);
-  }, 7000);
+  }, jedaOtomatis);
   window.addEventListener("resize", sinkron, { passive: true });
 
   return (reset = false) => {

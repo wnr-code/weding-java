@@ -175,9 +175,9 @@ Tautan sudah diatur di `config.js`:
 
 ```js
 trakteer: {
-  label: "Kirim Tanda Kasih",
+  label: "Tautan Tanda Kasih",
   url: "https://trakteer.id/lanteraku/tip?open=",
-  keterangan: "Bagi Bapak/Ibu/Saudara/i yang berkenan, tanda kasih dapat disampaikan melalui tautan ini.",
+  keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
 }
 ```
 

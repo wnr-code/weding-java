@@ -143,12 +143,12 @@ export const CONFIG = {
   hadiah: {
     aktif: true,
     pembuka:
-      "Kehadiran dan doa restu Anda adalah hadiah terindah bagi kami. Bila ingin memberi tanda kasih, kami sediakan kanal berikut.",
+      "Kehadiran dan doa restu Bapak, Ibu, dan Saudara sekalian merupakan anugerah yang sangat berarti bagi kami.",
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
-      label: "Kirim Tanda Kasih",
+      label: "Tautan Tanda Kasih",
       url: "https://trakteer.id/lanteraku/tip?open=",
-      keterangan: "Bagi Bapak/Ibu/Saudara/i yang berkenan, tanda kasih dapat disampaikan melalui tautan ini.",
+      keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
     },
     // Opsional. Kosongkan array untuk menyembunyikan kartu rekening.
     rekening: [
@@ -204,8 +204,8 @@ export const CONFIG = {
   kredit: {
     teks: "Dibuat dengan cinta untuk Ja'far & Iklimah",
     // Muncul di kaki halaman. Hapus/ubah sesuai keinginan.
-    tautan: "https://trakteer.id/-java",
-    tautanLabel: "Dukung pengembang",
+    tautan: "",
+    tautanLabel: "",
   },
 };
 

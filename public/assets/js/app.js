@@ -5,7 +5,7 @@
  */
 
 import { pilihBalasan } from "./balasan.js?v=konteks-6";
-import CONFIG from "./config.js?v=lanteraku-8";
+import CONFIG from "./config.js?v=bahasa-10";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
 import * as api from "./api.js?v=konteks-6";
@@ -159,6 +159,7 @@ function isiTeks() {
   });
   if ($("#linkKredit") && CONFIG.kredit.tautan) {
     $("#linkKredit").href = CONFIG.kredit.tautan;
+    $("#linkKredit").hidden = false;
   }
   document.title = `${CONFIG.meta.judul} · ${W.tampilanTanggal}`;
 }
@@ -872,7 +873,7 @@ async function tampilkanTandaKasih() {
     if (!res.ok) return;
     const data = await res.json();
     if (!Array.isArray(data.items) || !data.items.length) return;
-    if (data.uji) $("#statusKirimanHadiah").textContent = "Percobaan · Trakteer";
+    if (data.uji) $("#statusKirimanHadiah").textContent = "Tampilan Percobaan";
     for (const item of data.items) {
       const kartu = document.createElement("li");
       kartu.className = "wish wish--hadiah";
@@ -888,7 +889,7 @@ async function tampilkanTandaKasih() {
       const pesan = document.createElement("p");
       pesan.className = "wish__msg";
       pesan.textContent = item.pesan;
-      isi.append(labelKiriman(data.uji ? "Uji Trakteer · Bukan hadiah asli" : "Tanda Kasih · Trakteer", data.uji ? "uji" : "hadiah"), nama);
+      isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
       kartu.append(avatar, isi);
       daftar.append(kartu);

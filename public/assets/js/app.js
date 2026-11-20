@@ -576,6 +576,7 @@ function pasangCarousel(id) {
   const controls = root.querySelector(".wish-carousel__controls");
   const count = controls.querySelector("[data-slide-count]");
   const tombolPutar = controls.querySelector("[data-slide-play]");
+  const panah = Array.from(controls.querySelectorAll("[data-slide]"));
   const bisaDiputar = "IntersectionObserver" in window;
   let diputar = bisaDiputar && !kurangiGerak();
   let dalamLayar = false;
@@ -618,7 +619,9 @@ function pasangCarousel(id) {
   };
   const sinkron = () => {
     const n = track.children.length;
-    controls.hidden = n < 2;
+    controls.hidden = n === 0 || (n === 1 && !bisaDiputar);
+    panah.forEach((button) => { button.hidden = n < 2; });
+    count.hidden = n < 2;
     radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
     stage.style.setProperty("--ring-radius", `${radius}px`);
     stage.style.setProperty("--couple-scale", String(1 + radius / 850));
@@ -630,7 +633,7 @@ function pasangCarousel(id) {
   };
 
   function jadwalkan() {
-    if (!frame && !document.hidden && (gerakanManual || (diputar && dalamLayar && track.children.length > 1))) {
+    if (!frame && !document.hidden && (gerakanManual || (diputar && dalamLayar && track.children.length > 0))) {
       frame = requestAnimationFrame(putar);
     }
   }
@@ -648,9 +651,9 @@ function pasangCarousel(id) {
     } else if (diputar && dalamLayar && !sentuhan && !(mediaHover.matches && stage.matches(":hover"))
       && !track.contains(document.activeElement) && now >= tahanSampai) {
       const n = track.children.length;
-      if (n > 1) {
+      if (n > 0) {
         // Kecepatan tetap, tanpa jeda di antara kartu; sudut bebas melewati 360°.
-        langkah += dt * Math.min(9 * n / 360, 1 / 5) / 1000;
+        langkah += dt * Math.min((n === 1 ? 12 : 9) * n / 360, 1 / 5) / 1000;
         gambar();
       }
     }
@@ -682,18 +685,40 @@ function pasangCarousel(id) {
     jadwalkan();
   });
   on(stage, "pointerdown", (e) => {
-    if (!e.isPrimary || e.button !== 0) return;
-    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    if (!e.isPrimary || e.button !== 0 || !track.children.length) return;
+    gerakanManual = null;
+    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY, mulai: langkah, sudut: 0, mendatar: false };
     tahanSampai = performance.now() + 10_000;
   });
-  on(window, "pointerup", (e) => {
+  on(window, "pointermove", (e) => {
     if (sentuhan?.id !== e.pointerId) return;
     const dx = e.clientX - sentuhan.x;
     const dy = e.clientY - sentuhan.y;
-    sentuhan = null;
-    if (Math.abs(dx) > 36 && Math.abs(dx) > Math.abs(dy)) manual(dx < 0 ? 1 : -1);
+    if (!sentuhan.mendatar) {
+      if (Math.abs(dx) < 8 || Math.abs(dx) <= Math.abs(dy)) return;
+      sentuhan.mendatar = true;
+      stage.classList.add("wish-carousel__stage--dragging");
+    }
+    const jarak = Math.max(72, stage.clientWidth * .38);
+    sentuhan.sudut = Math.max(-90, Math.min(90, -dx * 90 / jarak));
+    langkah = sentuhan.mulai + (sentuhan.sudut * track.children.length) / 360;
+    gambar();
   });
-  on(window, "pointercancel", (e) => { if (sentuhan?.id === e.pointerId) sentuhan = null; });
+  const selesaiTarik = (e, batal = false) => {
+    if (sentuhan?.id !== e.pointerId) return;
+    const { mulai, sudut, mendatar } = sentuhan;
+    sentuhan = null;
+    stage.classList.remove("wish-carousel__stage--dragging");
+    tahanSampai = performance.now() + 10_000;
+    if (!mendatar) return;
+    const asal = Math.round(mulai);
+    let tujuan = Math.round(langkah);
+    if (batal || track.children.length < 2) tujuan = asal;
+    else if (Math.abs(sudut) >= 18 && tujuan === asal) tujuan = asal + Math.sign(sudut);
+    menuju(tujuan);
+  };
+  on(window, "pointerup", (e) => selesaiTarik(e));
+  on(window, "pointercancel", (e) => selesaiTarik(e, true));
   on(track, "keydown", (e) => {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     e.preventDefault();

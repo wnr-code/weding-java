@@ -4,11 +4,11 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import { pilihBalasan } from "./balasan.js";
+import { pilihBalasan } from "./balasan.js?v=konteks-6";
 import CONFIG from "./config.js?v=music-2";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
-import * as api from "./api.js";
+import * as api from "./api.js?v=konteks-6";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
 document.documentElement.classList.add("js");
@@ -503,7 +503,10 @@ function buatKartuUcapan(item, i = 0) {
   const replyAvatar = document.createElement("span");
   replyAvatar.className = "wish__reply-avatar";
   replyAvatar.setAttribute("aria-hidden", "true");
-  for (const pengantin of [M.pria, M.wanita]) {
+  const pengantinPembalas = item.jenis_pengirim === "laki_laki" ? [M.pria]
+    : item.jenis_pengirim === "perempuan" ? [M.wanita] : [M.pria, M.wanita];
+  reply.dataset.avatars = String(pengantinPembalas.length);
+  for (const pengantin of pengantinPembalas) {
     const foto = document.createElement("img");
     foto.src = new URL(`../../${pengantin.foto}`, import.meta.url).href;
     foto.alt = "";
@@ -515,7 +518,7 @@ function buatKartuUcapan(item, i = 0) {
   const bubble = document.createElement("div");
   bubble.className = "wish__reply-bubble";
   const author = document.createElement("strong");
-  author.textContent = `${M.pria.panggilan} & ${M.wanita.panggilan}`;
+  author.textContent = pengantinPembalas.map((p) => p.panggilan).join(" & ");
   const label = document.createElement("span");
   label.className = "wish__reply-label";
   label.textContent = "Balasan otomatis";
@@ -571,6 +574,7 @@ function pasangFormUcapan() {
 
   const form = $("#formUcapan");
   const nama = $("#inNama");
+  const jenis = $("#inJenisPengirim");
   const pesan = $("#inPesan");
   const jumlah = $("#inJumlah");
   const fieldJumlah = $("#fieldJumlah");
@@ -614,6 +618,12 @@ function pasangFormUcapan() {
       nama.focus();
       return;
     }
+    if (!jenis.value) {
+      status.textContent = "Mohon pilih Laki-laki atau Perempuan.";
+      status.className = "form-status is-err";
+      jenis.focus();
+      return;
+    }
     if (pesanVal.length > (U.batasPesan || 500)) {
       status.textContent = "Ucapan terlalu panjang.";
       status.className = "form-status is-err";
@@ -626,7 +636,7 @@ function pasangFormUcapan() {
     status.className = "form-status";
 
     try {
-      const hasil = await api.kirimUcapan({ nama: namaVal, kehadiran, jumlah: jml, pesan: pesanVal });
+      const hasil = await api.kirimUcapan({ nama: namaVal, jenis_pengirim: jenis.value, kehadiran, jumlah: jml, pesan: pesanVal });
       status.textContent =
         hasil.mode === "lokal"
           ? "Ucapan tersimpan di perangkat ini (mode pratinjau — server belum aktif)."

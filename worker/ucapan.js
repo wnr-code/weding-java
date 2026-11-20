@@ -30,7 +30,7 @@ export function bersihkanTeks(nilai, { barisBaru = false } = {}) {
 }
 
 /**
- * @returns {{ok: true, data: {nama: string, kehadiran: string, jumlah: number, pesan: string}}
+ * @returns {{ok: true, data: {nama: string, kehadiran: string, jumlah: number, pesan: string, jenis_pengirim: string | null}}
  *          | {ok: false, status: number, pesan: string}}
  */
 export function validasiUcapan(input) {
@@ -51,6 +51,11 @@ export function validasiUcapan(input) {
     return { ok: false, status: 422, pesan: "Status kehadiran tidak dikenal." };
   }
 
+  const jenis_pengirim = input.jenis_pengirim ?? null;
+  if (jenis_pengirim !== null && jenis_pengirim !== "laki_laki" && jenis_pengirim !== "perempuan") {
+    return { ok: false, status: 422, pesan: "Pilihan jenis pengirim tidak dikenal." };
+  }
+
   let jumlah = Number.parseInt(input.jumlah ?? 1, 10);
   if (!Number.isFinite(jumlah) || jumlah < 0) jumlah = 0;
   if (kehadiran !== "hadir") jumlah = 0;
@@ -62,7 +67,7 @@ export function validasiUcapan(input) {
     return { ok: false, status: 422, pesan: `Ucapan maksimal ${BATAS.pesanMax} karakter.` };
   }
 
-  return { ok: true, data: { nama, kehadiran, jumlah, pesan } };
+  return { ok: true, data: { nama, kehadiran, jumlah, pesan, jenis_pengirim } };
 }
 
 /** Parameter paginasi yang aman. */
@@ -92,11 +97,11 @@ export const SQL = {
       COALESCE(SUM(CASE WHEN kehadiran = 'ragu' THEN 1 ELSE 0 END), 0) AS ragu,
       COALESCE(SUM(CASE WHEN kehadiran = 'hadir' THEN jumlah ELSE 0 END), 0) AS tamu
     FROM ucapan`,
-  daftar: `SELECT id, nama, kehadiran, jumlah, pesan, created_at
+  daftar: `SELECT id, nama, kehadiran, jumlah, pesan, created_at, jenis_pengirim
     FROM ucapan ORDER BY created_at DESC, rowid DESC LIMIT ? OFFSET ?`,
   terakhirDariIp: `SELECT created_at FROM ucapan WHERE ip_hash = ? ORDER BY created_at DESC LIMIT 1`,
-  simpan: `INSERT INTO ucapan (id, nama, kehadiran, jumlah, pesan, created_at, ip_hash)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+  simpan: `INSERT INTO ucapan (id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
 };
 
 export const JEDA_DETIK = 20;

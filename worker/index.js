@@ -144,10 +144,10 @@ async function simpanUcapan(request, env, cors) {
 
   const id = crypto.randomUUID();
   const created_at = new Date().toISOString();
-  const { nama, kehadiran, jumlah, pesan } = hasil.data;
+  const { nama, kehadiran, jumlah, pesan, jenis_pengirim } = hasil.data;
 
   await env.javar.prepare(SQL.simpan)
-    .bind(id, nama, kehadiran, jumlah, pesan, created_at, sidik)
+    .bind(id, nama, kehadiran, jumlah, pesan, created_at, sidik, jenis_pengirim)
     .run();
 
   const ringkas = await env.javar.prepare(SQL.ringkasan).first();
@@ -155,7 +155,7 @@ async function simpanUcapan(request, env, cors) {
   return json(
     {
       ok: true,
-      item: { id, nama, kehadiran, jumlah, pesan, created_at },
+      item: { id, nama, kehadiran, jumlah, pesan, created_at, jenis_pengirim },
       total: Number(ringkas?.total || 0),
       hadir: Number(ringkas?.hadir || 0),
       tidakHadir: Number(ringkas?.tidakHadir || 0),
@@ -173,6 +173,7 @@ function petakan(row) {
     kehadiran: row.kehadiran,
     jumlah: Number(row.jumlah || 0),
     pesan: row.pesan || "",
+    jenis_pengirim: row.jenis_pengirim ?? null,
     created_at: row.created_at,
   };
 }

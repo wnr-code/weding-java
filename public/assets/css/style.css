@@ -1058,3 +1058,6 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish__reply-bubble strong { font-size: .85rem; }
 .wish__reply-label { display: block; color: var(--ink-soft); font-size: .72rem; }
 .wish__reply-bubble p { margin-top: .25rem; font-size: .9rem; line-height: 1.55; }
+
+.wish__reply[data-avatars="1"] { grid-template-columns: 26px minmax(0, 1fr); }
+.field__hint { font-size: .82rem; color: var(--ink-soft); }

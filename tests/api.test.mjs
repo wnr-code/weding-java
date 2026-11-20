@@ -51,8 +51,8 @@ function fakeD1() {
         },
         async run() {
           if (sql.includes("INSERT INTO ucapan")) {
-            const [id, nama, kehadiran, jumlah, pesan, created_at, ip_hash] = args;
-            rows.push({ id, nama, kehadiran, jumlah, pesan, created_at, ip_hash });
+            const [id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim] = args;
+            rows.push({ id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim });
             return { success: true };
           }
           return { success: true };
@@ -157,12 +157,13 @@ test("GET /api/health tanpa D1 tetap 200 dengan database false", async () => {
 
 test("POST lalu GET /api/ucapan menyimpan serta mengembalikan ucapan", async () => {
   const e = env();
-  const res = await kirim({ nama: "Keluarga Hasan", kehadiran: "hadir", jumlah: 3, pesan: "Barakallahu lakuma" }, e);
+  const res = await kirim({ nama: "Keluarga Hasan", kehadiran: "hadir", jumlah: 3, pesan: "Barakallahu lakuma", jenis_pengirim: "perempuan" }, e);
   assert.equal(res.status, 201);
   const data = await res.json();
   assert.equal(data.ok, true);
   assert.equal(data.item.nama, "Keluarga Hasan");
   assert.equal(data.item.jumlah, 3);
+  assert.equal(data.item.jenis_pengirim, "perempuan");
   assert.equal(data.hadir, 1);
 
   const list = await panggil("/api/ucapan?limit=10", {}, e);
@@ -171,6 +172,7 @@ test("POST lalu GET /api/ucapan menyimpan serta mengembalikan ucapan", async () 
   assert.equal(isi.total, 1);
   assert.equal(isi.items.length, 1);
   assert.equal(isi.items[0].pesan, "Barakallahu lakuma");
+  assert.equal(isi.items[0].jenis_pengirim, "perempuan");
 });
 
 test("POST menolak nama kosong dengan 422", async () => {
@@ -229,4 +231,11 @@ test("preflight OPTIONS dijawab 204", async () => {
 test("rute non-API diteruskan ke aset statis", async () => {
   const res = await panggil("/undangan");
   assert.equal(await res.text(), "aset");
+});
+
+
+test("validasi pilihan pengirim, dengan kompatibilitas klien lama", () => {
+  assert.equal(validasiUcapan({ nama: "Ali" }).data.jenis_pengirim, null);
+  assert.equal(validasiUcapan({ nama: "Ali", jenis_pengirim: "laki_laki" }).data.jenis_pengirim, "laki_laki");
+  assert.equal(validasiUcapan({ nama: "Ali", jenis_pengirim: "lain" }).status, 422);
 });

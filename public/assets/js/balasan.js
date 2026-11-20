@@ -22,12 +22,24 @@ const BALASAN = {
   ],
 };
 
-export function pilihBalasan({ id, created_at, nama, kehadiran }) {
+// Kenali tema umum tanpa mengulang teks tamu atau mengirimkannya ke layanan AI.
+const TEMA = [
+  [/\b(sakinah|mawaddah|warahmah|rahmah|samawa|samara)\b/u, "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang."],
+  [/\b(lancar|kelancaran|dimudahkan)\b/u, "Aamiin, semoga Allah memudahkan persiapan dan jalannya acara."],
+  [/\b(barakallahu|berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan kepada Bapak/Ibu dan keluarga."],
+  [/\b(bahagia|kebahagiaan|langgeng)\b/u, "Aamiin, semoga kebahagiaan dan kebaikan juga senantiasa menyertai Bapak/Ibu."],
+  [/\b(selamat|congrats|congratulations)\b/u, "Ucapan selamat Bapak/Ibu sangat berarti bagi kami."],
+];
+
+export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
   const pilihan = Object.hasOwn(BALASAN, kehadiran) ? BALASAN[kehadiran] : BALASAN.ragu;
   // Variasi berdasarkan ID, bukan setiap render, agar balasan tidak berubah saat muat ulang.
   let hash = 2166136261;
   for (const char of String(id ?? `${created_at}|${nama}`)) {
     hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
   }
-  return pilihan[(hash >>> 0) % pilihan.length];
+  const dasar = pilihan[(hash >>> 0) % pilihan.length];
+  const ucapan = String(pesan ?? "").normalize("NFKC").toLowerCase();
+  const konteks = TEMA.find(([pola]) => pola.test(ucapan))?.[1];
+  return konteks ? `${konteks} ${dasar}` : dasar;
 }

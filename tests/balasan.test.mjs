@@ -15,3 +15,12 @@ test('balasan stabil per ucapan dan bervariasi sesuai status kehadiran', () => {
     tersaji.reduce((total, varian) => total + varian.size, 0));
   assert.equal(pilihBalasan({id: 'uji', kehadiran: 'constructor'}), pilihBalasan({id: 'uji', kehadiran: 'ragu'}));
 });
+
+test('balasan menanggapi tema doa tanpa mengubah respon kehadiran', () => {
+  const item = { id: 'uji', kehadiran: 'tidak_hadir' };
+  const dasar = pilihBalasan(item);
+  assert.equal(pilihBalasan({ ...item, pesan: 'Pesan umum' }), dasar);
+  const hasil = pilihBalasan({ ...item, pesan: 'Semoga sakinah mawaddah warahmah.' });
+  assert.match(hasil, /keluarga yang penuh kasih sayang/);
+  assert.ok(hasil.endsWith(dasar));
+});

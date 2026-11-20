@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=avatar-5" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=konteks-6" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -30,6 +30,16 @@
           <div class="field">
             <label for="inNama">Nama</label>
             <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+          </div>
+
+          <div class="field">
+            <label for="inJenisPengirim">Pengirim ucapan</label>
+            <select id="inJenisPengirim" name="jenis_pengirim" required>
+              <option value="" selected disabled>Pilih Laki-laki atau Perempuan</option>
+              <option value="laki_laki">Laki-laki</option>
+              <option value="perempuan">Perempuan</option>
+            </select>
+            <p class="field__hint">Pilihan ini menentukan mempelai yang mengirim balasan otomatis.</p>
           </div>
 
           <fieldset class="field">
@@ -82,6 +92,6 @@
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=avatar-5"></script>
+  <script type="module" src="/assets/js/app.js?v=konteks-6"></script>
 </body>
 </html>

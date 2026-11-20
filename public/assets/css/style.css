@@ -1102,12 +1102,39 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   border-radius: 999px; background: #f8e8eb; font-size: .83rem; line-height: 1.5;
 }
 
-/* Mulai ketika kartu benar-benar masuk layar, bukan saat data dimuat. */
-.wish--terlihat { animation: wishPop .55s var(--ease) both; }
-.wish--terlihat .wish__reaction > span { animation: heartPop .55s .18s var(--ease) both; }
-@keyframes wishPop {
-  from { opacity: .58; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Kartu remi: muka kartu dibentangkan berurutan, isi dilipat dari tepi atas. */
+.wish-carousel__track > .wish { display: block; padding: 0; perspective: 900px; }
+.wish__fold { border-radius: inherit; }
+.wish__face {
+  display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: .5rem .7rem;
+  padding: .9rem; border-radius: inherit; cursor: pointer; list-style: none;
+}
+.wish__face::-webkit-details-marker { display: none; }
+.wish__face:focus-visible { outline-offset: -4px; }
+.wish__face-info { min-width: 0; }
+.wish__fold-hint {
+  grid-column: 2; display: flex; align-items: center; justify-content: space-between;
+  color: var(--gold-deep); font-size: .85rem; font-weight: 600;
+}
+.wish__fold-arrow { font-size: 1.25rem; line-height: 1; transition: transform .25s ease; }
+.wish__fold[open] .wish__fold-arrow { transform: rotate(180deg); }
+.wish__fold-close, .wish__fold[open] .wish__fold-open { display: none; }
+.wish__fold[open] .wish__fold-close { display: inline; }
+.wish__fold-content {
+  min-width: 0; padding: .7rem .9rem .9rem; border-top: 1px solid var(--gold-line);
+  transform-origin: top; backface-visibility: hidden;
+}
+.wish--terlihat .wish__face { animation: wishDeal .58s var(--wish-delay, 0ms) var(--ease) both; }
+.wish__fold[open] .wish__fold-content { animation: wishUnfold .52s var(--ease) both; }
+.wish__fold[open] .wish__reaction > span { animation: heartPop .55s .24s var(--ease) both; }
+@keyframes wishDeal {
+  from { opacity: .4; transform: rotateY(-28deg) rotateZ(-3deg) translateY(9px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wishUnfold {
+  from { opacity: .3; transform: rotateX(-78deg); }
+  72% { opacity: 1; transform: rotateX(5deg); }
+  to { opacity: 1; transform: none; }
 }
 @keyframes heartPop {
   0% { transform: scale(.78); }
@@ -1116,5 +1143,6 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   100% { transform: scale(1) rotate(0); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .wish--terlihat, .wish--terlihat .wish__reaction > span { animation: none; }
+  .wish--terlihat .wish__face, .wish__fold[open] .wish__fold-content,
+  .wish__fold[open] .wish__reaction > span { animation: none; }
 }

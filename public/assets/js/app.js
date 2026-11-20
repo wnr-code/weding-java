@@ -468,18 +468,36 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
+function pasangLipatan(kartu, avatar, muka, isi, kelompok) {
+  const lipatan = document.createElement("details");
+  lipatan.className = "wish__fold";
+  lipatan.name = kelompok;
+  const ringkas = document.createElement("summary");
+  ringkas.className = "wish__face";
+  avatar.setAttribute("aria-hidden", "true");
+  const petunjuk = document.createElement("span");
+  petunjuk.className = "wish__fold-hint";
+  petunjuk.innerHTML = '<span class="wish__fold-open">Buka kartu</span><span class="wish__fold-close">Tutup kartu</span><span class="wish__fold-arrow" aria-hidden="true">⌄</span>';
+  ringkas.append(avatar, muka, petunjuk);
+  isi.classList.add("wish__fold-content");
+  lipatan.append(ringkas, isi);
+  kartu.append(lipatan);
+}
+
 function buatKartuUcapan(item) {
   const li = document.createElement("li");
   li.className = "wish";
 
-  const av = document.createElement("div");
+  const av = document.createElement("span");
   av.className = "wish__avatar";
   av.textContent = inisial(item.nama);
 
   const body = document.createElement("div");
   body.className = "wish__body";
 
-  const top = document.createElement("div");
+  const muka = document.createElement("span");
+  muka.className = "wish__face-info";
+  const top = document.createElement("span");
   top.className = "wish__top";
 
   const nm = document.createElement("span");
@@ -497,7 +515,7 @@ function buatKartuUcapan(item) {
   time.textContent = waktuRelatif(item.created_at);
 
   top.append(nm, badge, time);
-  body.append(labelKiriman("Ucapan & Doa", "doa"), top);
+  muka.append(labelKiriman("Ucapan & Doa", "doa"), top);
   if (item.kota) {
     const kota = document.createElement("p");
     kota.className = "wish__city";
@@ -513,7 +531,7 @@ function buatKartuUcapan(item) {
   }
 
   body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
-  li.append(av, body);
+  pasangLipatan(li, av, muka, body, "lipatan-ucapan");
   return li;
 }
 
@@ -620,7 +638,10 @@ function pasangCarousel(id) {
     if (reset) track.scrollLeft = 0;
     if (terlihat) {
       terlihat.disconnect();
-      for (const card of track.children) terlihat.observe(card);
+      Array.from(track.children).forEach((card, i) => {
+        card.style.setProperty("--wish-delay", `${(i % 4) * 70}ms`);
+        terlihat.observe(card);
+      });
     }
     sinkron();
   };
@@ -940,18 +961,20 @@ async function tampilkanTandaKasih(sinkron) {
       avatar.textContent = "♡";
       const isi = document.createElement("div");
       isi.className = "wish__body";
+      const muka = document.createElement("span");
+      muka.className = "wish__face-info";
       const nama = document.createElement("strong");
       nama.className = "wish__name";
       nama.textContent = item.nama;
       const pesan = document.createElement("p");
       pesan.className = "wish__msg";
       pesan.textContent = item.pesan;
-      isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
+      muka.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
       isi.append(buatReaksi(), buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
-      kartu.append(avatar, isi);
+      pasangLipatan(kartu, avatar, muka, isi, "lipatan-tanda-kasih");
       daftar.append(kartu);
     }
     bagian.hidden = false;

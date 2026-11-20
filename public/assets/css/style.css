@@ -1200,6 +1200,16 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   background: linear-gradient(140deg, #fbf5e6, #fffefa 30%, #fffefa 68%, #fbf3e2);
 }
 .wish-slot.wish--hadiah .wish__front { padding-block: calc(var(--sudut-hadiah) + .4rem); }
+.wish-slot.wish--hadiah .wish__back {
+  display: grid;
+  place-items: center;
+  padding: calc(var(--sudut-hadiah) + .4rem) 1.1rem;
+  background: linear-gradient(140deg, #fbf5e6df, #fffefaed 33%, #fffefaed 67%, #fbf3e2df);
+}
+.wish__back-message {
+  color: #51422f; font-size: .95rem; line-height: 1.65;
+  text-align: center; overflow-wrap: anywhere; white-space: pre-wrap;
+}
 .wish-slot.wish--hadiah .wish__front::before,
 .wish-slot.wish--hadiah .wish__front::after,
 .wish-slot.wish--hadiah .wish__back::before,

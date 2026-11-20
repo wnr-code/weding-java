@@ -468,13 +468,19 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-function pasangWajahKartu(kartu, avatar, isi) {
+function pasangWajahKartu(kartu, avatar, isi, pesanBelakang) {
   const depan = document.createElement("div");
   depan.className = "wish wish__front";
   depan.append(avatar, isi);
   const belakang = document.createElement("div");
   belakang.className = "wish__back";
   belakang.setAttribute("aria-hidden", "true");
+  if (pesanBelakang?.trim()) {
+    const teks = document.createElement("p");
+    teks.className = "wish__back-message";
+    teks.textContent = pesanBelakang;
+    belakang.append(teks);
+  }
   kartu.append(depan, belakang);
 }
 
@@ -1095,7 +1101,7 @@ async function tampilkanTandaKasih(sinkron) {
       isi.append(buatReaksi(), buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
-      pasangWajahKartu(kartu, avatar, isi);
+      pasangWajahKartu(kartu, avatar, isi, item.pesan);
       daftar.append(kartu);
     }
     bagian.hidden = false;

@@ -468,23 +468,31 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-function pasangWajahKartu(kartu, avatar, isi, pesanBelakang) {
+const ilustrasiMempelai = ["taman", "pelaminan", "senja"];
+for (let i = ilustrasiMempelai.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [ilustrasiMempelai[i], ilustrasiMempelai[j]] = [ilustrasiMempelai[j], ilustrasiMempelai[i]];
+}
+
+function pasangWajahKartu(kartu, avatar, isi, urutan) {
   const depan = document.createElement("div");
   depan.className = "wish wish__front";
   depan.append(avatar, isi);
   const belakang = document.createElement("div");
   belakang.className = "wish__back";
   belakang.setAttribute("aria-hidden", "true");
-  if (pesanBelakang?.trim()) {
-    const teks = document.createElement("p");
-    teks.className = "wish__back-message";
-    teks.textContent = pesanBelakang;
-    belakang.append(teks);
-  }
+  const ilustrasi = document.createElement("img");
+  ilustrasi.className = "wish__back-art";
+  ilustrasi.alt = "";
+  ilustrasi.loading = "lazy";
+  ilustrasi.decoding = "async";
+  const adegan = ilustrasiMempelai[urutan % ilustrasiMempelai.length];
+  ilustrasi.src = new URL(`../img/ilustrasi-pengantin-${adegan}.webp`, import.meta.url).href;
+  belakang.append(ilustrasi);
   kartu.append(depan, belakang);
 }
 
-function buatKartuUcapan(item) {
+function buatKartuUcapan(item, urutan) {
   const li = document.createElement("li");
   li.className = "wish-slot";
 
@@ -529,7 +537,7 @@ function buatKartuUcapan(item) {
   }
 
   body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
-  pasangWajahKartu(li, av, body);
+  pasangWajahKartu(li, av, body, urutan);
   return li;
 }
 
@@ -787,7 +795,7 @@ async function muatUcapan({ reset = false } = {}) {
   try {
     const data = await api.ambilUcapan({ limit: state.limit, offset: state.offset });
     if (reset) list.innerHTML = "";
-    (data.items || []).forEach((it) => list.appendChild(buatKartuUcapan(it)));
+    (data.items || []).forEach((it, i) => list.appendChild(buatKartuUcapan(it, state.offset + i)));
     sinkronUcapan(reset);
     state.offset += (data.items || []).length;
     state.total = data.total ?? 0;
@@ -1081,7 +1089,7 @@ async function tampilkanTandaKasih(sinkron) {
     const data = await res.json();
     if (!Array.isArray(data.items) || !data.items.length) return;
     if (data.uji) $("#statusKirimanHadiah").textContent = "Tampilan Percobaan";
-    for (const item of data.items) {
+    for (const [i, item] of data.items.entries()) {
       const kartu = document.createElement("li");
       kartu.className = "wish-slot wish--hadiah";
       const avatar = document.createElement("span");
@@ -1101,7 +1109,7 @@ async function tampilkanTandaKasih(sinkron) {
       isi.append(buatReaksi(), buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
         : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
-      pasangWajahKartu(kartu, avatar, isi, item.pesan);
+      pasangWajahKartu(kartu, avatar, isi, i + 1);
       daftar.append(kartu);
     }
     bagian.hidden = false;

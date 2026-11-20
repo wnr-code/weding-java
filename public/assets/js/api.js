@@ -77,6 +77,7 @@ export async function kirimUcapan(payload) {
     const item = {
       id: (crypto.randomUUID ? crypto.randomUUID() : `lokal-${Date.now()}`),
       nama: payload.nama,
+      kota: payload.kota || "",
       jenis_pengirim: payload.jenis_pengirim,
       kehadiran: payload.kehadiran,
       jumlah: payload.jumlah,

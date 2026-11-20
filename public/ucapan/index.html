@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=geser-11" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=kota-12" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -30,6 +30,12 @@
           <div class="field">
             <label for="inNama">Nama</label>
             <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+          </div>
+
+          <div class="field">
+            <label for="inKota">Nama kota <span class="muted">(opsional)</span></label>
+            <input id="inKota" name="kota" type="text" autocomplete="address-level2" placeholder="Contoh: Tasikmalaya" maxlength="60" aria-describedby="petunjukKota" />
+            <small id="petunjukKota" class="wish__city">Jika diisi, kota akan tampil bersama ucapan.</small>
           </div>
 
           <fieldset class="field">
@@ -106,6 +112,6 @@
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=geser-11"></script>
+  <script type="module" src="/assets/js/app.js?v=kota-12"></script>
 </body>
 </html>

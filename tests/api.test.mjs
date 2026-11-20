@@ -51,8 +51,8 @@ function fakeD1() {
         },
         async run() {
           if (sql.includes("INSERT INTO ucapan")) {
-            const [id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim] = args;
-            rows.push({ id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim });
+            const [id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim, kota] = args;
+            rows.push({ id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim, kota });
             return { success: true };
           }
           return { success: true };
@@ -157,7 +157,7 @@ test("GET /api/health tanpa D1 tetap 200 dengan database false", async () => {
 
 test("POST lalu GET /api/ucapan menyimpan serta mengembalikan ucapan", async () => {
   const e = env();
-  const res = await kirim({ nama: "Keluarga Hasan", kehadiran: "hadir", jumlah: 3, pesan: "Barakallahu lakuma", jenis_pengirim: "perempuan" }, e);
+  const res = await kirim({ nama: "Keluarga Hasan", kehadiran: "hadir", jumlah: 3, pesan: "Barakallahu lakuma", jenis_pengirim: "perempuan", kota: "  Kota   Bandung " }, e);
   assert.equal(res.status, 201);
   const data = await res.json();
   assert.equal(data.ok, true);
@@ -173,6 +173,7 @@ test("POST lalu GET /api/ucapan menyimpan serta mengembalikan ucapan", async () 
   assert.equal(isi.items.length, 1);
   assert.equal(isi.items[0].pesan, "Barakallahu lakuma");
   assert.equal(isi.items[0].jenis_pengirim, "perempuan");
+  assert.equal(isi.items[0].kota, "Kota Bandung");
 });
 
 test("POST menolak nama kosong dengan 422", async () => {
@@ -238,4 +239,11 @@ test("validasi pilihan pengirim, dengan kompatibilitas klien lama", () => {
   assert.equal(validasiUcapan({ nama: "Ali" }).data.jenis_pengirim, null);
   assert.equal(validasiUcapan({ nama: "Ali", jenis_pengirim: "laki_laki" }).data.jenis_pengirim, "laki_laki");
   assert.equal(validasiUcapan({ nama: "Ali", jenis_pengirim: "lain" }).status, 422);
+});
+
+
+test("kota opsional dan divalidasi", () => {
+  assert.equal(validasiUcapan({ nama: "Ali" }).data.kota, "");
+  assert.equal(validasiUcapan({ nama: "Ali", kota: "x".repeat(61) }).status, 422);
+  assert.equal(validasiUcapan({ nama: "Ali", kota: {} }).status, 422);
 });

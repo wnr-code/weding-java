@@ -8,7 +8,7 @@ import { pilihBalasan } from "./balasan.js?v=konteks-6";
 import CONFIG from "./config.js?v=bahasa-10";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
-import * as api from "./api.js?v=konteks-6";
+import * as api from "./api.js?v=kota-12";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
 document.documentElement.classList.add("js");
@@ -499,6 +499,12 @@ function buatKartuUcapan(item, i = 0) {
 
   top.append(nm, badge, time);
   body.append(labelKiriman("Ucapan & Doa", "doa"), top);
+  if (item.kota) {
+    const kota = document.createElement("p");
+    kota.className = "wish__city";
+    kota.textContent = `Asal: ${item.kota}`;
+    body.append(kota);
+  }
 
   if (item.pesan) {
     const msg = document.createElement("p");
@@ -507,6 +513,24 @@ function buatKartuUcapan(item, i = 0) {
     body.appendChild(msg);
   }
 
+  body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
+  li.append(av, body);
+  return li;
+}
+
+function buatReaksi() {
+  const reaksi = document.createElement("span");
+  reaksi.className = "wish__reaction";
+  reaksi.setAttribute("role", "img");
+  reaksi.setAttribute("aria-label", "Dua tanda kasih dari kedua mempelai, ditampilkan otomatis");
+  const hati = document.createElement("span");
+  hati.setAttribute("aria-hidden", "true");
+  hati.textContent = "💞 💞";
+  reaksi.append(hati);
+  return reaksi;
+}
+
+function buatBalasan(kalimat) {
   const reply = document.createElement("div");
   reply.className = "wish__reply";
   const replyAvatar = document.createElement("span");
@@ -530,12 +554,10 @@ function buatKartuUcapan(item, i = 0) {
   label.className = "wish__reply-label";
   label.textContent = "Balasan otomatis";
   const text = document.createElement("p");
-  text.textContent = pilihBalasan(item);
+  text.textContent = kalimat;
   bubble.append(author, label, text);
   reply.append(replyAvatar, bubble);
-  body.append(reply);
-  li.append(av, body);
-  return li;
+  return reply;
 }
 
 function perbaruiStatistik(data) {
@@ -628,6 +650,7 @@ function pasangFormUcapan() {
 
   const form = $("#formUcapan");
   const nama = $("#inNama");
+  const kota = $("#inKota");
   const pesan = $("#inPesan");
   const jumlah = $("#inJumlah");
   const fieldJumlah = $("#fieldJumlah");
@@ -683,7 +706,7 @@ function pasangFormUcapan() {
     status.className = "form-status";
 
     try {
-      const hasil = await api.kirimUcapan({ nama: namaVal, kehadiran, jumlah: jml, pesan: pesanVal });
+      const hasil = await api.kirimUcapan({ nama: namaVal, kota: kota.value.trim(), kehadiran, jumlah: jml, pesan: pesanVal });
       status.textContent =
         hasil.mode === "lokal"
           ? "Ucapan tersimpan di perangkat ini (mode pratinjau — server belum aktif)."
@@ -930,6 +953,9 @@ async function tampilkanTandaKasih(sinkron) {
       pesan.textContent = item.pesan;
       isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
+      isi.append(buatReaksi(), buatBalasan(data.uji
+        ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
+        : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
       kartu.append(avatar, isi);
       daftar.append(kartu);
     }

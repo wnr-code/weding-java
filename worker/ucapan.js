@@ -8,6 +8,7 @@ export const BATAS = Object.freeze({
   namaMin: 2,
   namaMax: 60,
   pesanMax: 500,
+  kotaMax: 60,
   tamuMax: 10,
   limitDefault: 6,
   limitMaks: 50,
@@ -30,7 +31,7 @@ export function bersihkanTeks(nilai, { barisBaru = false } = {}) {
 }
 
 /**
- * @returns {{ok: true, data: {nama: string, kehadiran: string, jumlah: number, pesan: string, jenis_pengirim: string | null}}
+ * @returns {{ok: true, data: {nama: string, kehadiran: string, jumlah: number, pesan: string, kota: string, jenis_pengirim: string | null}}
  *          | {ok: false, status: number, pesan: string}}
  */
 export function validasiUcapan(input) {
@@ -44,6 +45,14 @@ export function validasiUcapan(input) {
   }
   if (nama.length > BATAS.namaMax) {
     return { ok: false, status: 422, pesan: `Nama maksimal ${BATAS.namaMax} karakter.` };
+  }
+
+  if (input.kota != null && typeof input.kota !== "string") {
+    return { ok: false, status: 422, pesan: "Nama kota harus berupa teks." };
+  }
+  const kota = bersihkanTeks(input.kota);
+  if (kota.length > BATAS.kotaMax) {
+    return { ok: false, status: 422, pesan: `Nama kota maksimal ${BATAS.kotaMax} karakter.` };
   }
 
   const kehadiran = bersihkanTeks(input.kehadiran || "ragu").toLowerCase();
@@ -67,7 +76,7 @@ export function validasiUcapan(input) {
     return { ok: false, status: 422, pesan: `Ucapan maksimal ${BATAS.pesanMax} karakter.` };
   }
 
-  return { ok: true, data: { nama, kehadiran, jumlah, pesan, jenis_pengirim } };
+  return { ok: true, data: { nama, kehadiran, jumlah, pesan, jenis_pengirim, kota } };
 }
 
 /** Parameter paginasi yang aman. */
@@ -97,11 +106,11 @@ export const SQL = {
       COALESCE(SUM(CASE WHEN kehadiran = 'ragu' THEN 1 ELSE 0 END), 0) AS ragu,
       COALESCE(SUM(CASE WHEN kehadiran = 'hadir' THEN jumlah ELSE 0 END), 0) AS tamu
     FROM ucapan`,
-  daftar: `SELECT id, nama, kehadiran, jumlah, pesan, created_at, jenis_pengirim
+  daftar: `SELECT id, nama, kehadiran, jumlah, pesan, created_at, jenis_pengirim, kota
     FROM ucapan ORDER BY created_at DESC, rowid DESC LIMIT ? OFFSET ?`,
   terakhirDariIp: `SELECT created_at FROM ucapan WHERE ip_hash = ? ORDER BY created_at DESC LIMIT 1`,
-  simpan: `INSERT INTO ucapan (id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+  simpan: `INSERT INTO ucapan (id, nama, kehadiran, jumlah, pesan, created_at, ip_hash, jenis_pengirim, kota)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 };
 
 export const JEDA_DETIK = 20;

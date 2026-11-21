@@ -1539,3 +1539,29 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   margin: .15rem 0 0; text-align: center;
   color: #806947; font-size: .65rem; line-height: 1.3;
 }
+
+.share-social { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .2rem; max-width: 25rem; margin: 1rem auto .45rem; }
+.share-social__item {
+  display: grid; justify-items: center; align-content: start; gap: .28rem;
+  min-height: 48px; padding: .12rem 0; border: 0; border-radius: .6rem;
+  background: transparent; color: #6d5128; font-family: inherit; font-weight: 600; line-height: 1.2;
+  font-size: clamp(.58rem, 2.3vw, .72rem); cursor: pointer; text-decoration: none;
+}
+.share-social__item:focus-visible { outline: 2px solid #947032; outline-offset: 2px; }
+.share-social__medal {
+  display: grid; place-items: center; width: clamp(36px, 12vw, 48px); aspect-ratio: 1;
+  border-radius: 50%; border: 1px solid #c59841; color: #684718;
+  background: linear-gradient(125deg, #d1a34a 10%, #fff6d7 34%, #e4bb64 57%, #fff1c3 72%, #b7822c 94%);
+  background-size: 240% 100%; background-position: right center;
+  box-shadow: inset 0 0 0 2px #fff2cf9c;
+}
+.share-social__medal svg { width: 57%; height: 57%; }
+@media (prefers-reduced-motion: no-preference) {
+  .share-sheet[open] .share-social__medal { animation: kilauIkonBagikan 5.6s ease-in-out infinite; }
+  .share-social__item:nth-child(2n) .share-social__medal { animation-delay: .45s; }
+  .share-social__item:nth-child(3n) .share-social__medal { animation-delay: .9s; }
+}
+@keyframes kilauIkonBagikan {
+  0%, 57% { background-position: right center; }
+  86%, 100% { background-position: left center; }
+}

@@ -1312,3 +1312,27 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .site-footer__meta a::before { text-decoration: none; }
 
 .ayat cite a { text-decoration: underline; text-underline-offset: .22em; }
+
+/* Sorot emas mengitari bingkai kartu, tanpa menutupi isi atau efek reveal. */
+@property --event-glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@supports (mask-composite: exclude) {
+  @media (prefers-reduced-motion: no-preference) {
+    .event.is-in::after {
+      content: ''; position: absolute; inset: 4px; border-radius: 17px;
+      padding: 2px; pointer-events: none;
+      background: conic-gradient(from var(--event-glow-angle), transparent 65%, #bc8d3570 78%, #d6a84c 89%, #fff2cd 94%, transparent 100%);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: .8;
+      animation: eventBorderGlow 7s linear infinite;
+    }
+    .event:nth-child(2).is-in::after { animation-delay: -3.5s; }
+  }
+}
+@keyframes eventBorderGlow {
+  to { --event-glow-angle: 360deg; }
+}

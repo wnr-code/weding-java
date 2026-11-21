@@ -1051,6 +1051,8 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   .to-top, .music-toggle--float { min-width: 44px; min-height: 44px; }
 }
 
+.section--peta .section__head { margin-bottom: 1.05rem; }
+.section--peta .section__head .divider { margin-block: .65rem .5rem; }
 .section--peta .map { margin-top: 1rem; }
 .section--peta .map__card .btn { margin-top: .85rem; }
 .map__fallback { margin-top: .75rem; text-align: center; font-size: .9rem; color: var(--ink-soft); }

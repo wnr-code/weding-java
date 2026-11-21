@@ -1197,6 +1197,8 @@ function mulai() {
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
     pasangHadiah();
+    const hadiahFloat = $("#hadiahFloat");
+    if (hadiahFloat) hadiahFloat.hidden = !hadiahTersedia();
     pasangPeta();
     siapkanReveal();
     if (location.hash === "#hadiah" && hadiahTersedia()) {

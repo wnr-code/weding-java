@@ -1457,3 +1457,4 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   0%, 62%, 100% { box-shadow: none; }
   76% { box-shadow: 0 0 .65rem #c89637a8; }
 }
+.page-ucapan .hadiah-float { bottom: calc(.85rem + env(safe-area-inset-bottom)); }

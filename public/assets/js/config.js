@@ -147,7 +147,7 @@ export const CONFIG = {
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
       label: "Tautan Tanda Kasih",
-      url: "https://trakteer.id/lanteraku/tip?open=",
+      url: "https://trakteer.id/-java/tip?open=",
       keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
     },
     // Opsional. Kosongkan array untuk menyembunyikan kartu rekening.

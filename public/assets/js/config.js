@@ -29,7 +29,7 @@ export const CONFIG = {
       sumber: "QS. Ar-Rum: 21",
     },
     kalimat:
-      "Dengan memohon rahmat dan rida Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
+      "Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
   },
 
   /* ------------------------------- Mempelai ------------------------------ */
@@ -67,7 +67,7 @@ export const CONFIG = {
     aktif: true,
     src: "assets/img/foto-bersama.jpg",
     judul: "Kebersamaan",
-    ket: "Dua hati, satu tujuan — menuju rida-Nya",
+    ket: "Dua hati, satu tujuan — menuju ridha-Nya",
     catatan: "Sentuh foto untuk melihat versi utuh",
   },
 

@@ -61,7 +61,7 @@ export class Music {
 
   /** Harus dipanggil dari gestur pengguna (klik) agar diizinkan peramban. */
   async start() {
-    if (!this.tersedia || this.playing || this.starting) return this.playing;
+    if (!this.tersedia || (this.playing && !this.el?.paused) || this.starting) return this.playing;
     this.starting = true;
     try {
       return await this.#start();
@@ -83,19 +83,34 @@ export class Music {
       this.el = new Audio(this.config.berkas);
       this.el.loop = true;
       this.el.preload = "auto";
-      this.el.crossOrigin = "anonymous";
+      const posisi = this.config.posisiAwal;
+      if (Number.isFinite(posisi) && posisi > 0) this.el.currentTime = posisi;
     }
     try {
       this.el.volume = this.baseVolume;
       await this.el.play();
       this.playing = true;
+      this.#pasangMetadata();
       this.#notify();
     } catch (err) {
-      console.warn("Musik berkas gagal diputar:", err);
+      if (err.name !== "NotAllowedError" && err.name !== "AbortError") {
+        console.warn("Musik berkas gagal diputar:", err);
+      }
       this.playing = false;
       this.#notify();
     }
     return this.playing;
+  }
+
+  #pasangMetadata() {
+    if (!globalThis.navigator?.mediaSession || typeof globalThis.MediaMetadata !== "function") return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: "Ney Dinletisi",
+        artist: "Ja’far & Iklimah",
+        artwork: [{ src: "/assets/img/ikon/mempelai-baru-192.png", sizes: "192x192", type: "image/png" }],
+      });
+    } catch { /* Metadata opsional; musik tetap diputar. */ }
   }
 
   async #startSynth() {
@@ -287,8 +302,8 @@ export class Music {
   }
 
   pause() {
-    if (!this.playing) return false;
     if (this.el) this.el.pause();
+    if (!this.playing) return false;
     if (this.ctx) {
       const now = this.ctx.currentTime;
       this.master.gain.cancelScheduledValues(now);

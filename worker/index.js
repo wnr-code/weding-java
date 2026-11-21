@@ -7,7 +7,7 @@
  *   POST /api/ucapan           kirim ucapan & konfirmasi kehadiran
  *
  * Aset statis (HTML/CSS/JS/gambar) dilayani oleh binding `ASSETS`
- * (Cloudflare Static Assets). Worker hanya menangani /api/*.
+ * (Cloudflare Static Assets). Worker menangani API dan alias tautan berbagi.
  */
 
 import {
@@ -46,6 +46,12 @@ function galat(pesan, status = 400) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Sajikan HTML undangan langsung, termasuk untuk crawler yang bukan navigasi browser.
+    if (["/jafar&iklimah", "/jafar%26iklimah"].includes(url.pathname) && env.ASSETS) {
+      url.pathname = "/";
+      return env.ASSETS.fetch(new Request(url, request));
+    }
 
     // Selain /api/* biarkan aset statis yang melayani.
     if (!url.pathname.startsWith("/api/")) {

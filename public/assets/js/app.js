@@ -4,11 +4,11 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=smart-57";
+import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=audit-41";
+import CONFIG from "./config.js?v=foto-97";
 import { injectOrnaments, icons } from "./ornament.js";
-import { Music } from "./music.js";
+import { Music } from "./music.js?v=foto-97";
 import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
@@ -936,8 +936,10 @@ function pasangFormUcapan() {
       pesan.value = "";
       const c = $("#counterPesan");
       if (c) c.textContent = `0/${pesan.maxLength}`;
-      await muatUcapan({ reset: true });
+      const panel = form.closest("dialog");
+      if (panel?.open) panel.close();
       toast(hasil.mode === "lokal" ? "Tersimpan di perangkat (mode pratinjau)" : "Terima kasih atas doanya 🤍");
+      await muatUcapan({ reset: true });
     } catch (err) {
       status.textContent = err?.message && err.message !== "Failed to fetch"
         ? err.message
@@ -955,6 +957,33 @@ function pasangFormUcapan() {
   muatUcapan({ reset: true });
 }
 
+/* Tarik dari puncak halaman Ucapan, bukan dari carousel atau popup. */
+function pasangTarikMuatUlang() {
+  let awal = null;
+  let memuat = false;
+  const diPuncak = () => window.scrollY <= 0;
+  document.addEventListener("touchstart", (e) => {
+    awal = null;
+    if (memuat || e.touches.length !== 1 || !diPuncak()) return;
+    if (e.target.closest?.("dialog, .wish-carousel__stage, button, a, input, textarea, select, iframe")) return;
+    const { identifier, clientX, clientY } = e.touches[0];
+    awal = { identifier, clientX, clientY };
+  }, { passive: true });
+  document.addEventListener("touchmove", () => {
+    if (!diPuncak()) awal = null;
+  }, { passive: true });
+  document.addEventListener("touchcancel", () => { awal = null; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    const mulai = awal;
+    awal = null;
+    if (!mulai || !diPuncak() || e.touches.length) return;
+    const akhir = Array.from(e.changedTouches).find((t) => t.identifier === mulai.identifier);
+    if (!akhir || akhir.clientY - mulai.clientY < 90 || Math.abs(akhir.clientX - mulai.clientX) > 50) return;
+    memuat = true;
+    window.location.reload();
+  }, { passive: true });
+}
+
 /* --------------------------------- Musik --------------------------------- */
 let musik = null;
 const musicUI = () => $$("#musicToggle, #musicToggleCover");
@@ -964,8 +993,21 @@ function sinkronMusik() {
   musicUI().forEach((b) => b && b.setAttribute("aria-pressed", aktif ? "true" : "false"));
 }
 
+const KUNCI_MUSIK = `undangan:musik:${CONFIG.musik.berkas}`;
+const bacaMusik = () => {
+  try { return JSON.parse(sessionStorage.getItem(KUNCI_MUSIK)) ?? {}; }
+  catch { return {}; }
+};
+function simpanMusik(aktif = bacaMusik().aktif) {
+  if (!CONFIG.musik.berkas || (aktif === undefined && !musik?.el)) return;
+  try {
+    sessionStorage.setItem(KUNCI_MUSIK, JSON.stringify({ aktif, posisi: musik?.el?.currentTime ?? 0 }));
+  } catch { /* Pengaturan penyimpanan browser tidak menghalangi musik. */ }
+}
+
 function pasangMusik() {
-  musik = new Music(CONFIG.musik);
+  const keadaan = bacaMusik();
+  musik = new Music({ ...CONFIG.musik, posisiAwal: keadaan.posisi });
   musik.onChange = sinkronMusik;
   if (!musik.tersedia) {
     musicUI().forEach((b) => b && (b.hidden = true));
@@ -975,13 +1017,15 @@ function pasangMusik() {
   const toggle = async () => {
     const main = $("#main");
     const sudahDibuka = main && !main.hidden;
-    if (!sudahDibuka) {
+    if (main && !sudahDibuka) {
       bukaUndangan({ mulaiMusik: false });
     }
     if (musik.playing) {
       musik.pause();
+      simpanMusik(false);
     } else {
       await musik.start();
+      if (musik.playing) simpanMusik(true);
       if (!musik.playing) toast("Musik tidak dapat diputar di peramban ini");
     }
     sinkronMusik();
@@ -990,7 +1034,31 @@ function pasangMusik() {
   musicUI().forEach((b) => on(b, "click", toggle));
 
   // Audio berkas berjalan dalam loop native, termasuk saat tab di latar.
-  if (CONFIG.musik.berkas) return;
+  if (CONFIG.musik.berkas) {
+    window.addEventListener("pagehide", () => simpanMusik());
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) simpanMusik();
+      else cobaLanjutkan();
+    });
+    const cobaLanjutkan = () => {
+      if (bacaMusik().aktif === false || $("#main")?.hidden) return;
+      if (!musik.playing || musik.el?.paused) musik.start();
+    };
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) {
+        const terakhir = bacaMusik();
+        if (terakhir.aktif === false) musik.pause();
+        if (musik.el && Number.isFinite(terakhir.posisi)) musik.el.currentTime = terakhir.posisi;
+        cobaLanjutkan();
+      }
+    });
+    // Jika autoplay ditolak, lanjutkan pada ketukan berikutnya di halaman yang sama.
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest?.("#musicToggle, #musicToggleCover, #btnBuka")) cobaLanjutkan();
+    }, { capture: true });
+    cobaLanjutkan();
+    return;
+  }
 
   document.addEventListener("visibilitychange", () => {
     if (!musik) return;
@@ -1082,8 +1150,11 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
   cover?.classList.add("is-open");
   musicFloat?.classList.add("is-visible");
 
-  if (mulaiMusik && musik && musik.tersedia) {
-    musik.start().then(sinkronMusik);
+  if (mulaiMusik && musik && musik.tersedia && bacaMusik().aktif !== false) {
+    musik.start().then(() => {
+      if (musik.playing) simpanMusik(true);
+      sinkronMusik();
+    });
   }
 
   setTimeout(() => {
@@ -1215,6 +1286,9 @@ function mulai() {
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
+    pasangTarikMuatUlang();
+    pasangPartikel();
+    pasangMusik();
     pasangHadiah();
     const hadiahFloat = $("#hadiahFloat");
     if (hadiahFloat) hadiahFloat.hidden = !hadiahTersedia();
@@ -1247,7 +1321,7 @@ function mulai() {
   siapkanReveal();
 
   on($("#btnBuka"), "click", () => bukaUndangan());
-  if (location.hash === "#salam") bukaUndangan({ mulaiMusik: false });
+  if (location.hash === "#salam") bukaUndangan();
 
   perbaruiGulir();
 

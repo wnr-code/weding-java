@@ -17,7 +17,7 @@ test('aset lokal yang dirujuk oleh halaman dan konfigurasi tersedia', async () =
       await access(new URL(path, new URL(file, publicDir)));
     }
   }
-  await Promise.all([...new Set(paths)].map((path) => access(new URL(path, publicDir))));
+  await Promise.all([...new Set(paths)].map((path) => access(new URL(path.replace(/^\/+/, ""), publicDir))));
 });
 
 test('lima rujukan ayat berbeda dan semua memiliki teks serta terjemahan', () => {

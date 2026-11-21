@@ -15,7 +15,7 @@ export const CONFIG = {
     // Ganti dengan alamat situs Anda setelah deploy (dipakai untuk preview WhatsApp).
     url: "https://wedding.cgs.my.id",
     // Gambar preview saat tautan dibagikan.
-    gambar: "assets/img/foto-bersama.jpg",
+    gambar: "assets/img/foto-bersama-baru.jpg",
   },
 
   /* -------------------------- Komentar pembuka --------------------------- */
@@ -29,7 +29,7 @@ export const CONFIG = {
       sumber: "QS. Ar-Rum: 21",
     },
     kalimat:
-      "Dengan memohon rahmat dan rida Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
+      "Dengan memohon rahmat dan ridha Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
   },
 
   /* ------------------------------- Mempelai ------------------------------ */
@@ -43,7 +43,7 @@ export const CONFIG = {
       ibu: "Ibu Hj. Siti Wafiroh Alfiah",
       // Opsional: tautan Instagram tanpa @ (kosongkan jika tidak dipakai).
       instagram: "",
-      foto: "assets/img/mempelai-pria.jpg",
+      foto: "assets/img/mempelai-pria-baru.jpg",
     },
     wanita: {
       nama: "Risva Iklimah Adawiyah",
@@ -53,7 +53,7 @@ export const CONFIG = {
       bapakAlmarhum: false,
       ibu: "Ibu Sopiah",
       instagram: "",
-      foto: "assets/img/mempelai-wanita.jpg",
+      foto: "assets/img/mempelai-wanita-baru.jpg",
     },
     // Nama besar yang tampil di sampul: "Ja'far & Iklimah"
     hashtag: "#JaFarIklimah",
@@ -65,9 +65,9 @@ export const CONFIG = {
   // Foto utuh (tidak dipecah). Tampil dengan animasi dua panel yang menyatu.
   fotoBersama: {
     aktif: true,
-    src: "assets/img/foto-bersama.jpg",
+    src: "assets/img/foto-bersama-baru.jpg",
     judul: "Kebersamaan",
-    ket: "Dua hati, satu tujuan — menuju rida-Nya",
+    ket: "Dua hati, satu tujuan — menuju ridha-Nya",
     catatan: "Sentuh foto untuk melihat versi utuh",
   },
 
@@ -111,7 +111,7 @@ export const CONFIG = {
     nama: "Gedung Islamic Center",
     alamat: "Kabupaten Tasikmalaya",
     detail:
-      "Jl. Penda, Linggasari 01/06, Desa Singasari, Kec. Singaparna, Kab. Tasikmalaya, Jawa Barat",
+      "Jl. Pemda, Linggasari 01/016, Singasari, Singaparna, Tasikmalaya",
     // Titik peta (dipakai untuk tombol petunjuk arah).
     koordinat: { lat: -7.3551, lng: 108.1119 },
     // Kueri yang dikirim ke Google Maps (lebih akurat jika berupa nama tempat).
@@ -123,17 +123,17 @@ export const CONFIG = {
   /* -------------------------------- Galeri ------------------------------- */
   galeri: [
     {
-      src: "assets/img/foto-bersama.jpg",
+      src: "assets/img/foto-bersama-baru.jpg",
       judul: "Ja'far & Iklimah",
       ket: "Kebersamaan kami",
     },
     {
-      src: "assets/img/mempelai-pria.jpg",
+      src: "assets/img/mempelai-pria-baru.jpg",
       judul: "Ja'far",
       ket: "Calon mempelai pria",
     },
     {
-      src: "assets/img/mempelai-wanita.jpg",
+      src: "assets/img/mempelai-wanita-baru.jpg",
       judul: "Iklimah",
       ket: "Calon mempelai wanita",
     },
@@ -147,7 +147,7 @@ export const CONFIG = {
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
       label: "Tautan Tanda Kasih",
-      url: "https://trakteer.id/lanteraku/tip?open=",
+      url: "https://trakteer.id/-java/tip?open=",
       keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
     },
     // Opsional. Kosongkan array untuk menyembunyikan kartu rekening.
@@ -155,7 +155,7 @@ export const CONFIG = {
       // { bank: "BCA", nomor: "1234567890", atasNama: "Risva Iklimah Adawiyah" },
     ],
     kadoFisik: {
-      alamat: "Jl. Penda, Linggasari 01/06, Singasari, Singaparna, Tasikmalaya",
+      alamat: "Jl. Pemda, Linggasari 01/016, Singasari, Singaparna, Tasikmalaya",
       atasNama: "Keluarga Ja'far & Iklimah",
     },
   },
@@ -172,11 +172,11 @@ export const CONFIG = {
   /* -------------------------------- Musik -------------------------------- */
   musik: {
     aktif: true,
-    judul: "Doa Bahagia",
+    judul: "Ney Dinletisi – Fikrimin İnce Gülü",
     // Jika diisi (mis. "assets/audio/nasheed.mp3"), berkas itu yang diputar.
     // Bila kosong, undangan memakai musik instrumental islami yang dibangkitkan
     // langsung di peramban (Web Audio) sehingga tanpa berkas & bebas royalti.
-    berkas: "assets/audio/doa-bahagia.mp3",
+    berkas: "/assets/audio/ney-dinletisi.mp3",
     volume: 0.65,
   },
 

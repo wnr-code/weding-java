@@ -19,7 +19,7 @@ seluler.
 | Support Cloudflare | Static Assets (`public/`) + Worker API (`worker/`) + D1 (`migrations/`) |
 | Data pengantin | Nama, urutan anak, orang tua (termasuk gelar `(alm)`) dari `assets/js/config.js` |
 | Tanggal 25 Rajab | Tampil berdampingan dengan 3 Januari 2027 di sampul, hitung mundur, dan acara |
-| Terhubung Trakteer | Kartu **Tanda Kasih** → `https://trakteer.id/lanteraku/tip?open=` |
+| Terhubung Trakteer | Kartu **Tanda Kasih** → `https://trakteer.id/-java/tip?open=` |
 | Kirim ucapan / kehadiran | Formulir di `/ucapan/`: *Hadir / Masih Ragu / Tidak Hadir* + jumlah tamu + doa, tersimpan di D1, lengkap dengan statistik |
 | Peta | Menu Lokasi, sematan Google Maps, serta tombol buka peta, petunjuk arah & salin alamat |
 | Foto-foto | Foto asli: potret per wajah untuk kedua mempelai + foto utuh dengan animasi dua panel menyatu, semuanya bisa diperbesar (lightbox) |
@@ -176,7 +176,7 @@ Tautan sudah diatur di `config.js`:
 ```js
 trakteer: {
   label: "Tautan Tanda Kasih",
-  url: "https://trakteer.id/lanteraku/tip?open=",
+  url: "https://trakteer.id/-java/tip?open=",
   keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
 }
 ```

@@ -5,6 +5,7 @@
  */
 
 import { pilihBalasan } from "./balasan.js?v=konteks-6";
+import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
 import CONFIG from "./config.js?v=footer-37";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
@@ -73,6 +74,8 @@ function waktuRelatif(iso) {
 }
 
 /* ------------------------------ Data & teks ------------------------------- */
+const ayatPilihan = [{ ...CONFIG.pembuka.ayat, surah: 30, nomor: 21 }, ...AYAT_PERNIKAHAN];
+const ayat = ayatPilihan[Math.floor(Math.random() * ayatPilihan.length)];
 const M = CONFIG.mempelai;
 const W = CONFIG.waktu;
 
@@ -115,9 +118,9 @@ const NILAI = {
   lokasiDetail: CONFIG.lokasi.detail,
   bismillah: CONFIG.pembuka.bismillah,
   salam: CONFIG.pembuka.salam,
-  ayatArab: CONFIG.pembuka.ayat.arab,
-  ayatTerjemah: CONFIG.pembuka.ayat.terjemah,
-  ayatSumber: CONFIG.pembuka.ayat.sumber,
+  ayatArab: ayat.arab,
+  ayatTerjemah: ayat.terjemah,
+  ayatSumber: ayat.sumber,
   kalimatPembuka: CONFIG.pembuka.kalimat,
   hadiahPembuka: CONFIG.hadiah.pembuka,
   trakteerLabel: CONFIG.hadiah.trakteer.label,
@@ -1172,6 +1175,8 @@ async function tampilkanTandaKasih(sinkron) {
 
 /* --------------------------------- Inisialisasi -------------------------- */
 function mulai() {
+  const rujukanAyat = $("a[data-bind='ayatSumber']");
+  if (rujukanAyat) rujukanAyat.href = `https://quran.cgs.my.id/#/surah/${ayat.surah}/${ayat.nomor}`;
   injectOrnaments();
   isiTeks();
   const personalisasi = (href) => {

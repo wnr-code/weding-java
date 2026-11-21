@@ -43,7 +43,7 @@ export const CONFIG = {
       ibu: "Ibu Hj. Siti Wafiroh Alfiah",
       // Opsional: tautan Instagram tanpa @ (kosongkan jika tidak dipakai).
       instagram: "",
-      foto: "assets/img/portrait-the-groom-v3.jpg",
+      foto: "assets/img/portrait-the-groom-v4.jpg",
     },
     wanita: {
       nama: "Risva Iklimah Adawiyah",

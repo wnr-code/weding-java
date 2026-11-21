@@ -6,7 +6,7 @@
 
 import { pilihBalasan } from "./balasan.js?v=konteks-6";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=footer-37";
+import CONFIG from "./config.js?v=audit-41";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
 import * as api from "./api.js?v=audit-29";
@@ -133,8 +133,6 @@ const NILAI = {
   penutupSalam: CONFIG.penutup.salam,
   terimaKasih: CONFIG.penutup.terimaKasih,
   hashtag: M.hashtag,
-  kreditTeks: CONFIG.kredit.teks,
-  kreditLabel: CONFIG.kredit.tautan ? `· ${CONFIG.kredit.tautanLabel}` : "",
   tamu: namaTamu || "Tamu Undangan",
 };
 
@@ -160,10 +158,6 @@ function isiTeks() {
       a.hidden = true;
     }
   });
-  if ($("#linkKredit") && CONFIG.kredit.tautan) {
-    $("#linkKredit").href = CONFIG.kredit.tautan;
-    $("#linkKredit").hidden = false;
-  }
   document.title = `${CONFIG.meta.judul} · ${W.tampilanTanggal}`;
 }
 

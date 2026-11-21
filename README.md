@@ -108,7 +108,7 @@ Semua teks dan angka berada di **`public/assets/js/config.js`**.
 | `turutMengundang` | Daftar keluarga yang turut mengundang |
 | `musik` | `aktif`, `berkas` (kosongkan untuk musik bawaan), `volume` |
 | `ucapan` | Judul, pengantar, batas karakter |
-| `penutup`, `kredit` | Kalimat penutup dan kredit |
+| `penutup` | Kalimat penutup undangan |
 
 Contoh mengubah tanggal:
 

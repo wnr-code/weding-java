@@ -29,7 +29,7 @@ export const CONFIG = {
       sumber: "QS. Ar-Rum: 21",
     },
     kalimat:
-      "Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
+      "Dengan memohon rahmat dan rida Allah SWT, kami bermaksud menyelenggarakan pernikahan putra-putri kami:",
   },
 
   /* ------------------------------- Mempelai ------------------------------ */
@@ -67,7 +67,7 @@ export const CONFIG = {
     aktif: true,
     src: "assets/img/foto-bersama.jpg",
     judul: "Kebersamaan",
-    ket: "Dua hati, satu tujuan — menuju ridho-Nya",
+    ket: "Dua hati, satu tujuan — menuju rida-Nya",
     catatan: "Sentuh foto untuk melihat versi utuh",
   },
 
@@ -94,7 +94,7 @@ export const CONFIG = {
       nama: "Akad Nikah",
       jam: "08.00",
       jamSelesai: "Selesai",
-      keterangan: "Ijab qabul disaksikan keluarga dan kerabat.",
+      keterangan: "Ijab kabul disaksikan keluarga dan kerabat.",
       ikon: "ring",
     },
     {
@@ -188,24 +188,15 @@ export const CONFIG = {
       "Kehadiran dan doa restu Bapak, Ibu, serta Saudara sekalian sangat berarti bagi kami. Silakan sampaikan doa dan konfirmasi kehadiran.",
     batasPesan: 500,
     batasNama: 60,
-    maksTamu: 10,
   },
 
   /* -------------------------------- Penutup ------------------------------ */
   penutup: {
     teks:
-      "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa dan restu kepada kedua mempelai.",
+      "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak, Ibu, serta Saudara sekalian berkenan hadir dan memberikan doa restu kepada kedua mempelai.",
     salam: "Wassalamu'alaikum Warahmatullahi Wabarakatuh",
     terimaKasih:
-      "Atas kehadiran serta doa restunya, kami ucapkan terima kasih.",
-  },
-
-  /* ------------------------------- Kredit -------------------------------- */
-  kredit: {
-    teks: "Dibuat dengan cinta untuk Ja'far & Iklimah",
-    // Muncul di kaki halaman. Hapus/ubah sesuai keinginan.
-    tautan: "",
-    tautanLabel: "",
+      "Kami mengucapkan terima kasih atas kehadiran dan doa restu Bapak, Ibu, serta Saudara sekalian.",
   },
 };
 

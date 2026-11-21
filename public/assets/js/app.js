@@ -1175,21 +1175,21 @@ const SECTION_NAV = ["salam", "mempelai", "acara", "peta", "turut"];
 let ticking = false;
 
 function perbaruiGulir() {
-  const bar = $("#progressBar");
-  const doc = document.documentElement;
-  const total = doc.scrollHeight - window.innerHeight;
-  const rasio = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0;
-  if (bar) bar.style.width = `${(rasio * 100).toFixed(2)}%`;
-
-  const toTop = $("#toTop");
-  if (toTop) toTop.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.9);
-
-  const tengah = window.innerHeight * 0.42;
+  const y = window.scrollY;
+  const tinggi = window.innerHeight;
+  const total = document.documentElement.scrollHeight - tinggi;
+  const rasio = total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
+  const tengah = tinggi * 0.42;
   let aktif = SECTION_NAV[0];
-  SECTION_NAV.forEach((id) => {
+  for (const id of SECTION_NAV) {
     const sec = document.getElementById(id);
     if (sec && sec.getBoundingClientRect().top <= tengah) aktif = id;
-  });
+  }
+
+  // Baca geometri lebih dulu; progress memakai transform tanpa mengubah layout.
+  const bar = $("#progressBar");
+  if (bar) bar.style.transform = `scaleX(${rasio.toFixed(4)})`;
+  $("#toTop")?.classList.toggle("is-visible", y > tinggi * 0.9);
   $$(".dock__item").forEach((a) => {
     const terpilih = a.dataset.nav === aktif;
     if (a.classList.contains("is-active") === terpilih && a.hasAttribute("aria-current") === terpilih) return;
@@ -1217,7 +1217,7 @@ function pasangGulir() {
   });
 
   let timerPetunjuk;
-  const tombolTurut = $('.dock__item[data-nav="turut"]');
+  let tombolPetunjuk;
   on($("#dock"), "click", (e) => {
     const a = e.target.closest(".dock__item");
     if (!a) return;
@@ -1227,8 +1227,10 @@ function pasangGulir() {
     if (!target) return;
     e.preventDefault();
     clearTimeout(timerPetunjuk);
-    tombolTurut?.classList.toggle("show-hint", a === tombolTurut);
-    if (a === tombolTurut) timerPetunjuk = setTimeout(() => tombolTurut.classList.remove("show-hint"), 1700);
+    if (tombolPetunjuk !== a) tombolPetunjuk?.classList.remove("show-hint");
+    tombolPetunjuk = a;
+    a.classList.add("show-hint");
+    timerPetunjuk = setTimeout(() => a.classList.remove("show-hint"), 1700);
     window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - 8), behavior: kurangiGerak() ? "auto" : "smooth" });
   });
 }

@@ -874,12 +874,15 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 }
 .dock__item.is-active::before { opacity: 1; }
 .dock__hint {
-  position: absolute; inset-inline-end: 0; bottom: calc(100% + .65rem);
+  position: absolute; inset-inline-start: 50%; bottom: calc(100% + .65rem);
+  transform: translateX(-50%);
   padding: .35rem .65rem; white-space: nowrap; border-radius: 999px;
   background: #fff9eb; border: 1px solid #c49a59; color: #634318;
   font-size: .72rem; pointer-events: none; opacity: 0; visibility: hidden;
 }
-.dock__item.show-hint .dock__hint, .dock__item:focus-visible .dock__hint { opacity: 1; visibility: visible; }
+.dock__item:first-child .dock__hint { inset-inline-start: 0; transform: none; }
+.dock__item:last-child .dock__hint { inset-inline-start: auto; inset-inline-end: 0; transform: none; }
+.dock__item.show-hint .dock__hint { opacity: 1; visibility: visible; }
 @media (min-width: 260px) { .dock__item { min-width: 44px; } }
 @media (display-mode: standalone) { .dock { bottom: calc(.85rem + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: no-preference) {
@@ -937,10 +940,11 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 /* --------------------------- Progres gulir ------------------------------- */
 .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 32; background: transparent; }
 .progress i {
-  display: block; height: 100%; width: 0%;
+  display: block; height: 100%; width: 100%;
+  transform: scaleX(0); transform-origin: left center;
   background: linear-gradient(90deg, #e0c68b, var(--gold-deep));
   box-shadow: 0 0 12px rgba(178, 138, 65, .6);
-  transition: width .12s linear;
+  transition: transform .12s linear;
 }
 
 /* --------------------------- Toast & lightbox ---------------------------- */

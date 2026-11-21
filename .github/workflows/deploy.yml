@@ -56,19 +56,3 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: $WRANGLER deploy
-  bersihkan-ucapan-uji:
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.confirm_deploy == 'BERSIHKAN-UCAPAN-UJI-44897798395' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-      - name: Hapus hanya ucapan lama yang dikonfirmasi sebagai data uji
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          $WRANGLER d1 execute weding-java --remote --command "DELETE FROM ucapan WHERE created_at <= '2026-11-21T11:12:32.000Z'; SELECT changes() AS jumlah_dihapus;"

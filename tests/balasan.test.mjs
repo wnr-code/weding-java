@@ -61,3 +61,17 @@ test('kategori baru cocok utuh, mengenali variasi, dan memilih satu balasan', ()
   assert.match(hasil, /atas kebaikannya/);
   assert.doesNotMatch(hasil, /doanya tetap manis|sampai bertemu/i);
 });
+
+test('doa Arab berharakat dan tanpa harakat cocok tanpa mengubah status RSVP', () => {
+  const item = { id: 'arab', kehadiran: 'hadir' };
+  for (const [pesan, pola] of [
+    ['بَارَكَ اللَّهُ لَكَ، وَبَارَكَ عَلَيْكَ، وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ', /keberkahan/],
+    ['بارك الله لكما وبارك عليكما وجمع بينكما في خير', /keberkahan/],
+    ['اللَّهُمَّ اجْعَلْ بَيْتَهُمَا بَيْتًا مُبَارَكًا، وَارْزُقْهُمَا الْمَوَدَّةَ وَالرَّحْمَةَ وَالسَّكِينَةَ', /ketenteraman/],
+    ["Allahummaj'al baitahumaa baitan mubaarakan", /ketenteraman/],
+  ]) {
+    assert.ok(pilihBalasan({ ...item, pesan }).endsWith(pilihBalasan(item)));
+    assert.match(pilihBalasan({ ...item, pesan }), pola);
+    assert.match(pilihBalasanHadiah(pesan), pola);
+  }
+});

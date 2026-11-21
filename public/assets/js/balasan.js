@@ -50,6 +50,13 @@ function kategoriPesan(pesan) {
 
 function temaPesan(pesan) {
   const teks = String(pesan ?? "").normalize("NFKC").toLowerCase().replace(/\s+/gu, " ");
+  const arab = teks.replace(/\p{M}|ـ/gu, "");
+  if (/بارك الله لك(?:ما)?(?:\s|[،,.!?]|$)/u.test(arab) || /بارك عليكما|جمع بينكما في خير/u.test(arab)) {
+    return "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua.";
+  }
+  if (/اجعل بيتهما بيتا مباركا|المودة والرحمة والسكينة/u.test(arab) || /baitahumaa baitan mubaarakan/u.test(teks)) {
+    return "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang dan ketenteraman.";
+  }
   return TEMA.find(([pola]) => pola.test(teks))?.[1];
 }
 

@@ -1434,3 +1434,26 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .wish--hadiah .wish__reply::before { content: none; }
 .wish--hadiah .wish__reply-bubble p { line-height: 1.45; overflow-wrap: anywhere; }
 #carouselHadiah .wish-carousel__stage { padding-top: 1.75rem; }
+
+/* Linimasa: beri balasan ruang selebar kartu, bukan kolom sempit di kanan. */
+#carouselUcapan .wish__front { padding-bottom: clamp(2.75rem, 11vw, 3.5rem); }
+#carouselUcapan .wish__front > .wish__reply {
+  grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr);
+  gap: .25rem; margin: 0; padding: 0; min-width: 0;
+}
+#carouselUcapan .wish__reply::before { content: none; }
+#carouselUcapan .wish__reply-bubble p { line-height: 1.45; overflow-wrap: anywhere; }
+.wish__sender-check {
+  display: inline-grid; place-items: center; vertical-align: .08em;
+  width: 1.12em; height: 1.12em; margin-inline-start: .35em;
+  border-radius: 50%; border: 1px solid #956522;
+  background: linear-gradient(135deg, #fff0ad, #d3a448 60%, #ad7421);
+  color: #432a10; font-size: .92em; font-weight: 800; line-height: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wish--terlihat .wish__sender-check { animation: kilauPengirim 4s ease-in-out infinite; }
+}
+@keyframes kilauPengirim {
+  0%, 62%, 100% { box-shadow: none; }
+  76% { box-shadow: 0 0 .65rem #c89637a8; }
+}

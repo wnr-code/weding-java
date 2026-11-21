@@ -510,6 +510,11 @@ function buatKartuUcapan(item, urutan) {
   const nm = document.createElement("span");
   nm.className = "wish__name";
   nm.textContent = item.nama;
+  const centang = document.createElement("span");
+  centang.className = "wish__sender-check";
+  centang.setAttribute("aria-hidden", "true");
+  centang.textContent = "✓";
+  nm.append(centang);
 
   const b = badgeKehadiran(item);
   const badge = document.createElement("span");
@@ -537,8 +542,9 @@ function buatKartuUcapan(item, urutan) {
     body.appendChild(msg);
   }
 
-  body.append(buatReaksi(), buatBalasan(pilihBalasan(item)));
+  body.append(buatReaksi());
   pasangWajahKartu(li, av, body, urutan);
+  li.querySelector(".wish__front").append(buatBalasan(pilihBalasan(item)));
   return li;
 }
 

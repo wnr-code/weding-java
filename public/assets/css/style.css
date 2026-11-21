@@ -1458,3 +1458,21 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   76% { box-shadow: 0 0 .65rem #c89637a8; }
 }
 .page-ucapan .hadiah-float { bottom: calc(.85rem + env(safe-area-inset-bottom)); }
+
+.wish-carousel .wish__front > .wish__reply::before {
+  content: ""; position: static; grid-column: 1 / -1;
+  width: 50%; height: 1px; margin: .12rem auto .35rem;
+  border: 0; border-radius: 0;
+  background: linear-gradient(90deg, transparent, #c49545, #fff2cd, #c49545, transparent);
+  background-size: 200% 100%; background-position: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wish-carousel .wish--terlihat .wish__front > .wish__reply::before {
+    animation: kilauGarisBalasan 4s ease-in-out infinite alternate;
+  }
+}
+@keyframes kilauGarisBalasan { from { background-position: left; } to { background-position: right; } }
+.ucapan-float, .to-top, .music-toggle--float {
+  background: transparent; border-color: transparent; box-shadow: none;
+}
+.ucapan-float .gold-icon, .to-top .gold-icon { filter: drop-shadow(0 2px 2px #76552340); }

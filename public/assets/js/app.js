@@ -493,6 +493,27 @@ function pasangWajahKartu(kartu, avatar, isi, urutan) {
   kartu.append(depan, belakang);
 }
 
+function buatCentangPengirim() {
+  const centang = document.createElement("span");
+  centang.className = "wish__sender-check";
+  centang.setAttribute("aria-hidden", "true");
+  centang.textContent = "✓";
+  return centang;
+}
+
+const formatWaktuKiriman = new Intl.DateTimeFormat("id-ID", {
+  timeZone: "Asia/Jakarta", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit",
+});
+function buatWaktuKiriman(iso) {
+  if (!iso) return null;
+  const tanggal = new Date(iso);
+  if (!Number.isFinite(tanggal.getTime())) return null;
+  const waktu = document.createElement("time");
+  waktu.dateTime = tanggal.toISOString();
+  waktu.textContent = `${formatWaktuKiriman.format(tanggal)} WIB`;
+  return waktu;
+}
+
 function buatKartuUcapan(item, urutan) {
   const li = document.createElement("li");
   li.className = "wish-slot";
@@ -510,11 +531,7 @@ function buatKartuUcapan(item, urutan) {
   const nm = document.createElement("span");
   nm.className = "wish__name";
   nm.textContent = item.nama;
-  const centang = document.createElement("span");
-  centang.className = "wish__sender-check";
-  centang.setAttribute("aria-hidden", "true");
-  centang.textContent = "✓";
-  nm.append(centang);
+  nm.append(buatCentangPengirim());
 
   const b = badgeKehadiran(item);
   const badge = document.createElement("span");
@@ -544,7 +561,7 @@ function buatKartuUcapan(item, urutan) {
 
   body.append(buatReaksi());
   pasangWajahKartu(li, av, body, urutan);
-  li.querySelector(".wish__front").append(buatBalasan(pilihBalasan(item)));
+  li.querySelector(".wish__front").append(buatBalasan(pilihBalasan(item), item.created_at));
   return li;
 }
 
@@ -562,7 +579,7 @@ function buatReaksi() {
   return reaksi;
 }
 
-function buatBalasan(kalimat) {
+function buatBalasan(kalimat, waktuKiriman) {
   const reply = document.createElement("div");
   reply.className = "wish__reply";
   const replyAvatar = document.createElement("span");
@@ -585,6 +602,8 @@ function buatBalasan(kalimat) {
   const label = document.createElement("span");
   label.className = "wish__reply-label";
   label.textContent = "Balasan otomatis";
+  const waktu = buatWaktuKiriman(waktuKiriman);
+  if (waktu) label.append(" · ", waktu);
   const text = document.createElement("p");
   text.textContent = kalimat;
   bubble.append(author, label, text);
@@ -1163,13 +1182,21 @@ async function tampilkanTandaKasih(sinkron) {
       const nama = document.createElement("strong");
       nama.className = "wish__name";
       nama.textContent = item.nama;
+      nama.append(buatCentangPengirim());
       const pesan = document.createElement("p");
       pesan.className = "wish__msg";
       pesan.textContent = item.pesan;
       isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
+      const waktu = buatWaktuKiriman(item.dibuat);
+      if (waktu) {
+        const meta = document.createElement("p");
+        meta.className = "wish__reply-label";
+        meta.append("Diterima · ", waktu);
+        isi.append(meta);
+      }
       if (item.pesan) isi.append(pesan);
       isi.append(buatReaksi());
-      const balasan = buatBalasan(pilihBalasanHadiah(item.pesan, data.uji));
+      const balasan = buatBalasan(pilihBalasanHadiah(item.pesan, data.uji), item.dibuat);
       pasangWajahKartu(kartu, avatar, isi, i + 1);
       kartu.querySelector(".wish__front").append(balasan);
       daftar.append(kartu);

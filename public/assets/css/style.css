@@ -1410,3 +1410,5 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 
 .hadiah-float { left: .9rem; right: auto; }
 .page-ucapan #hadiah { scroll-margin-top: .75rem; }
+.tanda-kasih-frame { display: block; width: 100%; height: min(62vh, 62dvh); border: 0; }
+[data-gift-fallback] { text-decoration: underline; }

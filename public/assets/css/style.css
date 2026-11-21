@@ -1534,3 +1534,8 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   0%, 58%, 100% { transform: scale(1); filter: none; }
   78% { transform: scale(1.045); filter: drop-shadow(0 0 5px #d4af3773); }
 }
+
+.site-footer__handle {
+  margin: .15rem 0 0; text-align: center;
+  color: #806947; font-size: .65rem; line-height: 1.3;
+}

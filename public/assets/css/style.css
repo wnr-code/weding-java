@@ -1389,3 +1389,5 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
     .bottom-sheet[open] .bottom-sheet__head::after { inset: 7px 0 0; border-radius: .8rem; }
   }
 }
+
+.section--turut__icon { display: block; width: 64px; height: 64px; object-fit: contain; margin: 0 auto .5rem; }

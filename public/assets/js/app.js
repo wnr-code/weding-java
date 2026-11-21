@@ -6,7 +6,7 @@
 
 import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=pemda-92";
+import CONFIG from "./config.js?v=alamat-94";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js?v=loop-90";
 import * as api from "./api.js?v=audit-29";

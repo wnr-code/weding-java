@@ -1503,8 +1503,18 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   border: 1px solid var(--gold-line); border-radius: var(--radius); background: #fff6e3;
 }
 .share-sheet__photo {
-  display: block; width: 100%; height: auto; max-height: 33dvh;
-  object-fit: contain; border-radius: .75rem;
+  display: grid; width: min(100%, 49dvh); aspect-ratio: 1400 / 933;
+  margin-inline: auto; overflow: hidden; border-radius: .75rem; background: #f1dfb9;
+}
+.share-sheet__half { grid-area: 1 / 1; width: 100%; height: auto; display: block; }
+.share-sheet__half--left { clip-path: inset(0 49.9% 0 0); --split-offset: -18%; }
+.share-sheet__half--right { clip-path: inset(0 0 0 50%); --split-offset: 18%; }
+@media (prefers-reduced-motion: no-preference) {
+  .share-sheet[open] .share-sheet__half { animation: satukanFotoBagikan 1.15s .12s var(--ease) both; }
+}
+@keyframes satukanFotoBagikan {
+  from { transform: translateX(var(--split-offset)); opacity: .72; }
+  to { transform: none; opacity: 1; }
 }
 .share-sheet__card h3 { color: #57391f; font: 700 1.65rem/1.15 'Cormorant Garamond', serif; margin-top: .5rem; }
 .share-sheet__message { color: #695131; font-size: .86rem; line-height: 1.45; margin-top: .25rem; }

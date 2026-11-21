@@ -13,7 +13,10 @@ if (pemicu.length) {
         <button class="sheet-close" type="button" aria-label="Tutup" autofocus><img class="gold-icon" src="/assets/img/ikon/tutup.webp" alt="" width="44" height="44"></button>
       </header>
       <div class="share-sheet__card gold-glow">
-        <img class="share-sheet__photo" src="/assets/img/foto-bersama.jpg" alt="Ja’far dan Iklimah" width="1400" height="933" loading="lazy">
+        <div class="share-sheet__photo">
+          <img class="share-sheet__half share-sheet__half--left" src="/assets/img/foto-bersama.jpg" alt="Ja’far dan Iklimah" width="1400" height="933">
+          <img class="share-sheet__half share-sheet__half--right" src="/assets/img/foto-bersama.jpg" alt="" width="1400" height="933">
+        </div>
         <h3>Ja’far &amp; Iklimah</h3>
         <p class="share-sheet__message"></p>
       </div>
@@ -22,10 +25,11 @@ if (pemicu.length) {
         <button class="btn btn--outline" type="button" data-share-copy>Salin Tautan</button>
       </div>
       <p class="share-sheet__status" role="status"></p>
-      <footer class="share-sheet__footer"></footer>
+      <div class="share-sheet__footer"></div>
     </div>`;
   panel.querySelector('.share-sheet__message').textContent = teks;
-  panel.querySelector('.share-sheet__footer').textContent = document.querySelector('.site-footer__credit')?.textContent ?? '';
+  const footer = document.querySelector('.site-footer');
+  if (footer) panel.querySelector('.share-sheet__footer').append(footer.cloneNode(true));
   document.body.append(panel);
   const status = panel.querySelector('[role="status"]');
   const bagikan = panel.querySelector('[data-share-native]');

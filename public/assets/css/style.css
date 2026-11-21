@@ -858,10 +858,10 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   padding: .18rem 0;
   transition: color .3s ease, opacity .3s ease, background-color .3s ease;
 }
-.dock__item svg { width: 20px; height: 20px; }
-.dock__item span { font-size: .75rem; font-weight: 600; line-height: 1.15; }
 .dock__item.is-active { color: #fffdf8; background: #765523; }
-.dock__item.is-active svg { animation: dockPop .5s var(--ease); }
+@media (prefers-reduced-motion: no-preference) {
+  .dock__item.is-active .gold-icon { animation: dockPop .5s var(--ease); }
+}
 @keyframes dockPop { 0% { transform: scale(.85); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
 
 /* ------------------------------ Musik & naik ------------------------------ */
@@ -1259,7 +1259,6 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .ucapan-float:not([hidden]) ~ .to-top {
   bottom: calc(var(--dock-h) + 4.65rem + env(safe-area-inset-bottom));
 }
-.dock__item[data-nav="turut"] span { text-align: center; font-size: clamp(.58rem, 2.65vw, .75rem); }
 
 /* Sampul ringkas halaman ucapan, tanpa menunda akses ke formulir. */
 .wishes-cover {
@@ -1364,8 +1363,9 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 }
 .gold-icon { width: 30px; height: 30px; object-fit: contain; flex: none; }
 .sheet-close .gold-icon, .to-top .gold-icon { width: 34px; height: 34px; }
-.dock__item .gold-icon { width: 26px; height: 26px; }
-.ucapan-float .gold-icon { width: 24px; height: 24px; }
+.dock__item .gold-icon { width: 36px; height: 36px; }
+.ucapan-float { width: 48px; height: 48px; padding: 0; justify-content: center; }
+.ucapan-float .gold-icon { width: 32px; height: 32px; }
 .sheet-trigger { gap: .5rem; white-space: normal; text-align: center; }
 .wish-form-entry { position: relative; text-align: center; margin: 1rem 0; padding: .85rem; border-radius: var(--radius); border: 1px solid var(--gold-line); background: #fffaf0; }
 .bottom-sheet .wish-form { margin: 0; padding: 1rem 0 0; border: 0; background: transparent; box-shadow: none; }

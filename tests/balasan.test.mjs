@@ -41,7 +41,7 @@ test('doa pernikahan mengutamakan tema spesifik tanpa menebak status hadir', () 
 
 test('Tanda Kasih tetap berterima kasih dan mengenali variasi doa keberkahan', () => {
   for (const pesan of ['barakallah', 'baarakallah', 'Baarakallaahu laka', 'barakallahu laka']) {
-    assert.match(pilihBalasanHadiah(pesan), /^Terima kasih atas tanda kasih dan doanya\. Aamiin, .*keberkahan/);
+    assert.match(pilihBalasanHadiah(pesan), /^Terima kasih atas tanda kasih dan doanya\. Aamiin, .*wa fiikum baarakallaah.*keberkahan/);
   }
   assert.match(pilihBalasanHadiah('peci'), /suasana pesantren/);
   assert.match(pilihBalasanHadiah('sakinah', true), /^Contoh doa:/);
@@ -74,4 +74,13 @@ test('doa Arab berharakat dan tanpa harakat cocok tanpa mengubah status RSVP', (
     assert.match(pilihBalasan({ ...item, pesan }), pola);
     assert.match(pilihBalasanHadiah(pesan), pola);
   }
+});
+
+test('doa Barakallah didahulukan dari kata hadiah dan dibalas tanpa menebak gender', () => {
+  const pesan = "Bārakallāhu laka, wa baaraka 'alaika, wa jama'a bainakumaa fii khair. Semoga suka kopinya.";
+  const item = { id: 'barakallah', kehadiran: 'hadir' };
+  const balasan = pilihBalasan({ ...item, pesan });
+  assert.match(balasan, /wa fiikum baarakallaah/);
+  assert.ok(balasan.endsWith(pilihBalasan(item)));
+  assert.match(pilihBalasanHadiah(pesan), /^Terima kasih atas tanda kasih dan doanya\. .*wa fiikum baarakallaah/);
 });

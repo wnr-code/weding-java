@@ -20,7 +20,7 @@ const TEMA = [
   [/\b(?:keturunan|anak)(?: yang)? (?:saleh(?:ah)?|shalih(?:ah)?|sholeh(?:ah)?|penyejuk hati)\b/u, "Aamiin, terima kasih atas doa baik untuk keluarga kami."],
   [/\b(?:sakinah|mawaddah|wa\s*rahmah|samawa|samara|rumah tangga harmonis)\b/u, "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang dan ketenteraman."],
   [/\b(?:(?:lancar|dimudahkan) sampai hari[ -]h|(?:akad|acaranya?) (?:lancar|dimudahkan)|kelancaran (?:akad|acara))\b/u, "Aamiin, semoga persiapan dan acara kami dimudahkan."],
-  [/\bba?araka?lla?ahu?\b|\b(?:semoga berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua."],
+  [/\b(?:semoga berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua."],
   [/\b(?:semoga bahagia|bahagia selalu|semoga langgeng|langgeng sampai tua)\b/u, "Aamiin, semoga kebahagiaan juga selalu menyertai kita semua."],
   [/\b(?:happy wedding|selamat menikah|selamat menempuh hidup baru|selamat atas pernikahannya|congrats|congratulations)\b/u, "Terima kasih atas ucapan hangatnya untuk kami berdua."],
 ];
@@ -48,12 +48,16 @@ function kategoriPesan(pesan) {
   return pilihan;
 }
 
+const BALASAN_BARAKALLAH = "Aamiin, وَفِيكُمْ بَارَكَ اللَّهُ (wa fiikum baarakallaah) — semoga Allah juga melimpahkan keberkahan untuk yang mendoakan.";
+
+function doaBarakallah(pesan) {
+  const teks = String(pesan ?? "").normalize("NFKD").toLowerCase().replace(/\p{M}|ـ/gu, "").replace(/\s+/gu, " ");
+  return /بارك الله لك(?:ما)?(?:\s|[،,.!?]|$)|بارك عليكما|جمع بينكما في خير|\bba?araka?lla?ahu?\b/u.test(teks);
+}
+
 function temaPesan(pesan) {
   const teks = String(pesan ?? "").normalize("NFKC").toLowerCase().replace(/\s+/gu, " ");
   const arab = teks.replace(/\p{M}|ـ/gu, "");
-  if (/بارك الله لك(?:ما)?(?:\s|[،,.!?]|$)/u.test(arab) || /بارك عليكما|جمع بينكما في خير/u.test(arab)) {
-    return "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua.";
-  }
   if (/اجعل بيتهما بيتا مباركا|المودة والرحمة والسكينة/u.test(arab) || /baitahumaa baitan mubaarakan/u.test(teks)) {
     return "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang dan ketenteraman.";
   }
@@ -63,6 +67,7 @@ function temaPesan(pesan) {
 export function pilihBalasanHadiah(pesan, uji = false) {
   const doa = "Semoga Allah membalas kebaikan ini, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.";
   if (uji) return `Contoh doa: ${doa}`;
+  if (doaBarakallah(pesan)) return `Terima kasih atas tanda kasih dan doanya. ${BALASAN_BARAKALLAH}`;
   const kategori = kategoriPesan(pesan);
   if (kategori) return kategori;
   const tema = temaPesan(pesan);
@@ -79,6 +84,7 @@ export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
     hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
   }
   const dasar = pilihan[(hash >>> 0) % pilihan.length];
+  if (doaBarakallah(pesan)) return `${BALASAN_BARAKALLAH} ${dasar}`;
   const kategori = kategoriPesan(pesan);
   if (kategori) return kategori;
   const konteks = temaPesan(pesan);

@@ -1522,3 +1522,15 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .share-sheet__status:empty { display: none; }
 .share-sheet__footer { text-align: center; color: #80612f; font-size: .7rem; margin-top: .65rem; }
 .share-sheet [data-share-native][hidden] { display: none; }
+
+/* Plakat Kirim Doa lebih ringkas, dengan kilau perlahan saat siap dikirim. */
+.plaque-btn--submit { width: min(135px, 100%); min-height: 44px; }
+@media (prefers-reduced-motion: no-preference) {
+  #sheetUcapan[open] .plaque-btn--submit:not(:disabled) img {
+    animation: kilauKirimDoa 5.5s ease-in-out infinite;
+  }
+}
+@keyframes kilauKirimDoa {
+  0%, 58%, 100% { transform: scale(1); filter: none; }
+  78% { transform: scale(1.045); filter: drop-shadow(0 0 5px #d4af3773); }
+}

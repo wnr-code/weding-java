@@ -657,7 +657,6 @@ function pasangCarousel(id) {
     count.hidden = n < 2;
     radius = n < 2 ? 0 : Math.max(88, (track.firstElementChild.offsetWidth + 16) / (2 * Math.tan(Math.PI / n)));
     stage.style.setProperty("--ring-radius", `${radius}px`);
-    stage.style.setProperty("--couple-scale", String(1 + radius / 850));
     Array.from(track.children).forEach((card, index) => {
       card.style.setProperty("--card-angle", `${index * 360 / n}deg`);
     });
@@ -1015,6 +1014,7 @@ function paksaTampil() {
   const main = $("#main");
   if (!main || main.hidden) return; // jangan tampilkan sebelum undangan dibuka
   $$(".reveal:not(.is-in)").forEach((el) => {
+    if (pengamat && el.id === "splitFoto") return;
     const r = el.getBoundingClientRect();
     if (r.top < window.innerHeight + 120 && r.bottom > -120) el.classList.add("is-in");
   });

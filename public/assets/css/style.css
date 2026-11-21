@@ -1078,7 +1078,7 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wish-carousel__hint { font-size: .82rem; color: var(--ink-soft); margin-bottom: .6rem; }
 .wish-carousel__stage {
   position: relative; perspective: 850px; perspective-origin: center 3.4rem; overflow: clip;
-  padding: 6.65rem 0 2rem;
+  padding: 3.55rem 0 2rem;
 }
 .wish-carousel__track {
   display: grid; justify-items: center; align-items: start;
@@ -1177,11 +1177,10 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   .wish--terlihat .wish__front::after { animation: none; }
 }
 
-/* Potret tetap diam di pusat lingkaran, di atas area baca kartu. */
+/* Potret tetap di tengah, di luar bidang putar agar tidak tertutup kartu. */
 .wish-carousel__couple {
-  position: absolute; top: .3rem; left: 50%; width: max-content; margin: 0;
-  transform: translateX(-50%) translateZ(calc(-1 * var(--ring-radius, 0px))) scale(var(--couple-scale, 1));
-  transform-origin: center top; text-align: center;
+  width: max-content; max-width: 100%; margin: .85rem auto .35rem;
+  text-align: center;
 }
 .wish-carousel__portraits { display: flex; justify-content: center; }
 .wish-carousel__portraits img {

@@ -1485,3 +1485,7 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   color: #80612f; font-size: .68rem; line-height: 1.15; cursor: pointer;
 }
 .page-ucapan .share-float[hidden] { display: none; }
+.page-ucapan .share-float {
+  left: .9rem; right: auto;
+  bottom: calc(4.3rem + env(safe-area-inset-bottom));
+}

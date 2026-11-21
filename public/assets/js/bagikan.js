@@ -2,7 +2,7 @@ const tombol = document.querySelector('#bagikanUcapan');
 if (tombol) {
   const judul = 'Pernikahan Ja’far & Iklimah';
   const teks = 'Mohon doa restu untuk pernikahan kami, Ja’far & Iklimah.';
-  const url = new URL('/', location.origin).href;
+  const url = new URL('/jafar&iklimah', location.origin).href;
   tombol.hidden = false;
   tombol.addEventListener('click', async () => {
     if (navigator.share) {

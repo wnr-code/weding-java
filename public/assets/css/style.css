@@ -1298,16 +1298,16 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .page-ucapan .wishes-cover { margin-bottom: 1rem; }
 
 .site-footer { padding-block: .6rem; text-align: center; }
-.site-footer__credit { color: var(--ink); font-size: .82rem; line-height: 1.5; }
+.site-footer__credit { color: #80612f; font-size: .82rem; line-height: 1.5; }
 .site-footer__meta {
   display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
-  gap: 0 .45rem; color: #766b5b; font-size: .65rem; line-height: 1.35;
+  gap: 0 .45rem; color: #806947; font-size: .65rem; line-height: 1.35;
   font-variant-numeric: tabular-nums;
 }
 .site-footer__meta > * + *::before { content: "·"; margin-inline-end: .45rem; }
 .site-footer__meta a {
   display: inline-flex; align-items: center; min-height: 44px;
-  color: inherit; text-decoration: underline; text-decoration-color: #766b5b80;
+  color: inherit; text-decoration: underline; text-decoration-color: #80694780;
   text-underline-offset: .18em;
 }
 .site-footer__meta a::before { text-decoration: none; }

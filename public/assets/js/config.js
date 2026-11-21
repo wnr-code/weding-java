@@ -56,7 +56,7 @@ export const CONFIG = {
       foto: "assets/img/mempelai-wanita.jpg",
     },
     // Nama besar yang tampil di sampul: "Ja'far & Iklimah"
-    hashtag: "#JaFarIkimah",
+    hashtag: "#JaFarIklimah",
   },
 
   /* --------------------------- Foto kebersamaan --------------------------- */

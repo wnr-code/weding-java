@@ -111,7 +111,7 @@ export const CONFIG = {
     nama: "Gedung Islamic Center",
     alamat: "Kabupaten Tasikmalaya",
     detail:
-      "Jl. Penda, Linggasari 01/06, Desa Singasari, Kec. Singaparna, Kab. Tasikmalaya, Jawa Barat",
+      "Jl. Pemda, Linggasari 01/06, Desa Singasari, Kec. Singaparna, Kab. Tasikmalaya, Jawa Barat",
     // Titik peta (dipakai untuk tombol petunjuk arah).
     koordinat: { lat: -7.3551, lng: 108.1119 },
     // Kueri yang dikirim ke Google Maps (lebih akurat jika berupa nama tempat).
@@ -155,7 +155,7 @@ export const CONFIG = {
       // { bank: "BCA", nomor: "1234567890", atasNama: "Risva Iklimah Adawiyah" },
     ],
     kadoFisik: {
-      alamat: "Jl. Penda, Linggasari 01/06, Singasari, Singaparna, Tasikmalaya",
+      alamat: "Jl. Pemda, Linggasari 01/06, Singasari, Singaparna, Tasikmalaya",
       atasNama: "Keluarga Ja'far & Iklimah",
     },
   },

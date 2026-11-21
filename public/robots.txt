@@ -1,0 +1,3 @@
+# Izinkan pembacaan metadata pratinjau. Halaman undangan memakai noindex.
+User-agent: *
+Disallow: /api/

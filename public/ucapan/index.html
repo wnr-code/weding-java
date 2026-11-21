@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6efe1" />
+  <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
+  <meta name="robots" content="noindex, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:url" content="https://wedding.cgs.my.id/ucapan/" />
+  <meta property="og:title" content="Ucapan &amp; Kehadiran · Ja’far &amp; Iklimah" />
+  <meta property="og:description" content="Sampaikan doa dan konfirmasi kehadiran untuk pernikahan Ja’far &amp; Iklimah." />
+  <meta property="og:image" content="https://wedding.cgs.my.id/assets/img/foto-bersama.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1400" />
+  <meta property="og:image:height" content="933" />
+  <meta property="og:image:alt" content="Foto Ja’far dan Iklimah, kedua mempelai" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ucapan &amp; Kehadiran · Ja’far &amp; Iklimah" />
+  <meta name="twitter:description" content="Sampaikan doa dan konfirmasi kehadiran untuk pernikahan Ja’far &amp; Iklimah." />
+  <meta name="twitter:image" content="https://wedding.cgs.my.id/assets/img/foto-bersama.jpg" />
+  <meta name="twitter:image:alt" content="Foto Ja’far dan Iklimah, kedua mempelai" />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=bagikan-76" />
+</head>
+<body class="page-ucapan">
+  <main class="main">
+    <div class="wrap page-ucapan__back"><a class="btn btn--outline" id="kembaliUndangan" href="/#salam">← Kembali ke undangan</a></div>
+    <section class="section section--ucapan" id="ucapan" hidden>
+      <div class="wrap">
+        <figure class="wishes-cover gold-glow">
+          <div class="wishes-cover__portraits">
+            <img src="/assets/img/mempelai-pria.jpg" alt="Ja’far" width="92" height="106" />
+            <img src="/assets/img/mempelai-wanita.jpg" alt="Iklimah" width="92" height="106" />
+            <img class="wishes-cover__rings" src="/assets/img/cincin-emas.svg" alt="" width="32" height="24" />
+          </div>
+          <figcaption><span class="eyebrow">Doa untuk kedua mempelai</span><strong data-bind="pasanganScript">Ja’far &amp; Iklimah</strong></figcaption>
+        </figure>
+        <header class="section__head">
+          <span class="eyebrow">Doa &amp; Restu</span>
+          <h1 class="section__title" data-bind="ucapanJudul">Ucapan &amp; Kehadiran</h1>
+          <div class="divider is-in" data-orn="divider" aria-hidden="true"></div>
+        </header>
+        <p class="lead" data-bind="ucapanPembuka"></p>
+
+        <div class="stats" id="stats" aria-live="polite">
+          <div class="stats__item"><strong id="statHadir">0</strong><span>Hadir</span></div>
+          <div class="stats__item"><strong id="statUcapan">0</strong><span>Ucapan</span></div>
+          <div class="stats__item"><strong id="statTidakHadir">0</strong><span>Berhalangan</span></div>
+        </div>
+
+        <div class="wish-form-entry gold-glow">
+          <button class="plaque-btn" type="button" data-sheet-open="sheetUcapan" aria-haspopup="dialog" aria-controls="sheetUcapan"><img src="/assets/img/ikon/plakat-konfirmasi.webp" alt="Konfirmasi Kehadiran" /></button>
+        </div>
+        <dialog class="bottom-sheet" id="sheetUcapan" aria-labelledby="sheetUcapanJudul">
+          <div class="bottom-sheet__panel">
+            <header class="bottom-sheet__head">
+              <h2 id="sheetUcapanJudul">Ucapan &amp; Kehadiran</h2>
+              <button class="sheet-close" type="button" data-sheet-close aria-label="Tutup Ucapan &amp; Kehadiran" autofocus><img class="gold-icon" src="/assets/img/ikon/tutup.webp" alt="" width="44" height="44" /></button>
+            </header>
+            <form class="wish-form" id="formUcapan" novalidate>
+              <div class="field">
+                <label for="inNama">Nama</label>
+                <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+              </div>
+
+              <div class="field">
+                <label for="inKota">Nama kota <span class="muted">(opsional)</span></label>
+                <input id="inKota" name="kota" type="text" autocomplete="address-level2" placeholder="Contoh: Tasikmalaya" maxlength="60" aria-describedby="petunjukKota" />
+                <small id="petunjukKota" class="wish__city">Jika diisi, kota akan tampil bersama ucapan.</small>
+              </div>
+
+              <fieldset class="field">
+                <legend>Konfirmasi kehadiran</legend>
+                <div class="pills" role="radiogroup" aria-label="Konfirmasi kehadiran">
+                  <label class="pill"><input type="radio" name="kehadiran" value="hadir" checked /><span>Hadir</span></label>
+                  <label class="pill"><input type="radio" name="kehadiran" value="ragu" /><span>Masih Ragu</span></label>
+                  <label class="pill"><input type="radio" name="kehadiran" value="tidak_hadir" /><span>Tidak Hadir</span></label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="inPesan">Ucapan &amp; doa <span class="muted">(opsional)</span></label>
+                <textarea id="inPesan" name="pesan" rows="4" maxlength="500" placeholder="Tulis doa dan ucapan untuk kedua mempelai…"></textarea>
+                <span class="counter" id="counterPesan">0/500</span>
+              </div>
+
+              <button class="plaque-btn plaque-btn--submit" type="submit" id="btnKirim">
+                <img src="/assets/img/ikon/plakat-doa.webp" alt="Kirim Doa" />
+                <span id="btnKirimLabel">Kirim Ucapan</span>
+              </button>
+              <p class="form-status" id="formStatus" role="status"></p>
+            </form>
+          </div>
+        </dialog>
+
+        <div class="wishes">
+          <div class="wishes__head">
+            <h3>Linimasa Ucapan</h3>
+            <span class="wishes__count" id="wishesCount"></span>
+          </div>
+          <div class="wish-carousel" id="carouselUcapan" hidden>
+            <p class="wish-carousel__hint" id="petunjukUcapan">Tarik kartu ke atas, ke bawah, ke kiri, atau ke kanan untuk membaliknya. Di balik kartu, ada ilustrasi momen bahagia Ja’far &amp; Iklimah. Untuk melanjutkan menggulir halaman, usap di luar kartu.</p>
+            <figure class="wish-carousel__couple" aria-label="Ja’far dan Iklimah, kedua mempelai">
+              <div class="wish-carousel__portraits">
+                <img src="/assets/img/mempelai-pria.jpg" alt="Ja’far" width="56" height="56" loading="lazy" />
+                <img src="/assets/img/mempelai-wanita.jpg" alt="Iklimah" width="56" height="56" loading="lazy" />
+              </div>
+              <figcaption>Ja’far &amp; Iklimah</figcaption>
+            </figure>
+            <div class="wish-carousel__stage">
+              <div class="wish-carousel__drag-zone"><ul class="wish-list wish-carousel__track" id="daftarUcapan" tabindex="0" aria-label="Kartu ucapan" aria-describedby="petunjukUcapan" aria-live="polite"></ul></div>
+            </div>
+            <div class="wish-carousel__controls" hidden>
+              <button type="button" data-slide="-1" aria-label="Ucapan sebelumnya" aria-controls="daftarUcapan">←</button>
+              <span data-slide-count aria-hidden="true"></span>
+              <button type="button" data-slide-play>Jeda</button>
+              <button type="button" data-slide="1" aria-label="Ucapan berikutnya" aria-controls="daftarUcapan">→</button>
+            </div>
+          </div>
+          <p class="wishes__empty" id="wishesEmpty" hidden>Belum ada ucapan. Jadilah yang pertama mendoakan. 🤍</p>
+          <button class="btn btn--ghost btn--sm" id="btnMuatLagi" type="button" hidden>Lihat ucapan lainnya</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tanda kasih -->
+    <section class="section section--hadiah" id="hadiah" hidden>
+      <div class="wrap">
+        <header class="section__head reveal">
+          <span class="eyebrow">Dengan Hormat</span>
+          <h2 class="section__title">Tanda Kasih</h2>
+          <div class="divider" data-orn="divider" aria-hidden="true"></div>
+        </header>
+        <p class="lead reveal" data-bind="hadiahPembuka"></p>
+
+        <a class="trakteer reveal" id="linkTrakteer" data-sheet-open="sheetTandaKasih" aria-haspopup="dialog" aria-controls="sheetTandaKasih" href="https://trakteer.id/lanteraku/tip?open=" target="_blank" rel="noopener noreferrer">
+          <span class="trakteer__glow" aria-hidden="true"></span>
+          <span class="trakteer__icon" aria-hidden="true">
+            <img class="gold-icon" src="/assets/img/ikon/hadiah.webp" alt="" width="44" height="44" />
+          </span>
+          <span class="trakteer__body">
+            <strong data-bind="trakteerLabel">Tautan Tanda Kasih</strong>
+            <small data-bind="trakteerKet"></small>
+          </span>
+          <span class="trakteer__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <dialog class="bottom-sheet" id="sheetTandaKasih" aria-labelledby="judulSheetTandaKasih">
+          <div class="bottom-sheet__panel">
+            <header class="bottom-sheet__head">
+              <div><h2 id="judulSheetTandaKasih">Tanda Kasih</h2><small class="gift-refresh-hint">Tarik bagian ini ke bawah untuk memuat ulang formulir.</small></div>
+              <button class="sheet-close gift-refresh" type="button" data-gift-refresh aria-label="Muat ulang formulir Tanda Kasih">↻</button>
+              <button class="sheet-close" type="button" data-sheet-close aria-label="Tutup Tanda Kasih" autofocus><img class="gold-icon" src="/assets/img/ikon/tutup.webp" alt="" width="44" height="44" /></button>
+            </header>
+            <iframe class="tanda-kasih-frame" title="Formulir Tanda Kasih" allow="payment https://trakteer.id; clipboard-write https://trakteer.id" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <p class="qris-note"><strong>QRIS:</strong> Ketuk <strong>Download QR Code</strong>, lalu <strong>Oke</strong>. Tunggu sekitar 8–15 detik sampai unduhan muncul di browser. Mau lebih cepat? Ambil tangkapan layar kode QR, lalu pilih gambarnya dari galeri di aplikasi pembayaran.</p>
+            <p class="map__fallback">Formulir tidak muncul? <a data-gift-fallback target="_blank" rel="noopener noreferrer">Buka formulir di tab baru</a>.</p>
+          </div>
+        </dialog>
+
+        <div class="rekening" id="rekeningList" hidden></div>
+
+        <div class="kado reveal" id="kadoFisik" hidden>
+          <p class="kado__label">Kirim kado</p>
+          <p class="kado__addr" data-bind="kadoAlamat"></p>
+          <p class="kado__name" data-bind="kadoNama"></p>
+          <button class="btn btn--ghost btn--sm" id="btnSalinKado" type="button">Salin Alamat</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--kiriman" id="kirimanHadiah" hidden>
+      <div class="wrap">
+        <header class="section__head">
+          <span class="eyebrow" id="statusKirimanHadiah">Ungkapan Syukur</span>
+          <h2 class="section__title">Kiriman Tanda Kasih</h2>
+        </header>
+        <div class="wish-carousel" id="carouselHadiah">
+          <figure class="wish-carousel__couple" aria-label="Ja’far dan Iklimah, kedua mempelai">
+            <div class="wish-carousel__portraits">
+              <img src="/assets/img/mempelai-pria.jpg" alt="Ja’far" width="56" height="56" loading="lazy" />
+              <img src="/assets/img/mempelai-wanita.jpg" alt="Iklimah" width="56" height="56" loading="lazy" />
+            </div>
+            <figcaption>Ja’far &amp; Iklimah</figcaption>
+          </figure>
+          <div class="wish-carousel__stage">
+            <div class="wish-carousel__drag-zone"><ul class="wish-list wish-carousel__track" id="daftarHadiah" tabindex="0" aria-label="Kartu tanda kasih"></ul></div>
+          </div>
+          <div class="wish-carousel__controls" hidden>
+            <button type="button" data-slide="-1" aria-label="Kiriman sebelumnya" aria-controls="daftarHadiah">←</button>
+            <span data-slide-count aria-hidden="true"></span>
+              <button type="button" data-slide-play>Jeda</button>
+            <button type="button" data-slide="1" aria-label="Kiriman berikutnya" aria-controls="daftarHadiah">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="wrap site-footer">
+      <p class="site-footer__credit">©2027 Dibuat dengan ❤️ untuk Ja’far &amp; Iklimah.</p>
+      <div class="site-footer__meta">
+        <time data-site-clock>--:--:-- WIB</time>
+        <a href="https://play.google.com/store/apps/details?id=id.cgs.quranku" target="_blank" rel="noopener noreferrer" aria-label="QuranKu di Google Play, buka di tab baru">Google Play</a>
+        <span data-site-build>Versi 1.0.0</span>
+      </div>
+    </footer>
+  </main>
+  <a class="ucapan-float hadiah-float" id="hadiahFloat" href="#hadiah" aria-label="Ke bagian Tanda Kasih" hidden>
+    <img class="gold-icon" src="/assets/img/ikon/hadiah.webp" alt="" width="44" height="44" />
+  </a>
+  <button class="ucapan-float share-float" id="bagikanUcapan" data-bagikan type="button" aria-label="Bagikan undangan" hidden>
+    <img class="gold-icon" src="/assets/img/ikon/bagikan.webp" alt="" width="44" height="44" />
+    <span>Bagikan</span>
+  </button>
+  <div class="toast" id="toast" role="status"></div>
+  <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
+  <script type="module" src="/assets/js/app.js?v=ilustrasi-71"></script>
+  <script type="module" src="/assets/js/footer.js?v=76"></script>
+  <script type="module" src="/assets/js/sheets.js?v=kado-52"></script>
+  <script type="module" src="/assets/js/bagikan.js?v=76"></script>
+</body>
+</html>

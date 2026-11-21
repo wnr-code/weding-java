@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 110" fill="none">
+  <defs>
+    <linearGradient id="gold" x2="1" y2="1">
+      <stop stop-color="#795725"/><stop offset=".22" stop-color="#c5a25e"/>
+      <stop offset=".44" stop-color="#f6e2ad"/><stop offset=".64" stop-color="#a98341"/>
+      <stop offset=".82" stop-color="#d7b775"/><stop offset="1" stop-color="#80602e"/>
+    </linearGradient>
+    <radialGradient id="gem" cx=".32" cy=".27" r=".68">
+      <stop stop-color="#fff"/><stop offset=".42" stop-color="#faf4e5"/>
+      <stop offset=".78" stop-color="#c4b69e"/><stop offset="1" stop-color="#8f8068"/>
+    </radialGradient>
+    <g id="bloom" fill="url(#gold)" stroke="#8e6a32" stroke-width=".5" stroke-linejoin="round">
+      <path d="M0-3C-11-9-7-17 1-15 7-20 14-10 5-4 17-11 23 1 15 7 11 10 6 7 3 4 8 17-6 22-10 12-13 7-7 3-4 2-16 6-21-5-13-10-8-13-4-7 0-3Z"/>
+      <path d="M-5-5C-2-11 5-9 6-4 13-2 9 5 4 4 2 11-5 8-5 3-11 1-10-3-5-5Z" fill="#e4c888"/>
+      <path d="M-4 1C-4-5 6-5 5 1 4 6-3 5-4 1ZM-9-8l4 3M8-9 5-5M11 5 6 3M-7 11l3-6" fill="none"/>
+      <circle r="2.8" fill="url(#gem)"/>
+    </g>
+    <g id="leaf" fill="url(#gold)" stroke="#876334" stroke-width=".45">
+      <path d="M0 0Q4-12 16-8 15 2 0 0Z"/><path d="M1 0 13-7" stroke="#f4dda1" fill="none"/>
+    </g>
+  </defs>
+  <g stroke="url(#gold)" stroke-linecap="round">
+    <path d="M2 104V2h143" stroke-width="2.6"/>
+    <path d="M6 97V6h128M9 85V9h108" stroke-width="1.2"/>
+    <path d="M9 75c22-10 6-38 20-55C45 1 67 11 61 28c-5 13-22 9-22-1 0-7 8-10 13-6M9 57c10-25 25-34 45-23 26 15 12 43-10 41-17-2-19-18-9-24 8-4 16 2 13 8-2 4-6 4-9 2M10 45C20 26 26 11 47 9M27 66C20 69 15 79 16 89" stroke-width="1.8"/>
+    <path d="M12 35C24 25 34 27 42 32M29 14c14 2 28 1 41-4M18 78c12 8 28 9 39-2" stroke-width=".85"/>
+  </g>
+  <g>
+    <use href="#leaf" transform="translate(62 32) rotate(-32)"/><use href="#leaf" transform="translate(59 40) rotate(21)"/>
+    <use href="#leaf" transform="translate(48 19) rotate(-64) scale(.75)"/><use href="#leaf" transform="translate(23 67) rotate(-117) scale(.84)"/>
+    <use href="#leaf" transform="translate(29 79) rotate(23) scale(.8)"/>
+    <use href="#bloom" transform="translate(57 32) rotate(10) scale(.83)"/>
+    <use href="#bloom" transform="translate(24 72) rotate(-13) scale(.66)"/>
+    <use href="#bloom" transform="translate(40 74) rotate(16) scale(.47)"/>
+  </g>
+  <g fill="url(#gem)" stroke="#b7a88a" stroke-width=".55">
+    <circle cx="11" cy="99" r="2.4"/><circle cx="21" cy="14" r="2.5"/><circle cx="79" cy="22" r="2.7"/>
+    <circle cx="92" cy="14" r="2.4"/><circle cx="105" cy="12" r="2"/><circle cx="139" cy="9" r="2.4"/>
+    <circle cx="69" cy="57" r="2.6"/><circle cx="65" cy="68" r="2.2"/><circle cx="58" cy="82" r="2.5"/>
+  </g>
+  <g fill="#fff8dd"><path d="M79 17l.8 4.2 4.2.8-4.2.8-.8 4.2-.8-4.2-4.2-.8 4.2-.8z"/><path d="M23 67l.7 3.8 3.8.7-3.8.7-.7 3.8-.7-3.8-3.8-.7 3.8-.7z"/></g>
+</svg>

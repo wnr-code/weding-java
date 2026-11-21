@@ -6,9 +6,9 @@
 
 import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=groom-100";
+import CONFIG from "./config.js?v=qalbi-102";
 import { injectOrnaments, icons } from "./ornament.js";
-import { Music } from "./music.js?v=foto-97";
+import { Music } from "./music.js?v=qalbi-102";
 import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */

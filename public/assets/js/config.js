@@ -172,11 +172,11 @@ export const CONFIG = {
   /* -------------------------------- Musik -------------------------------- */
   musik: {
     aktif: true,
-    judul: "Ney Dinletisi – Fikrimin İnce Gülü",
+    judul: "Qalbi Sajad (قلبي سجد)",
     // Jika diisi (mis. "assets/audio/nasheed.mp3"), berkas itu yang diputar.
     // Bila kosong, undangan memakai musik instrumental islami yang dibangkitkan
     // langsung di peramban (Web Audio) sehingga tanpa berkas & bebas royalti.
-    berkas: "/assets/audio/ney-dinletisi.mp3",
+    berkas: "/assets/audio/qalbi-sajad.mp3",
     volume: 0.65,
   },
 

@@ -4,7 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import { pilihBalasan } from "./balasan.js?v=konteks-6";
+import { pilihBalasan } from "./balasan.js?v=sapaan-55";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
 import CONFIG from "./config.js?v=audit-41";
 import { injectOrnaments, icons } from "./ornament.js";
@@ -1164,8 +1164,8 @@ async function tampilkanTandaKasih(sinkron) {
       if (item.pesan) isi.append(pesan);
       isi.append(buatReaksi());
       const balasan = buatBalasan(data.uji
-        ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
-        : "Terima kasih atas tanda kasihnya. Semoga Allah membalas kebaikan Bapak dan Ibu, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.");
+        ? "Contoh doa: Semoga Allah membalas kebaikan ini, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
+        : "Terima kasih atas tanda kasihnya. Semoga Allah membalas kebaikan ini, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.");
       pasangWajahKartu(kartu, avatar, isi, i + 1);
       kartu.querySelector(".wish__front").append(balasan);
       daftar.append(kartu);

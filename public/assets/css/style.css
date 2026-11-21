@@ -1422,3 +1422,5 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 #sheetTandaKasih .bottom-sheet__head { touch-action: none; }
 .gift-refresh-hint { display: block; font-size: .66rem; line-height: 1.3; color: var(--gold-deep); }
 .gift-refresh { margin-inline-start: auto; color: var(--gold-deep); font-size: 1.5rem; }
+.qris-note { margin: 0; padding: .6rem .75rem; background: #fffaf0eb; color: #57391f; font-size: .78rem; line-height: 1.45; }
+#sheetTandaKasih .tanda-kasih-frame { height: calc(95vh - 12.5rem); height: calc(95dvh - 12.5rem - env(safe-area-inset-bottom)); min-height: 14rem; }

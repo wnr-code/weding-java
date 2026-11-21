@@ -61,7 +61,7 @@ export class Music {
 
   /** Harus dipanggil dari gestur pengguna (klik) agar diizinkan peramban. */
   async start() {
-    if (!this.tersedia || this.playing || this.starting) return this.playing;
+    if (!this.tersedia || (this.playing && !this.el?.paused) || this.starting) return this.playing;
     this.starting = true;
     try {
       return await this.#start();
@@ -92,7 +92,9 @@ export class Music {
       this.playing = true;
       this.#notify();
     } catch (err) {
-      console.warn("Musik berkas gagal diputar:", err);
+      if (err.name !== "NotAllowedError" && err.name !== "AbortError") {
+        console.warn("Musik berkas gagal diputar:", err);
+      }
       this.playing = false;
       this.#notify();
     }
@@ -288,8 +290,8 @@ export class Music {
   }
 
   pause() {
-    if (!this.playing) return false;
     if (this.el) this.el.pause();
+    if (!this.playing) return false;
     if (this.ctx) {
       const now = this.ctx.currentTime;
       this.master.gain.cancelScheduledValues(now);

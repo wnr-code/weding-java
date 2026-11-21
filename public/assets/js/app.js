@@ -8,7 +8,7 @@ import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
 import CONFIG from "./config.js?v=java-84";
 import { injectOrnaments, icons } from "./ornament.js";
-import { Music } from "./music.js?v=lanjut-78";
+import { Music } from "./music.js?v=loop-90";
 import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
@@ -972,7 +972,7 @@ const bacaMusik = () => {
   catch { return {}; }
 };
 function simpanMusik(aktif = bacaMusik().aktif) {
-  if (!CONFIG.musik.berkas || typeof aktif !== "boolean") return;
+  if (!CONFIG.musik.berkas || (aktif === undefined && !musik?.el)) return;
   try {
     sessionStorage.setItem(KUNCI_MUSIK, JSON.stringify({ aktif, posisi: musik?.el?.currentTime ?? 0 }));
   } catch { /* Pengaturan penyimpanan browser tidak menghalangi musik. */ }
@@ -1011,9 +1011,11 @@ function pasangMusik() {
     window.addEventListener("pagehide", () => simpanMusik());
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) simpanMusik();
+      else cobaLanjutkan();
     });
     const cobaLanjutkan = () => {
-      if (bacaMusik().aktif === true && !musik.playing) musik.start();
+      if (bacaMusik().aktif === false || $("#main")?.hidden) return;
+      if (!musik.playing || musik.el?.paused) musik.start();
     };
     window.addEventListener("pageshow", (e) => {
       if (e.persisted) {
@@ -1026,7 +1028,7 @@ function pasangMusik() {
     // Jika autoplay ditolak, lanjutkan pada ketukan berikutnya di halaman yang sama.
     document.addEventListener("click", (e) => {
       if (!e.target.closest?.("#musicToggle, #musicToggleCover, #btnBuka")) cobaLanjutkan();
-    });
+    }, { capture: true });
     cobaLanjutkan();
     return;
   }
@@ -1291,7 +1293,7 @@ function mulai() {
   siapkanReveal();
 
   on($("#btnBuka"), "click", () => bukaUndangan());
-  if (location.hash === "#salam") bukaUndangan({ mulaiMusik: false });
+  if (location.hash === "#salam") bukaUndangan();
 
   perbaruiGulir();
 

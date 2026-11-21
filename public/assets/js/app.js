@@ -4,7 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=smart-57";
+import { pilihBalasanHadiah } from "./balasan.js?v=smart-57";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
 import CONFIG from "./config.js?v=java-84";
 import { injectOrnaments, icons } from "./ornament.js";
@@ -553,7 +553,6 @@ function buatKartuUcapan(item, urutan) {
 
   body.append(buatReaksi());
   pasangWajahKartu(li, av, body, urutan);
-  li.querySelector(".wish__front").append(buatBalasan(pilihBalasan(item), item.created_at));
   return li;
 }
 
@@ -1257,6 +1256,7 @@ function mulai() {
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
+    pasangPartikel();
     pasangMusik();
     pasangHadiah();
     const hadiahFloat = $("#hadiahFloat");

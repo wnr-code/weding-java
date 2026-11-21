@@ -1565,3 +1565,7 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   0%, 57% { background-position: right center; }
   86%, 100% { background-position: left center; }
 }
+
+/* Partikel bergerak di belakang kartu, tanpa menangkap sentuhan. */
+.page-ucapan .ambient__petal { opacity: .23; }
+.page-ucapan .main { position: relative; }

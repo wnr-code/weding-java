@@ -1261,3 +1261,31 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   bottom: calc(var(--dock-h) + 4.65rem + env(safe-area-inset-bottom));
 }
 .dock__item[data-nav="turut"] span { text-align: center; font-size: clamp(.58rem, 2.65vw, .75rem); }
+
+/* Sampul ringkas halaman ucapan, tanpa menunda akses ke formulir. */
+.wishes-cover {
+  position: relative; overflow: hidden; display: grid; justify-items: center;
+  margin: 0 0 1.7rem; padding: 1rem .7rem .95rem; text-align: center;
+  border: 1px solid var(--gold-line); border-radius: var(--radius);
+  background: radial-gradient(ellipse at 50% 5%, #fffef8 12%, #f6e9d3 100%);
+  box-shadow: var(--shadow-sm);
+}
+.wishes-cover__portraits { position: relative; display: flex; justify-content: center; gap: .45rem; }
+.wishes-cover__portraits img:not(.wishes-cover__rings) {
+  width: clamp(70px, 25vw, 92px); height: auto; aspect-ratio: 92 / 106; object-fit: cover; object-position: center 35%;
+  border: 3px solid var(--ivory); border-radius: 50% 50% 43% 43%; box-shadow: 0 0 0 1px var(--gold-soft), var(--shadow-sm);
+}
+.wishes-cover__rings {
+  position: absolute; bottom: -.3rem; left: 50%; transform: translateX(-50%);
+  border-radius: 999px; background: var(--ivory); border: 1px solid var(--gold-soft);
+  width: 36px; height: 28px; padding: 2px;
+}
+.wishes-cover figcaption { display: grid; gap: .12rem; margin-top: .75rem; }
+.wishes-cover figcaption strong { font: 600 clamp(1.75rem, 7vw, 2.45rem)/1.15 "Cormorant Garamond", serif; color: var(--gold-deep); }
+@media (prefers-reduced-motion: no-preference) {
+  .wishes-cover__portraits img:first-child { --wishes-enter: -22px; animation: wishesPortraitIn .8s var(--ease) both; }
+  .wishes-cover__portraits img:nth-child(2) { --wishes-enter: 22px; animation: wishesPortraitIn .8s .12s var(--ease) both; }
+  .wishes-cover__rings { animation: wishesRingGlow 7s 1s ease-in-out infinite; }
+}
+@keyframes wishesPortraitIn { from { opacity: 0; transform: translateX(var(--wishes-enter)); } to { opacity: 1; transform: none; } }
+@keyframes wishesRingGlow { 0%, 72%, 100% { filter: none; } 84% { filter: drop-shadow(0 0 6px #cba45599); } }

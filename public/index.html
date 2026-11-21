@@ -28,7 +28,7 @@
   <link rel="apple-touch-icon" href="favicon.svg" />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/great-vibes-latin-400-normal.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin />
-  <link rel="stylesheet" href="assets/css/style.css?v=kilau-60" />
+  <link rel="stylesheet" href="assets/css/style.css?v=bagikan-74" />
   <!-- Tandai JS aktif lebih awal agar animasi tidak berkedip saat modul dimuat. -->
   <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -92,6 +92,10 @@
   <button class="music-toggle music-toggle--cover" id="musicToggleCover" type="button" aria-pressed="false" aria-label="Putar musik">
       <span class="music-toggle__bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
       <span class="music-toggle__text">Musik</span>
+    </button>
+    <button class="ucapan-float share-float share-float--cover" id="bagikanSampul" type="button" data-bagikan aria-label="Bagikan undangan" hidden>
+      <img class="gold-icon" src="/assets/img/ikon/bagikan.webp" alt="" width="44" height="44" />
+      <span>Bagikan</span>
     </button>
   </section>
 
@@ -414,5 +418,6 @@
   <script type="module" src="assets/js/app.js?v=kilau-60"></script>
   <script type="module" src="/assets/js/footer.js"></script>
   <script type="module" src="/assets/js/sheets.js"></script>
+  <script type="module" src="/assets/js/bagikan.js?v=74"></script>
 </body>
 </html>

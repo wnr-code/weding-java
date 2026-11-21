@@ -1,5 +1,4 @@
-const tombol = document.querySelector('#bagikanUcapan');
-if (tombol) {
+for (const tombol of document.querySelectorAll('[data-bagikan]')) {
   const judul = 'Pernikahan Ja’far & Iklimah';
   const teks = 'Mohon doa restu untuk pernikahan kami, Ja’far & Iklimah.';
   const url = new URL('/jafar&iklimah', location.origin).href;

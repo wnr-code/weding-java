@@ -1297,15 +1297,17 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .page-ucapan .section--ucapan .lead { line-height: 1.58; }
 .page-ucapan .wishes-cover { margin-bottom: 1rem; }
 
-.site-footer {
+.site-footer { padding-block: .6rem; text-align: center; }
+.site-footer__credit { color: var(--ink); font-size: .82rem; line-height: 1.5; }
+.site-footer__meta {
   display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
-  gap: 0 .5rem; padding-block: .45rem; text-align: center;
-  color: var(--ink-soft); font-size: .7rem; line-height: 1.35;
+  gap: 0 .45rem; color: #766b5b; font-size: .65rem; line-height: 1.35;
   font-variant-numeric: tabular-nums;
 }
-.site-footer > * + *::before { content: "·"; margin-inline-end: .5rem; color: var(--ink-soft); }
-.site-footer a {
+.site-footer__meta > * + *::before { content: "·"; margin-inline-end: .45rem; }
+.site-footer__meta a {
   display: inline-flex; align-items: center; min-height: 44px;
-  font-weight: 600; text-underline-offset: .18em; text-decoration: underline;
+  color: inherit; text-decoration: underline; text-decoration-color: #766b5b80;
+  text-underline-offset: .18em;
 }
-.site-footer a::before { text-decoration: none; }
+.site-footer__meta a::before { text-decoration: none; }

@@ -28,11 +28,32 @@
   <link rel="apple-touch-icon" href="/assets/img/ikon/mempelai-baru-192.png" />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/great-vibes-latin-400-normal.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-garamond-latin-400-normal.woff2" crossorigin />
-  <link rel="stylesheet" href="assets/css/style.css?v=sosial-83" />
+  <link rel="stylesheet" href="assets/css/style.css?v=dock-112" />
   <!-- Tandai JS aktif lebih awal agar animasi tidak berkedip saat modul dimuat. -->
   <script>document.documentElement.classList.add("js");</script>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/css/pwa.css?v=splash-2" />
+  <script>
+    if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
+      document.documentElement.classList.add('pwa-standalone');
+      try {
+        if (sessionStorage.getItem('undangan:pwa-splash') !== '1') {
+          document.documentElement.classList.add('pwa-splash-start');
+          sessionStorage.setItem('undangan:pwa-splash', '1');
+        }
+      } catch { document.documentElement.classList.add('pwa-splash-start'); }
+    }
+  </script>
 </head>
 <body class="is-locked">
+  <div class="pwa-splash" id="pwaSplash" aria-hidden="true">
+    <div class="pwa-splash__plate">
+      <span class="pwa-splash__crest"><span>J<span class="pwa-splash__amp">&amp;</span>I</span></span>
+      <p class="pwa-splash__eyebrow">Undangan Pernikahan</p>
+      <p class="pwa-splash__names">Ja’far <span>&amp;</span> Iklimah</p>
+      <span class="pwa-splash__rule"></span>
+    </div>
+  </div>
 
   <!-- Ornamen dekoratif global (diisi oleh assets/js/ornament.js) -->
   <div class="ambient" aria-hidden="true">
@@ -133,7 +154,7 @@
 
         <article class="person reveal">
           <div class="person__photo">
-            <div class="frame">
+            <div class="frame frame--groom">
               <img data-bind-src="fotoPria" alt="Foto Dikdik Ja'far Shiddik" loading="lazy" decoding="async" />
               <span class="frame__shine" aria-hidden="true"></span>
             </div>
@@ -356,8 +377,9 @@
       <div class="site-footer__meta">
         <time data-site-clock>--:--:-- WIB</time>
         <a href="https://play.google.com/store/apps/details?id=id.cgs.quranku" target="_blank" rel="noopener noreferrer" aria-label="QuranKu di Google Play, buka di tab baru">Google Play</a>
-        <span data-site-build>Versi 1.0.0</span>
+        <span data-site-build>Versi 1.1.0</span>
       </div>
+      <div class="pwa-install"><button type="button" data-pwa-install hidden>Pasang Undangan</button></div>
     </footer>
   </main>
 
@@ -365,18 +387,23 @@
   <nav class="dock" id="dock" hidden aria-label="Navigasi undangan">
     <a href="#salam" class="dock__item is-active" data-nav="salam" aria-label="Beranda">
       <img class="gold-icon" src="/assets/img/ikon/beranda.webp" alt="" width="44" height="44" />
+      <span class="dock__hint" aria-hidden="true">Beranda</span>
     </a>
     <a href="#mempelai" class="dock__item" data-nav="mempelai" aria-label="Mempelai">
       <img class="gold-icon" src="/assets/img/ikon/mempelai.webp" alt="" width="44" height="44" />
+      <span class="dock__hint" aria-hidden="true">Mempelai</span>
     </a>
     <a href="#acara" class="dock__item" data-nav="acara" aria-label="Acara">
       <img class="gold-icon" src="/assets/img/ikon/acara.webp" alt="" width="44" height="44" />
+      <span class="dock__hint" aria-hidden="true">Acara</span>
     </a>
     <a href="#peta" class="dock__item" data-nav="peta" aria-label="Lokasi">
       <img class="gold-icon" src="/assets/img/ikon/lokasi.webp" alt="" width="44" height="44" />
+      <span class="dock__hint" aria-hidden="true">Lokasi</span>
     </a>
     <a href="#turut" class="dock__item" data-nav="turut" aria-label="Turut Mengundang">
       <img class="gold-icon" src="/assets/img/ikon/turut.webp" alt="" width="44" height="44" />
+      <span class="dock__hint" aria-hidden="true">Turut Mengundang</span>
     </a>
   </nav>
 
@@ -416,9 +443,20 @@
     </div>
   </noscript>
 
-  <script type="module" src="assets/js/app.js?v=foto-97"></script>
+  <script type="module" src="assets/js/app.js?v=dock-112"></script>
   <script type="module" src="/assets/js/footer.js?v=76"></script>
   <script type="module" src="/assets/js/sheets.js"></script>
-  <script type="module" src="/assets/js/bagikan.js?v=foto-97"></script>
+  <script type="module" src="/assets/js/bagikan.js?v=pwa-1"></script>
+  <dialog class="pwa-dialog" id="pwaInstallDialog" aria-labelledby="pwaInstallTitle">
+    <img src="/assets/img/pwa/mempelai-192.png" alt="" width="64" height="64" loading="lazy" />
+    <h2 id="pwaInstallTitle">Pasang Undangan</h2>
+    <p>Buka Ja’far &amp; Iklimah langsung dari layar utama, tanpa mencari tautannya lagi.</p>
+    <ul>
+      <li><strong>Android:</strong> buka menu ⋮ lalu pilih <em>Instal aplikasi</em> atau <em>Tambahkan ke layar utama</em>.</li>
+      <li><strong>iPhone:</strong> buka di Safari, ketuk <em>Bagikan</em> lalu pilih <em>Tambahkan ke Layar Utama</em>.</li>
+    </ul>
+    <form method="dialog"><button type="submit" autofocus>Tutup</button></form>
+  </dialog>
+  <script type="module" src="/assets/js/pwa.js?v=splash-2"></script>
 </body>
 </html>

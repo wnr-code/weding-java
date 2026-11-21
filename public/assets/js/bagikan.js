@@ -26,7 +26,11 @@ if (pemicu.length) {
     </div>`;
   panel.querySelector('.share-sheet__message').textContent = teks;
   const footer = document.querySelector('.site-footer');
-  if (footer) panel.querySelector('.share-sheet__footer').append(footer.cloneNode(true));
+  if (footer) {
+    const salinan = footer.cloneNode(true);
+    salinan.querySelector('.pwa-install')?.remove();
+    panel.querySelector('.share-sheet__footer').append(salinan);
+  }
   document.body.append(panel);
   const status = panel.querySelector('[role="status"]');
   const pilihan = panel.querySelector('.share-social');

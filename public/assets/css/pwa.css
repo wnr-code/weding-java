@@ -1,0 +1,44 @@
+.pwa-install { display: flex; justify-content: center; margin: .75rem 0 0; }
+.pwa-install button, .pwa-dialog button { font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; padding: .45rem 1rem; color: #67481d; background: #fff8e9; border: 1px solid #c7a35d; border-radius: 99px; }
+.pwa-install button[hidden] { display: none; }
+.pwa-dialog { box-sizing: border-box; width: min(calc(100% - 2rem), 26rem); max-height: 85dvh; padding: 1.5rem; text-align: center; border: 1px solid #c7a35d; border-radius: 1.5rem; background: #fffaf0; color: #4c3825; box-shadow: 0 18px 60px #321f1b40; }
+.pwa-dialog::backdrop { background: #2f241c80; }
+.pwa-dialog img { margin-inline: auto; border-radius: 1rem; }
+.pwa-dialog h2 { margin: .45rem 0; }
+.pwa-dialog ul { text-align: left; padding-inline-start: 1.3rem; }
+
+/* Tampilan pembuka aplikasi; splash bawaan Android tetap dikelola perangkat. */
+.pwa-splash, .pwa-standalone .loader { display: none; }
+.pwa-splash-start .pwa-splash {
+  display: grid; place-items: center; position: fixed; inset: 0; z-index: 100;
+  padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+  overflow: hidden; pointer-events: none; text-align: center; color: #634419;
+  background: radial-gradient(ellipse at 50% 42%, #fffdf6 0%, #f6efe1 64%, #ebdabc 100%);
+  transition: opacity .28s ease, visibility .28s;
+  animation: pwa-splash-failsafe .25s 1.8s both;
+}
+.pwa-splash-start .pwa-splash.is-done { animation: none; opacity: 0; visibility: hidden; }
+@keyframes pwa-splash-failsafe { to { opacity: 0; visibility: hidden; } }
+.pwa-splash__plate { display: grid; justify-items: center; gap: .4rem; }
+.pwa-splash__crest {
+  display: grid; place-items: center; width: clamp(92px, 28vw, 124px); aspect-ratio: 1;
+  margin-bottom: .7rem; border-radius: 50%; border: 1px solid #a67936;
+  outline: 1px solid #c4a56a; outline-offset: 6px;
+  background: linear-gradient(118deg, transparent 42%, #fffdf0ba 50%, transparent 58%) 100% 0 / 250% 100%,
+    radial-gradient(circle, #fff9ea 46%, #d1ad65 48%, #fff2cf 52%, #b2843f 72%);
+  box-shadow: inset 0 0 0 4px #fff3d3, 0 .65rem 2rem #92724530;
+  font: 2.5rem/1 Georgia, serif; color: #68451c;
+}
+.pwa-splash__amp { font-size: .46em; padding-inline: .1em; color: #8a632a; }
+.pwa-splash__eyebrow { margin: 0; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; }
+.pwa-splash__names { margin: 0; font: clamp(2rem, 9vw, 3rem)/1.12 Georgia, serif; }
+.pwa-splash__names span { color: #8a632a; }
+.pwa-splash__rule { position: relative; margin-top: .7rem; width: 8rem; height: 1px; background: linear-gradient(90deg, transparent, #a67936, transparent); }
+.pwa-splash__rule::after { content: ''; position: absolute; inset: -2px auto auto calc(50% - 2px); width: 5px; height: 5px; background: #a67936; transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .pwa-splash__crest { animation: pwa-crest-glint .95s ease-out both; }
+  @keyframes pwa-crest-glint { to { background-position: 0 0, 0 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pwa-splash-start .pwa-splash { transition: none; animation-timing-function: step-end; }
+}

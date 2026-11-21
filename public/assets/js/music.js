@@ -106,7 +106,7 @@ export class Music {
     if (!globalThis.navigator?.mediaSession || typeof globalThis.MediaMetadata !== "function") return;
     try {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: "Ney Dinletisi",
+        title: this.config.judul || "Musik latar",
         artist: "Ja’far & Iklimah",
         artwork: [{ src: "/assets/img/ikon/mempelai-baru-192.png", sizes: "192x192", type: "image/png" }],
       });

@@ -438,6 +438,9 @@ body::before {
   transform-origin: 50% 32%;
   transition: opacity 1.1s ease, transform 1.7s var(--ease);
 }
+/* Bingkai mengikuti potret yang lebih tinggi agar peci dan gelas terlihat. */
+.frame--groom { aspect-ratio: 1053 / 1650; padding-block: 14px 10px; }
+.frame--groom img { object-fit: contain; object-position: center; }
 .js .frame img { opacity: 0; transform: translateY(11%) scale(1.12); }
 .js .person.is-in .frame img {
   opacity: 1; transform: none;
@@ -837,33 +840,58 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   position: fixed; z-index: 30;
   left: 50%; transform: translateX(-50%) translateY(0);
   bottom: calc(.65rem + env(safe-area-inset-bottom));
-  width: min(calc(100% - 1rem), 460px);
+  width: min(calc(100% - max(1rem, env(safe-area-inset-left) + env(safe-area-inset-right))), 460px);
   height: var(--dock-h);
   display: flex; align-items: stretch; justify-content: space-around;
   padding: .35rem;
-  gap: .15rem;
-  border: 1px solid rgba(178, 138, 65, .3);
+  gap: .25rem;
+  border: 1px solid #bb96566b;
   border-radius: 999px;
-  background: rgba(255, 252, 245, .94);
+  background: linear-gradient(168deg, #fffdf8f5, #f7e9cff5);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  box-shadow: 0 18px 40px -24px rgba(88, 64, 24, .6);
+  box-shadow: inset 0 1px 0 #fff, 0 9px 25px -12px #58401880;
   transition: transform .6s var(--ease), opacity .6s ease;
 }
 .dock[hidden] { display: none; }
 .dock__item {
+  position: relative; isolation: isolate;
   flex: 1 1 0; min-width: 0; min-height: 44px;
   display: grid; place-content: center; justify-items: center; gap: .25rem;
   color: var(--ink-soft);
   border-radius: 999px;
   padding: .18rem 0;
-  transition: color .3s ease, opacity .3s ease, background-color .3s ease;
+  -webkit-tap-highlight-color: transparent;
+  outline-offset: -3px;
 }
-.dock__item.is-active { color: #fffdf8; background: #765523; }
+.dock__item:focus-visible { outline: 2px solid #795625; }
+.dock__item::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  pointer-events: none; opacity: 0;
+  background: linear-gradient(115deg, transparent 40%, #fffaf0b8 50%, transparent 60%) 100% 0 / 250% 100%,
+    linear-gradient(155deg, #fff6da, #ebcf95);
+  box-shadow: inset 0 0 0 1px #a7753273, 0 2px 8px #80562020;
+}
+.dock__item.is-active::before { opacity: 1; }
+.dock__hint {
+  position: absolute; inset-inline-start: 50%; bottom: calc(100% + .65rem);
+  transform: translateX(-50%);
+  padding: .35rem .65rem; white-space: nowrap; border-radius: 999px;
+  background: #fff9eb; border: 1px solid #c49a59; color: #634318;
+  font-size: .72rem; pointer-events: none; opacity: 0; visibility: hidden;
+}
+.dock__item:first-child .dock__hint { inset-inline-start: 0; transform: none; }
+.dock__item:last-child .dock__hint { inset-inline-start: auto; inset-inline-end: 0; transform: none; }
+.dock__item.show-hint .dock__hint { opacity: 1; visibility: visible; }
+@media (min-width: 260px) { .dock__item { min-width: 44px; } }
+@media (display-mode: standalone) { .dock { bottom: calc(.85rem + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: no-preference) {
-  .dock__item.is-active .gold-icon { animation: dockPop .5s var(--ease); }
+  .dock__item::before, .dock__hint { transition: opacity .24s ease; }
+  .dock__item.is-active::before { animation: dockGlint .85s ease-out both; }
+  .dock__item.is-active .gold-icon { animation: dockPop .48s var(--ease); }
 }
-@keyframes dockPop { 0% { transform: scale(.85); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes dockGlint { from { background-position: 100% 0, 0 0; } to { background-position: 0 0, 0 0; } }
+@keyframes dockPop { 0% { transform: scale(.94); } 60% { transform: scale(1.07); } 100% { transform: scale(1); } }
 
 /* ------------------------------ Musik & naik ------------------------------ */
 .music-toggle {
@@ -912,10 +940,11 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 /* --------------------------- Progres gulir ------------------------------- */
 .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 32; background: transparent; }
 .progress i {
-  display: block; height: 100%; width: 0%;
+  display: block; height: 100%; width: 100%;
+  transform: scaleX(0); transform-origin: left center;
   background: linear-gradient(90deg, #e0c68b, var(--gold-deep));
   box-shadow: 0 0 12px rgba(178, 138, 65, .6);
-  transition: width .12s linear;
+  transition: transform .12s linear;
 }
 
 /* --------------------------- Toast & lightbox ---------------------------- */
@@ -1518,6 +1547,19 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .page-ucapan .share-float {
   left: .9rem; right: auto;
   bottom: calc(4.3rem + env(safe-area-inset-bottom));
+}
+.page-ucapan :is(.hadiah-float, .share-float) .gold-icon {
+  width: 38px;
+  height: 38px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-ucapan .hadiah-float .gold-icon { animation: getarKadoUcapan 6s ease-in-out infinite; }
+  @keyframes getarKadoUcapan {
+    0%, 12%, 100% { transform: translateX(0) rotate(0); }
+    2%, 6% { transform: translateX(-1.5px) rotate(-5deg); }
+    4%, 8% { transform: translateX(1.5px) rotate(5deg); }
+    10% { transform: translateX(-.5px) rotate(-2deg); }
+  }
 }
 .cover .share-float--cover {
   position: absolute; left: max(.9rem, env(safe-area-inset-left)); right: auto;

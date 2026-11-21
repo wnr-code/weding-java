@@ -1,6 +1,6 @@
 {
   "name": "weding-java",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "Undangan pernikahan digital Dikdik Ja'far Shiddik & Risva Iklimah Adawiyah — statis + Cloudflare Workers & D1.",
   "type": "module",

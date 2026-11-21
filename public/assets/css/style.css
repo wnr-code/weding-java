@@ -1412,3 +1412,10 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .page-ucapan #hadiah { scroll-margin-top: .75rem; }
 .tanda-kasih-frame { display: block; width: 100%; height: min(62vh, 62dvh); border: 0; }
 [data-gift-fallback] { text-decoration: underline; }
+
+/* Panel Tanda Kasih lebih tinggi, dengan bingkai luar transparan. */
+#sheetTandaKasih { background: transparent; border: 0; box-shadow: none; max-height: 95vh; max-height: 95dvh; }
+#sheetTandaKasih .bottom-sheet__panel { padding-inline: .5rem; }
+#sheetTandaKasih .bottom-sheet__head { background: #fffaf0c9; border-radius: 1rem 1rem 0 0; padding-inline: .8rem; }
+#sheetTandaKasih .tanda-kasih-frame { height: calc(95vh - 7.5rem); height: calc(95dvh - 7.5rem - env(safe-area-inset-bottom)); }
+#sheetTandaKasih .map__fallback { background: #fffaf0db; margin: 0; padding: .55rem; border-radius: 0 0 .75rem .75rem; }

@@ -1,24 +1,17 @@
+import KATEGORI from "./balasan-kategori.js?v=smart-57";
+
 const BALASAN = {
   hadir: [
-    "Terima kasih sudah mengonfirmasi kehadiran. Sampai bertemu di hari bahagia kami!",
-    "Kami senang bisa bertemu di hari bahagia kami. Semoga perjalanan menuju acara lancar.",
-    "Kami bahagia bisa berbagi momen ini bersama. Sampai jumpa di acara!",
-    "Terima kasih telah meluangkan waktu untuk hadir. Kami nantikan kehadirannya.",
-    "Insyaallah sampai bertemu di akad atau resepsi. Semoga selalu diberi kesehatan.",
+    "Terima kasih sudah mengonfirmasi kehadiran. Semoga perjalanan menuju acara lancar, aamiin.",
+    "Terima kasih sudah berkenan hadir. Semoga Allah menjaga kesehatan sampai hari bahagia kami, aamiin.",
   ],
   tidak_hadir: [
-    "Terima kasih sudah mengabari kami. Tak perlu khawatir jika belum bisa hadir.",
-    "Terima kasih atas konfirmasinya. Meski belum bisa bertemu, kami tetap memohon doa restunya.",
-    "Kami memahami jika belum bisa hadir. Semoga lain waktu kita bisa bersilaturahmi.",
-    "Terima kasih telah menyempatkan diri mengisi konfirmasi. Semoga segala urusannya dimudahkan.",
-    "Walau belum dapat hadir, doa dari kejauhan sangat berarti bagi kami. Terima kasih.",
+    "Terima kasih sudah mengabari, doa dari jauh pun berarti bagi kami. Semoga segala urusan dimudahkan, aamiin.",
+    "Terima kasih sudah memberi kabar, tak perlu khawatir jika belum bisa hadir. Semoga lain waktu kita bisa bersilaturahmi, aamiin.",
   ],
   ragu: [
-    "Terima kasih sudah memberi kabar. Bila waktunya memungkinkan, kami senang bisa bertemu.",
-    "Semoga jadwalnya dimudahkan. Apa pun keputusannya, terima kasih sudah mengabari kami.",
-    "Tak perlu terburu-buru memastikan. Terima kasih sudah memberi kabar.",
-    "Jika nanti ada kesempatan untuk hadir, kami nantikan. Terima kasih atas konfirmasinya.",
-    "Terima kasih sudah menyampaikan kabar sementara. Semoga segala persiapan dan urusannya lancar.",
+    "Terima kasih sudah memberi kabar, tidak perlu terburu-buru memastikan. Semoga jadwal dan segala urusannya dimudahkan, aamiin.",
+    "Terima kasih sudah mengabari, apa pun keputusannya doa baiknya tetap berarti. Semoga Allah memudahkan segala urusan, aamiin.",
   ],
 };
 
@@ -32,6 +25,29 @@ const TEMA = [
   [/\b(?:happy wedding|selamat menikah|selamat menempuh hidup baru|selamat atas pernikahannya|congrats|congratulations)\b/u, "Terima kasih atas ucapan hangatnya untuk kami berdua."],
 ];
 
+// Frasa mendapat bobot sesuai jumlah katanya; pengulangan tidak dihitung.
+const normalisasi = (teks) => String(teks ?? "").normalize("NFKC")
+  .toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+
+function kategoriPesan(pesan) {
+  const teks = ` ${normalisasi(pesan)} `;
+  let pilihan;
+  let skorTerbaik = 0;
+  for (const kategori of KATEGORI) {
+    if (!kategori.aktif || !kategori.balasan?.trim()) continue;
+    const cocok = [...new Set(kategori.kataKunci.map(normalisasi))]
+      .filter((kata) => kata && teks.includes(` ${kata} `));
+    const utama = cocok.filter((kata) => !cocok.some((lain) =>
+      lain !== kata && ` ${lain} `.includes(` ${kata} `)));
+    const skor = utama.reduce((jumlah, kata) => jumlah + kata.split(" ").length, 0);
+    if (skor > skorTerbaik) {
+      skorTerbaik = skor;
+      pilihan = kategori.balasan;
+    }
+  }
+  return pilihan;
+}
+
 function temaPesan(pesan) {
   const teks = String(pesan ?? "").normalize("NFKC").toLowerCase().replace(/\s+/gu, " ");
   return TEMA.find(([pola]) => pola.test(teks))?.[1];
@@ -40,7 +56,12 @@ function temaPesan(pesan) {
 export function pilihBalasanHadiah(pesan, uji = false) {
   const doa = "Semoga Allah membalas kebaikan ini, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.";
   if (uji) return `Contoh doa: ${doa}`;
-  return `Terima kasih atas tanda kasihnya. ${temaPesan(pesan) ?? doa}`;
+  const kategori = kategoriPesan(pesan);
+  if (kategori) return kategori;
+  const tema = temaPesan(pesan);
+  return tema?.startsWith("Aamiin, semoga")
+    ? `Terima kasih atas tanda kasih dan doanya. ${tema}`
+    : `Terima kasih atas tanda kasihnya. ${doa}`;
 }
 
 export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
@@ -51,6 +72,8 @@ export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
     hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
   }
   const dasar = pilihan[(hash >>> 0) % pilihan.length];
+  const kategori = kategoriPesan(pesan);
+  if (kategori) return kategori;
   const konteks = temaPesan(pesan);
   return konteks ? `${konteks} ${dasar}` : dasar;
 }

@@ -332,3 +332,13 @@ link hadiah di `config.js`. Mode live hanya menampilkan transaksi non-uji.
 Pastikan pengirim mengetahui nama tampilan dan pesan akan dipublikasikan.
 Feed menyimpan ID hanya untuk deduplikasi; tidak menyimpan email atau nominal,
 dan tidak mengubah statistik RSVP.
+
+### Konfigurasi Smart Auto Reply
+
+Edit data di `public/assets/js/balasan-kategori.js` tanpa mengubah mesin balasan.
+Tambahkan entri dengan `nama`, `aktif`, `kataKunci` (daftar kata/frasa dan variasi
+salah ketik yang disetujui), serta `balasan` (maksimal tiga kalimat berisi terima
+kasih dan doa). Gunakan `aktif: false` untuk menonaktifkan kategori, lalu deploy
+ulang. Kata dicocokkan utuh tanpa membedakan kapital. Frasa dan kata unik
+menambah skor kategori; pengulangan tidak dihitung. Jika seri, entri paling atas
+menang. Hanya satu balasan ditampilkan per kiriman, dan isinya tidak ditulis ke D1.

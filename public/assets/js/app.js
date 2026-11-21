@@ -4,7 +4,7 @@
  * ucapan/kehadiran, serta animasi ornamen.
  */
 
-import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=doa-88";
+import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
 import CONFIG from "./config.js?v=java-84";
 import { injectOrnaments, icons } from "./ornament.js";

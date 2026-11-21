@@ -17,7 +17,7 @@ const BALASAN = {
 
 // Kenali tema umum tanpa mengulang teks tamu atau mengirimkannya ke layanan AI.
 const TEMA = [
-  [/\b(?:keturunan|anak)(?: yang)? (?:saleh(?:ah)?|shalih(?:ah)?|sholeh(?:ah)?|penyejuk hati)\b/u, "Aamiin, terima kasih atas doa baik untuk keluarga kami."],
+  [/\b(?:keturunan|anak)(?: yang)? (?:saleh(?:ah)?|shalih(?:ah)?|sholeh(?:ah)?|penyejuk hati)\b/u, "Aamiin, terima kasih atas doa baik untuk keluarga kami; semoga Allah juga memberkahi keluarga yang mendoakan."],
   [/\b(?:sakinah|mawaddah|wa\s*rahmah|samawa|samara|rumah tangga harmonis)\b/u, "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang dan ketenteraman."],
   [/\b(?:(?:lancar|dimudahkan) sampai hari[ -]h|(?:akad|acaranya?) (?:lancar|dimudahkan)|kelancaran (?:akad|acara))\b/u, "Aamiin, semoga persiapan dan acara kami dimudahkan."],
   [/\b(?:semoga berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua."],
@@ -29,14 +29,24 @@ const TEMA = [
 const normalisasi = (teks) => String(teks ?? "").normalize("NFKC")
   .toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 
+// Jangan bercanda ketika tamu sedang meminta maaf atau menyampaikan kabar duka.
+const KONTEKS_SENSITIF = /\b(?:maaf|berduka|meninggal|wafat|musibah|(?:sedang|lagi|masih) sakit|dirawat)\b/u;
+const PENYANGKALAN = /\b(?:tidak|tak|bukan|belum|jangan|tanpa|nggak|enggak|gak|ga|ngga|ndak|kagak|teu|henteu)\b/u;
+
 function kategoriPesan(pesan) {
-  const teks = ` ${normalisasi(pesan)} `;
+  const teks = normalisasi(pesan);
+  if (KONTEKS_SENSITIF.test(teks)) return undefined;
+  // Jangan merespons kata benda yang disebut dalam klausa penyangkalan.
+  // Lebih baik melewatkan candaan jika pola bahasanya belum jelas.
+  const bagian = String(pesan ?? "").normalize("NFKC").toLowerCase()
+    .split(/[.!?,;:\n]+|\b(?:tapi|tetapi|namun|melainkan)\b/u)
+    .map(normalisasi).filter((klausa) => klausa && !PENYANGKALAN.test(klausa));
   let pilihan;
   let skorTerbaik = 0;
   for (const kategori of KATEGORI) {
     if (!kategori.aktif || !kategori.balasan?.trim()) continue;
     const cocok = [...new Set(kategori.kataKunci.map(normalisasi))]
-      .filter((kata) => kata && teks.includes(` ${kata} `));
+      .filter((kata) => kata && bagian.some((klausa) => ` ${klausa} `.includes(` ${kata} `)));
     const utama = cocok.filter((kata) => !cocok.some((lain) =>
       lain !== kata && ` ${lain} `.includes(` ${kata} `)));
     const skor = utama.reduce((jumlah, kata) => jumlah + kata.split(" ").length, 0);
@@ -67,13 +77,13 @@ function temaPesan(pesan) {
 export function pilihBalasanHadiah(pesan, uji = false) {
   const doa = "Semoga Allah membalas kebaikan ini, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.";
   if (uji) return `Contoh doa: ${doa}`;
-  if (doaBarakallah(pesan)) return `Terima kasih atas tanda kasih dan doanya. ${BALASAN_BARAKALLAH}`;
-  const kategori = kategoriPesan(pesan);
-  if (kategori) return kategori;
-  const tema = temaPesan(pesan);
-  return tema?.startsWith("Aamiin, semoga")
-    ? `Terima kasih atas tanda kasih dan doanya. ${tema}`
-    : `Terima kasih atas tanda kasihnya. ${doa}`;
+  const tema = doaBarakallah(pesan) ? BALASAN_BARAKALLAH : temaPesan(pesan);
+  if (tema?.startsWith("Aamiin, semoga") || tema === BALASAN_BARAKALLAH) {
+    return `Terima kasih atas tanda kasih dan doanya. ${tema}`;
+  }
+  if (tema?.startsWith("Aamiin,")) return `Terima kasih atas tanda kasihnya. ${tema}`;
+  if (tema) return `Terima kasih atas tanda kasih dan ucapan hangatnya. ${doa}`;
+  return kategoriPesan(pesan) ?? `Terima kasih atas tanda kasihnya. ${doa}`;
 }
 
 export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
@@ -84,9 +94,18 @@ export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
     hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
   }
   const dasar = pilihan[(hash >>> 0) % pilihan.length];
-  if (doaBarakallah(pesan)) return `${BALASAN_BARAKALLAH} ${dasar}`;
-  const kategori = kategoriPesan(pesan);
-  if (kategori) return kategori;
-  const konteks = temaPesan(pesan);
-  return konteks ? `${konteks} ${dasar}` : dasar;
+  const konteks = doaBarakallah(pesan) ? BALASAN_BARAKALLAH : temaPesan(pesan);
+  if (konteks) {
+    const penutup = kehadiran === "hadir"
+      ? "Sampai bertemu di hari bahagia kami."
+      : kehadiran === "tidak_hadir"
+        ? "Meski belum bisa bertemu, doa dari jauh sangat berarti bagi kami."
+        : "Jika ada kesempatan untuk hadir, kami senang bisa bertemu.";
+    const terimaKasih = konteks.includes("terima kasih") || konteks.startsWith("Terima kasih")
+      ? "" : "Terima kasih atas doa baiknya. ";
+    const doaTambahan = konteks.startsWith("Terima kasih")
+      ? " Semoga Allah melimpahkan kebaikan untuk kita semua, aamiin." : "";
+    return `${terimaKasih}${konteks} ${penutup}${doaTambahan}`;
+  }
+  return kategoriPesan(pesan) ?? dasar;
 }

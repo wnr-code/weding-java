@@ -14,8 +14,8 @@ if (pemicu.length) {
       </header>
       <div class="share-sheet__card gold-glow">
         <div class="share-sheet__photo">
-          <img class="share-sheet__half share-sheet__half--left" src="/assets/img/foto-bersama.jpg" alt="Ja’far dan Iklimah" width="1400" height="933">
-          <img class="share-sheet__half share-sheet__half--right" src="/assets/img/foto-bersama.jpg" alt="" width="1400" height="933">
+          <img class="share-sheet__half share-sheet__half--left" src="/assets/img/foto-bersama-baru.jpg" alt="Ja’far dan Iklimah" width="1400" height="933">
+          <img class="share-sheet__half share-sheet__half--right" src="/assets/img/foto-bersama-baru.jpg" alt="" width="1400" height="933">
         </div>
         <h3>Ja’far &amp; Iklimah</h3>
         <p class="share-sheet__message"></p>

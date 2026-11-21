@@ -108,7 +108,7 @@ export class Music {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: "Ney Dinletisi",
         artist: "Ja’far & Iklimah",
-        artwork: [{ src: "/assets/img/ikon/mempelai-192.png", sizes: "192x192", type: "image/png" }],
+        artwork: [{ src: "/assets/img/ikon/mempelai-baru-192.png", sizes: "192x192", type: "image/png" }],
       });
     } catch { /* Metadata opsional; musik tetap diputar. */ }
   }

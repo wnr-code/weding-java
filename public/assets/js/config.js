@@ -15,7 +15,7 @@ export const CONFIG = {
     // Ganti dengan alamat situs Anda setelah deploy (dipakai untuk preview WhatsApp).
     url: "https://wedding.cgs.my.id",
     // Gambar preview saat tautan dibagikan.
-    gambar: "assets/img/foto-bersama.jpg",
+    gambar: "assets/img/foto-bersama-baru.jpg",
   },
 
   /* -------------------------- Komentar pembuka --------------------------- */
@@ -43,7 +43,7 @@ export const CONFIG = {
       ibu: "Ibu Hj. Siti Wafiroh Alfiah",
       // Opsional: tautan Instagram tanpa @ (kosongkan jika tidak dipakai).
       instagram: "",
-      foto: "assets/img/mempelai-pria.jpg",
+      foto: "assets/img/mempelai-pria-baru.jpg",
     },
     wanita: {
       nama: "Risva Iklimah Adawiyah",
@@ -53,7 +53,7 @@ export const CONFIG = {
       bapakAlmarhum: false,
       ibu: "Ibu Sopiah",
       instagram: "",
-      foto: "assets/img/mempelai-wanita.jpg",
+      foto: "assets/img/mempelai-wanita-baru.jpg",
     },
     // Nama besar yang tampil di sampul: "Ja'far & Iklimah"
     hashtag: "#JaFarIklimah",
@@ -65,7 +65,7 @@ export const CONFIG = {
   // Foto utuh (tidak dipecah). Tampil dengan animasi dua panel yang menyatu.
   fotoBersama: {
     aktif: true,
-    src: "assets/img/foto-bersama.jpg",
+    src: "assets/img/foto-bersama-baru.jpg",
     judul: "Kebersamaan",
     ket: "Dua hati, satu tujuan — menuju ridha-Nya",
     catatan: "Sentuh foto untuk melihat versi utuh",
@@ -123,17 +123,17 @@ export const CONFIG = {
   /* -------------------------------- Galeri ------------------------------- */
   galeri: [
     {
-      src: "assets/img/foto-bersama.jpg",
+      src: "assets/img/foto-bersama-baru.jpg",
       judul: "Ja'far & Iklimah",
       ket: "Kebersamaan kami",
     },
     {
-      src: "assets/img/mempelai-pria.jpg",
+      src: "assets/img/mempelai-pria-baru.jpg",
       judul: "Ja'far",
       ket: "Calon mempelai pria",
     },
     {
-      src: "assets/img/mempelai-wanita.jpg",
+      src: "assets/img/mempelai-wanita-baru.jpg",
       judul: "Iklimah",
       ket: "Calon mempelai wanita",
     },

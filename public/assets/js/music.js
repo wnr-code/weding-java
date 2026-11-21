@@ -83,7 +83,8 @@ export class Music {
       this.el = new Audio(this.config.berkas);
       this.el.loop = true;
       this.el.preload = "auto";
-      this.el.crossOrigin = "anonymous";
+      const posisi = this.config.posisiAwal;
+      if (Number.isFinite(posisi) && posisi > 0) this.el.currentTime = posisi;
     }
     try {
       this.el.volume = this.baseVolume;

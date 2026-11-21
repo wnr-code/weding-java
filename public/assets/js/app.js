@@ -6,9 +6,9 @@
 
 import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=smart-57";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=musik-77";
+import CONFIG from "./config.js?v=lanjut-78";
 import { injectOrnaments, icons } from "./ornament.js";
-import { Music } from "./music.js";
+import { Music } from "./music.js?v=lanjut-78";
 import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
@@ -964,8 +964,21 @@ function sinkronMusik() {
   musicUI().forEach((b) => b && b.setAttribute("aria-pressed", aktif ? "true" : "false"));
 }
 
+const KUNCI_MUSIK = `undangan:musik:${CONFIG.musik.berkas}`;
+const bacaMusik = () => {
+  try { return JSON.parse(sessionStorage.getItem(KUNCI_MUSIK)) ?? {}; }
+  catch { return {}; }
+};
+function simpanMusik(aktif = bacaMusik().aktif) {
+  if (!CONFIG.musik.berkas || typeof aktif !== "boolean") return;
+  try {
+    sessionStorage.setItem(KUNCI_MUSIK, JSON.stringify({ aktif, posisi: musik?.el?.currentTime ?? 0 }));
+  } catch { /* Pengaturan penyimpanan browser tidak menghalangi musik. */ }
+}
+
 function pasangMusik() {
-  musik = new Music(CONFIG.musik);
+  const keadaan = bacaMusik();
+  musik = new Music({ ...CONFIG.musik, posisiAwal: keadaan.posisi });
   musik.onChange = sinkronMusik;
   if (!musik.tersedia) {
     musicUI().forEach((b) => b && (b.hidden = true));
@@ -975,13 +988,15 @@ function pasangMusik() {
   const toggle = async () => {
     const main = $("#main");
     const sudahDibuka = main && !main.hidden;
-    if (!sudahDibuka) {
+    if (main && !sudahDibuka) {
       bukaUndangan({ mulaiMusik: false });
     }
     if (musik.playing) {
       musik.pause();
+      simpanMusik(false);
     } else {
       await musik.start();
+      if (musik.playing) simpanMusik(true);
       if (!musik.playing) toast("Musik tidak dapat diputar di peramban ini");
     }
     sinkronMusik();
@@ -990,7 +1005,29 @@ function pasangMusik() {
   musicUI().forEach((b) => on(b, "click", toggle));
 
   // Audio berkas berjalan dalam loop native, termasuk saat tab di latar.
-  if (CONFIG.musik.berkas) return;
+  if (CONFIG.musik.berkas) {
+    window.addEventListener("pagehide", () => simpanMusik());
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) simpanMusik();
+    });
+    const cobaLanjutkan = () => {
+      if (bacaMusik().aktif === true && !musik.playing) musik.start();
+    };
+    window.addEventListener("pageshow", (e) => {
+      if (e.persisted) {
+        const terakhir = bacaMusik();
+        if (terakhir.aktif === false) musik.pause();
+        if (musik.el && Number.isFinite(terakhir.posisi)) musik.el.currentTime = terakhir.posisi;
+        cobaLanjutkan();
+      }
+    });
+    // Jika autoplay ditolak, lanjutkan pada ketukan berikutnya di halaman yang sama.
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest?.("#musicToggle, #musicToggleCover, #btnBuka")) cobaLanjutkan();
+    });
+    cobaLanjutkan();
+    return;
+  }
 
   document.addEventListener("visibilitychange", () => {
     if (!musik) return;
@@ -1082,8 +1119,11 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
   cover?.classList.add("is-open");
   musicFloat?.classList.add("is-visible");
 
-  if (mulaiMusik && musik && musik.tersedia) {
-    musik.start().then(sinkronMusik);
+  if (mulaiMusik && musik && musik.tersedia && bacaMusik().aktif !== false) {
+    musik.start().then(() => {
+      if (musik.playing) simpanMusik(true);
+      sinkronMusik();
+    });
   }
 
   setTimeout(() => {
@@ -1215,6 +1255,7 @@ function mulai() {
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
+    pasangMusik();
     pasangHadiah();
     const hadiahFloat = $("#hadiahFloat");
     if (hadiahFloat) hadiahFloat.hidden = !hadiahTersedia();

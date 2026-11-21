@@ -1,0 +1,8 @@
+.pwa-install { display: flex; justify-content: center; margin: .75rem 0 0; }
+.pwa-install button, .pwa-dialog button { font: inherit; font-weight: 700; cursor: pointer; min-height: 44px; padding: .45rem 1rem; color: #67481d; background: #fff8e9; border: 1px solid #c7a35d; border-radius: 99px; }
+.pwa-install button[hidden] { display: none; }
+.pwa-dialog { box-sizing: border-box; width: min(calc(100% - 2rem), 26rem); max-height: 85dvh; padding: 1.5rem; text-align: center; border: 1px solid #c7a35d; border-radius: 1.5rem; background: #fffaf0; color: #4c3825; box-shadow: 0 18px 60px #321f1b40; }
+.pwa-dialog::backdrop { background: #2f241c80; }
+.pwa-dialog img { margin-inline: auto; border-radius: 1rem; }
+.pwa-dialog h2 { margin: .45rem 0; }
+.pwa-dialog ul { text-align: left; padding-inline-start: 1.3rem; }

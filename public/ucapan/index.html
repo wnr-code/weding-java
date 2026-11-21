@@ -24,6 +24,8 @@
 
   <link rel="icon" href="/assets/img/ikon/mempelai-baru-192.png" type="image/png" sizes="192x192" />
   <link rel="stylesheet" href="/assets/css/style.css?v=kado-101" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/css/pwa.css?v=1" />
 </head>
 <body class="page-ucapan">
   <div class="ambient" aria-hidden="true">
@@ -209,8 +211,9 @@
       <div class="site-footer__meta">
         <time data-site-clock>--:--:-- WIB</time>
         <a href="https://play.google.com/store/apps/details?id=id.cgs.quranku" target="_blank" rel="noopener noreferrer" aria-label="QuranKu di Google Play, buka di tab baru">Google Play</a>
-        <span data-site-build>Versi 1.0.0</span>
+        <span data-site-build>Versi 1.1.0</span>
       </div>
+      <div class="pwa-install"><button type="button" data-pwa-install hidden>Pasang Undangan</button></div>
     </footer>
   </main>
   <a class="ucapan-float hadiah-float" id="hadiahFloat" href="#hadiah" aria-label="Ke bagian Tanda Kasih" hidden>
@@ -228,6 +231,17 @@
   <script type="module" src="/assets/js/app.js?v=intro-108"></script>
   <script type="module" src="/assets/js/footer.js?v=76"></script>
   <script type="module" src="/assets/js/sheets.js?v=kado-52"></script>
-  <script type="module" src="/assets/js/bagikan.js?v=foto-97"></script>
+  <script type="module" src="/assets/js/bagikan.js?v=pwa-1"></script>
+  <dialog class="pwa-dialog" id="pwaInstallDialog" aria-labelledby="pwaInstallTitle">
+    <img src="/assets/img/pwa/mempelai-192.png" alt="" width="64" height="64" loading="lazy" />
+    <h2 id="pwaInstallTitle">Pasang Undangan</h2>
+    <p>Buka Ja’far &amp; Iklimah langsung dari layar utama, tanpa mencari tautannya lagi.</p>
+    <ul>
+      <li><strong>Android:</strong> buka menu ⋮ lalu pilih <em>Instal aplikasi</em> atau <em>Tambahkan ke layar utama</em>.</li>
+      <li><strong>iPhone:</strong> buka di Safari, ketuk <em>Bagikan</em> lalu pilih <em>Tambahkan ke Layar Utama</em>.</li>
+    </ul>
+    <form method="dialog"><button type="submit" autofocus>Tutup</button></form>
+  </dialog>
+  <script type="module" src="/assets/js/pwa.js?v=1"></script>
 </body>
 </html>

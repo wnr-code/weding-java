@@ -4,10 +4,9 @@ if (pemicu.length) {
   const nama = 'Ja’far & Iklimah';
   const susunTeks = (namaMempelai) => [
     'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْمِ',
-    'Dengan penuh rasa syukur, kami memohon doa restu atas pernikahan kami,',
-    namaMempelai,
-    'Semoga Allah SWT senantiasa melimpahkan keberkahan dalam perjalanan rumah tangga kami.',
-    'Kehadiran doa dan restu dari Anda merupakan kebahagiaan bagi kami.',
+    'Dengan penuh rasa syukur, kami memohon doa restu atas pernikahan kami.',
+    `${namaMempelai} 🤍`,
+    'Semoga Allah SWT memberkahi rumah tangga kami dengan sakinah, mawaddah, warahmah.',
   ].join('\n\n');
   const teks = susunTeks(nama);
   const url = new URL('/jafar&iklimah', location.origin).href;

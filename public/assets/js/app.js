@@ -1184,14 +1184,15 @@ function perbaruiGulir() {
   const toTop = $("#toTop");
   if (toTop) toTop.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.9);
 
-  const tengah = window.scrollY + window.innerHeight * 0.42;
+  const tengah = window.innerHeight * 0.42;
   let aktif = SECTION_NAV[0];
   SECTION_NAV.forEach((id) => {
     const sec = document.getElementById(id);
-    if (sec && sec.offsetTop <= tengah) aktif = id;
+    if (sec && sec.getBoundingClientRect().top <= tengah) aktif = id;
   });
   $$(".dock__item").forEach((a) => {
     const terpilih = a.dataset.nav === aktif;
+    if (a.classList.contains("is-active") === terpilih && a.hasAttribute("aria-current") === terpilih) return;
     a.classList.toggle("is-active", terpilih);
     if (terpilih) a.setAttribute("aria-current", "location");
     else a.removeAttribute("aria-current");
@@ -1215,6 +1216,8 @@ function pasangGulir() {
     window.scrollTo({ top: target.offsetTop || 0, behavior: kurangiGerak() ? "auto" : "smooth" });
   });
 
+  let timerPetunjuk;
+  const tombolTurut = $('.dock__item[data-nav="turut"]');
   on($("#dock"), "click", (e) => {
     const a = e.target.closest(".dock__item");
     if (!a) return;
@@ -1223,7 +1226,10 @@ function pasangGulir() {
     const target = document.getElementById(href.slice(1));
     if (!target) return;
     e.preventDefault();
-    window.scrollTo({ top: target.offsetTop - 8, behavior: kurangiGerak() ? "auto" : "smooth" });
+    clearTimeout(timerPetunjuk);
+    tombolTurut?.classList.toggle("show-hint", a === tombolTurut);
+    if (a === tombolTurut) timerPetunjuk = setTimeout(() => tombolTurut.classList.remove("show-hint"), 1700);
+    window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - 8), behavior: kurangiGerak() ? "auto" : "smooth" });
   });
 }
 

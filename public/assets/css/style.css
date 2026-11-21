@@ -1597,7 +1597,9 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   to { transform: none; opacity: 1; }
 }
 .share-sheet__card h3 { color: #57391f; font: 700 1.65rem/1.15 'Cormorant Garamond', serif; margin-top: .5rem; }
-.share-sheet__message { color: #695131; font-size: .86rem; line-height: 1.45; margin-top: .25rem; }
+.share-sheet__message { white-space: pre-line; color: #695131; font-size: .86rem; line-height: 1.45; margin-top: .25rem; }
+.share-sheet__copy { display: block; margin: .35rem auto 0; }
+.share-sheet__manual:not([hidden]) { display: block; width: 100%; min-height: 7rem; margin-top: .5rem; font: inherit; }
 .share-sheet__status { text-align: center; font-size: .76rem; color: var(--gold-deep); }
 .share-sheet__status:empty { display: none; }
 .share-sheet__footer { text-align: center; color: #80612f; font-size: .7rem; margin-top: .65rem; }

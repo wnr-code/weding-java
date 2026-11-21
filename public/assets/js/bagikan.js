@@ -1,7 +1,15 @@
 const pemicu = document.querySelectorAll('[data-bagikan]');
 if (pemicu.length) {
   const judul = 'Pernikahan Ja’far & Iklimah';
-  const teks = 'Mohon doa restu untuk pernikahan kami, Ja’far & Iklimah.';
+  const nama = 'Ja’far & Iklimah';
+  const susunTeks = (namaMempelai) => [
+    'بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْمِ',
+    'Dengan penuh rasa syukur, kami memohon doa restu atas pernikahan kami,',
+    namaMempelai,
+    'Semoga Allah SWT senantiasa melimpahkan keberkahan dalam perjalanan rumah tangga kami.',
+    'Kehadiran doa dan restu dari Anda merupakan kebahagiaan bagi kami.',
+  ].join('\n\n');
+  const teks = susunTeks(nama);
   const url = new URL('/jafar&iklimah', location.origin).href;
   const panel = document.createElement('dialog');
   panel.className = 'bottom-sheet share-sheet';
@@ -17,10 +25,11 @@ if (pemicu.length) {
           <img class="share-sheet__half share-sheet__half--left" src="/assets/img/foto-bersama-baru.jpg" alt="Ja’far dan Iklimah" width="1400" height="933">
           <img class="share-sheet__half share-sheet__half--right" src="/assets/img/foto-bersama-baru.jpg" alt="" width="1400" height="933">
         </div>
-        <h3>Ja’far &amp; Iklimah</h3>
         <p class="share-sheet__message"></p>
       </div>
       <div class="share-social" role="group" aria-label="Pilihan berbagi"></div>
+      <button class="btn btn--ghost share-sheet__copy" type="button">Salin Pesan Undangan</button>
+      <textarea class="share-sheet__manual" aria-label="Salin pesan undangan secara manual" readonly hidden></textarea>
       <p class="share-sheet__status" role="status"></p>
       <div class="share-sheet__footer"></div>
     </div>`;
@@ -34,7 +43,9 @@ if (pemicu.length) {
   document.body.append(panel);
   const status = panel.querySelector('[role="status"]');
   const pilihan = panel.querySelector('.share-social');
-  const pesan = `${teks}\n${url}`;
+  const pesan = `${teks}\n\n💍 ${url}`;
+  const pesanWA = `${susunTeks(`*${nama}*`)}\n\n💍 ${url}`;
+  const manual = panel.querySelector('.share-sheet__manual');
   const ikon = {
     wa: '<path d="M20.5 11.8a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.3-4.7a8.5 8.5 0 1 1 16.2-4Z"/><path d="M8.2 7.8c-.9.6-.7 2.2.5 3.9s3 3.1 4.6 3.5c1.1.3 2.2-.3 2.6-1.2l-2.5-1.3-1 1c-1.3-.6-2.1-1.5-2.6-2.7l.8-.9-1.2-2.4Z"/>',
     fb: '<path fill="currentColor" stroke="none" d="M14 21v-8h2.8l.5-3H14V8.3c0-.9.3-1.3 1.4-1.3H17V4.2A18 18 0 0 0 14.5 4C12 4 10.4 5.5 10.4 8.2V10H8v3h2.4v8Z"/>',
@@ -42,12 +53,16 @@ if (pemicu.length) {
     tg: '<path d="m3 11 18-7-4 16-5-4-3 3v-5l8-7-10 6z"/>',
     more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',
   };
-  const salin = async (pesanStatus) => {
+  const salin = async (isi, pesanStatus) => {
+    manual.hidden = true;
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(isi);
       status.textContent = pesanStatus;
     } catch {
-      window.prompt('Salin tautan undangan:', url);
+      manual.value = isi;
+      manual.hidden = false;
+      manual.select();
+      status.textContent = 'Jika tidak tersalin otomatis, salin dari kolom ini.';
     }
   };
   const tambahPilihan = (kode, nama, tujuan) => {
@@ -62,21 +77,22 @@ if (pemicu.length) {
     pilihan.append(tombol);
     return tombol;
   };
-  tambahPilihan('wa', 'WhatsApp', `https://wa.me/?text=${encodeURIComponent(pesan)}`);
+  tambahPilihan('wa', 'WhatsApp', `https://wa.me/?text=${encodeURIComponent(pesanWA)}`);
   tambahPilihan('fb', 'Facebook', `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`);
-  tambahPilihan('ig', 'Instagram').addEventListener('click', () => salin('Tautan disalin. Tempel di pesan atau stiker tautan Story Instagram.'));
+  tambahPilihan('ig', 'Instagram').addEventListener('click', () => salin(url, 'Tautan disalin. Tempel di pesan atau stiker tautan Story Instagram.'));
   tambahPilihan('tg', 'Telegram', `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(teks)}`);
   tambahPilihan('more', 'Lainnya').addEventListener('click', async () => {
     if (typeof navigator.share === 'function') {
       try {
-        await navigator.share({ title: judul, text: teks, url });
+        await navigator.share({ title: judul, text: `${teks}\n\n💍`, url });
         return;
       } catch (galat) {
         if (galat.name === 'AbortError') return;
       }
     }
-    await salin('Tautan undangan disalin.');
+    await salin(pesan, 'Pesan undangan disalin.');
   });
+  panel.querySelector('.share-sheet__copy').addEventListener('click', () => salin(pesan, 'Pesan undangan disalin.'));
   panel.querySelector('.sheet-close').addEventListener('click', () => panel.close());
   panel.addEventListener('click', (e) => { if (e.target === panel) panel.close(); });
   for (const tombol of pemicu) {
@@ -84,6 +100,7 @@ if (pemicu.length) {
     tombol.setAttribute('aria-haspopup', 'dialog');
     tombol.addEventListener('click', () => {
       status.textContent = '';
+      manual.hidden = true;
       if (!panel.open) panel.showModal();
     });
   }

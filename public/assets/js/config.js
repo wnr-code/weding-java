@@ -185,7 +185,7 @@ export const CONFIG = {
     aktif: true,
     judul: "Ucapan & Kehadiran",
     pembuka:
-      "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Silakan tinggalkan doa dan konfirmasi kehadiran.",
+      "Kehadiran dan doa restu Bapak, Ibu, serta Saudara sekalian sangat berarti bagi kami. Silakan sampaikan doa dan konfirmasi kehadiran.",
     batasPesan: 500,
     batasNama: 60,
     maksTamu: 10,

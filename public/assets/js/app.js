@@ -5,7 +5,7 @@
  */
 
 import { pilihBalasan } from "./balasan.js?v=konteks-6";
-import CONFIG from "./config.js?v=bahasa-10";
+import CONFIG from "./config.js?v=ringkas-33";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
 import * as api from "./api.js?v=audit-29";

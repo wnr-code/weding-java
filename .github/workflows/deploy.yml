@@ -49,6 +49,8 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: $WRANGLER d1 migrations apply weding-java --remote
+      - name: Cantumkan versi build
+        run: node scripts/stamp-build.mjs
       - name: Deploy Worker + aset
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -1297,9 +1297,15 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .page-ucapan .section--ucapan .lead { line-height: 1.58; }
 .page-ucapan .wishes-cover { margin-bottom: 1rem; }
 
-.site-footer { text-align: center; padding-block: 1rem; }
+.site-footer {
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+  gap: 0 .5rem; padding-block: .45rem; text-align: center;
+  color: var(--ink-soft); font-size: .7rem; line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+.site-footer > * + *::before { content: "·"; margin-inline-end: .5rem; color: var(--ink-soft); }
 .site-footer a {
   display: inline-flex; align-items: center; min-height: 44px;
-  padding-inline: .75rem; font-size: .85rem; font-weight: 600;
-  text-decoration: underline; text-underline-offset: .22em;
+  font-weight: 600; text-underline-offset: .18em; text-decoration: underline;
 }
+.site-footer a::before { text-decoration: none; }

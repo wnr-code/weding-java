@@ -236,22 +236,6 @@
         </header>
 
         <div class="events" id="events"><!-- diisi app.js --></div>
-
-        <div class="venue reveal">
-          <div class="venue__icon" data-orn="arch" aria-hidden="true"></div>
-          <h3 class="venue__name" data-bind="lokasiNama">Gedung Islamic Center</h3>
-          <p class="venue__addr" data-bind="lokasiDetail"></p>
-          <div class="btn-row">
-            <a class="btn btn--gold" id="btnMaps" target="_blank" rel="noopener noreferrer">
-              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a7 7 0 1 1 14 0c0 5.6-7 10-7 10Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="10.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
-              <span>Petunjuk Arah</span>
-            </a>
-            <button class="btn btn--ghost" id="btnSalinAlamat" type="button">
-              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-7A2.5 2.5 0 0 0 3 5.5v7A2.5 2.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-              <span>Salin Alamat</span>
-            </button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -265,9 +249,14 @@
         </header>
 
         <div class="map__card gold-glow">
+          <div class="venue__icon" data-orn="arch" aria-hidden="true"></div>
           <p class="map__title" data-bind="lokasiNama">Gedung Islamic Center</p>
           <p class="map__desc" data-bind="lokasiDetail">Singaparna, Tasikmalaya</p>
           <button class="plaque-btn" type="button" data-sheet-open="sheetPeta" aria-haspopup="dialog" aria-controls="sheetPeta"><img src="/assets/img/ikon/plakat-lokasi.webp" alt="Lihat Lokasi" /></button>
+          <button class="btn btn--ghost" id="btnSalinAlamat" type="button">
+              <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M15 5.5A2.5 2.5 0 0 0 12.5 3h-7A2.5 2.5 0 0 0 3 5.5v7A2.5 2.5 0 0 0 5.5 15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <span>Salin Alamat</span>
+            </button>
         </div>
         <dialog class="bottom-sheet" id="sheetPeta" aria-labelledby="sheetPetaJudul">
           <div class="bottom-sheet__panel">
@@ -275,10 +264,12 @@
               <h2 id="sheetPetaJudul">Denah Lokasi</h2>
               <button class="sheet-close" type="button" data-sheet-close aria-label="Tutup Denah Lokasi" autofocus><img class="gold-icon" src="/assets/img/ikon/tutup.webp" alt="" width="44" height="44" /></button>
             </header>
-            <div class="map__card">
-              <p class="map__title" data-bind="lokasiNama">Gedung Islamic Center</p>
-              <p class="map__desc" data-bind="lokasiDetail">Singaparna, Tasikmalaya</p>
+            <div class="btn-row">
               <a class="btn btn--gold" id="btnMaps2" href="https://www.google.com/maps/search/?api=1&amp;query=Gedung+Islamic+Center+Singaparna%2C+Tasikmalaya" target="_blank" rel="noopener noreferrer">Buka Google Maps ↗</a>
+              <a class="btn btn--gold" id="btnMaps" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true"><path d="M12 21s-7-4.4-7-10a7 7 0 1 1 14 0c0 5.6-7 10-7 10Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="10.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+                <span>Petunjuk Arah</span>
+              </a>
             </div>
             <div class="map" id="mapWrap">
               <iframe data-src="https://www.google.com/maps?q=Gedung%20Islamic%20Center%20Singaparna%2C%20Tasikmalaya&amp;z=16&amp;hl=id&amp;output=embed" title="Peta Gedung Islamic Center Singaparna" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>

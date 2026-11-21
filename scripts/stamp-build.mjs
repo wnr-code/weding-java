@@ -9,5 +9,5 @@ for (const file of ['index.html', 'ucapan/index.html']) {
   const html = await readFile(path, 'utf8');
   const marker = /(<span data-site-build>)[^<]+(<\/span>)/g;
   if ([...html.matchAll(marker)].length !== 1) throw new Error(`Penanda build tidak ditemukan atau duplikat: ${file}`);
-  await writeFile(path, html.replace(marker, (_, awal, akhir) => `${awal}Build ${version}+${sha.slice(0, 7)}${akhir}`));
+  await writeFile(path, html.replace(marker, (_, awal, akhir) => `${awal}Versi ${version}+${sha.slice(0, 7)}${akhir}`));
 }

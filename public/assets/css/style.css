@@ -815,16 +815,18 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
 .wishes .btn { margin-top: 1rem; display: block; margin-inline: auto; }
 
 /* ---------------------------- Turut mengundang ---------------------------- */
+.section--turut { padding-bottom: clamp(1rem, 4vw, 1.8rem); }
 .invited { display: grid; gap: .1rem; max-width: 430px; margin-inline: auto; }
 .invited li {
-  text-align: center; font-size: .84rem; line-height: 1.7; color: var(--ink-soft);
-  padding: .48rem .3rem; border-bottom: 1px dashed rgba(178, 138, 65, .2);
+  position: relative; text-align: start; font-size: .84rem; line-height: 1.7; color: var(--ink-soft);
+  padding: .48rem .3rem .48rem 1.55rem; border-bottom: 1px dashed rgba(178, 138, 65, .2);
 }
 .invited li:last-child { border-bottom: 0; }
-.invited li::before { content: "❖"; color: var(--gold); margin-right: .45rem; font-size: .6rem; vertical-align: middle; }
+.invited li::before { content: "❖"; position: absolute; inset-inline-start: .35rem; inset-block-start: .48rem; color: var(--gold); font-size: .68em; line-height: 2.5; }
 
 /* -------------------------------- Penutup -------------------------------- */
 .section--penutup { text-align: center; padding-bottom: 3rem; }
+.section--turut + .section--penutup { padding-top: clamp(.55rem, 2.4vw, 1.15rem); }
 .section--penutup .lead { margin-bottom: 1rem; }
 .section--penutup .salam { margin-top: .35rem; }
 .closing { margin: 2.2rem 0 1.6rem; display: grid; gap: .3rem; }

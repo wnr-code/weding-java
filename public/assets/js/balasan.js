@@ -7,7 +7,7 @@ const BALASAN = {
     "Insyaallah sampai bertemu di akad atau resepsi. Semoga selalu diberi kesehatan.",
   ],
   tidak_hadir: [
-    "Tidak apa-apa bila belum bisa hadir. Terima kasih sudah mengabari kami.",
+    "Terima kasih sudah mengabari kami. Tak perlu khawatir jika belum bisa hadir.",
     "Terima kasih atas konfirmasinya. Meski belum bisa bertemu, kami tetap memohon doa restunya.",
     "Kami memahami jika belum bisa hadir. Semoga lain waktu kita bisa bersilaturahmi.",
     "Terima kasih telah menyempatkan diri mengisi konfirmasi. Semoga segala urusannya dimudahkan.",
@@ -16,7 +16,7 @@ const BALASAN = {
   ragu: [
     "Terima kasih sudah memberi kabar. Bila waktunya memungkinkan, kami senang bisa bertemu.",
     "Semoga jadwalnya dimudahkan. Apa pun keputusannya, terima kasih sudah mengabari kami.",
-    "Tidak perlu terburu-buru memastikan. Kami menghargai kabar dan doa Bapak/Ibu.",
+    "Tak perlu terburu-buru memastikan. Terima kasih sudah memberi kabar.",
     "Jika nanti ada kesempatan untuk hadir, kami nantikan. Terima kasih atas konfirmasinya.",
     "Terima kasih sudah menyampaikan kabar sementara. Semoga segala persiapan dan urusannya lancar.",
   ],
@@ -24,12 +24,24 @@ const BALASAN = {
 
 // Kenali tema umum tanpa mengulang teks tamu atau mengirimkannya ke layanan AI.
 const TEMA = [
-  [/\b(sakinah|mawaddah|warahmah|rahmah|samawa|samara)\b/u, "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang."],
-  [/\b(lancar|kelancaran|dimudahkan)\b/u, "Aamiin, semoga Allah memudahkan persiapan dan jalannya acara."],
-  [/\b(barakallahu|berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan untuk yang mendoakan dan keluarganya."],
-  [/\b(bahagia|kebahagiaan|langgeng)\b/u, "Aamiin, semoga kebahagiaan dan kebaikan juga senantiasa menyertai kita semua."],
-  [/\b(selamat|congrats|congratulations)\b/u, "Ucapan selamat ini sangat berarti bagi kami."],
+  [/\b(?:keturunan|anak)(?: yang)? (?:saleh(?:ah)?|shalih(?:ah)?|sholeh(?:ah)?|penyejuk hati)\b/u, "Aamiin, terima kasih atas doa baik untuk keluarga kami."],
+  [/\b(?:sakinah|mawaddah|wa\s*rahmah|samawa|samara|rumah tangga harmonis)\b/u, "Aamiin, semoga Allah membimbing kami membangun keluarga yang penuh kasih sayang dan ketenteraman."],
+  [/\b(?:(?:lancar|dimudahkan) sampai hari[ -]h|(?:akad|acaranya?) (?:lancar|dimudahkan)|kelancaran (?:akad|acara))\b/u, "Aamiin, semoga persiapan dan acara kami dimudahkan."],
+  [/\bba?araka?lla?ahu?\b|\b(?:semoga berkah|keberkahan)\b/u, "Aamiin, semoga Allah juga melimpahkan keberkahan untuk kita semua."],
+  [/\b(?:semoga bahagia|bahagia selalu|semoga langgeng|langgeng sampai tua)\b/u, "Aamiin, semoga kebahagiaan juga selalu menyertai kita semua."],
+  [/\b(?:happy wedding|selamat menikah|selamat menempuh hidup baru|selamat atas pernikahannya|congrats|congratulations)\b/u, "Terima kasih atas ucapan hangatnya untuk kami berdua."],
 ];
+
+function temaPesan(pesan) {
+  const teks = String(pesan ?? "").normalize("NFKC").toLowerCase().replace(/\s+/gu, " ");
+  return TEMA.find(([pola]) => pola.test(teks))?.[1];
+}
+
+export function pilihBalasanHadiah(pesan, uji = false) {
+  const doa = "Semoga Allah membalas kebaikan ini, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.";
+  if (uji) return `Contoh doa: ${doa}`;
+  return `Terima kasih atas tanda kasihnya. ${temaPesan(pesan) ?? doa}`;
+}
 
 export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
   const pilihan = Object.hasOwn(BALASAN, kehadiran) ? BALASAN[kehadiran] : BALASAN.ragu;
@@ -39,7 +51,6 @@ export function pilihBalasan({ id, created_at, nama, kehadiran, pesan }) {
     hash = Math.imul(hash ^ char.codePointAt(0), 16777619);
   }
   const dasar = pilihan[(hash >>> 0) % pilihan.length];
-  const ucapan = String(pesan ?? "").normalize("NFKC").toLowerCase();
-  const konteks = TEMA.find(([pola]) => pola.test(ucapan))?.[1];
+  const konteks = temaPesan(pesan);
   return konteks ? `${konteks} ${dasar}` : dasar;
 }

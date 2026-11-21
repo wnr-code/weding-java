@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { pilihBalasan } from '../public/assets/js/balasan.js';
+import { pilihBalasan, pilihBalasanHadiah } from '../public/assets/js/balasan.js';
 
 test('balasan stabil per ucapan dan bervariasi sesuai status kehadiran', () => {
   const jenis = ['hadir', 'tidak_hadir', 'ragu'];
@@ -23,4 +23,26 @@ test('balasan menanggapi tema doa tanpa mengubah respon kehadiran', () => {
   const hasil = pilihBalasan({ ...item, pesan: 'Semoga sakinah mawaddah warahmah.' });
   assert.match(hasil, /keluarga yang penuh kasih sayang/);
   assert.ok(hasil.endsWith(dasar));
+});
+
+test('doa pernikahan mengutamakan tema spesifik tanpa menebak status hadir', () => {
+  const item = { id: 'uji-tema', kehadiran: 'tidak_hadir' };
+  const dasar = pilihBalasan(item);
+  for (const pesan of ['Maaf tidak bisa hadir', 'Rokok, sarung, dan peci']) {
+    assert.equal(pilihBalasan({ ...item, pesan }), dasar);
+  }
+  const hasil = pilihBalasan({ ...item, pesan: 'Happy wedding! Semoga sakinah dan langgeng.' });
+  assert.match(hasil, /ketenteraman/);
+  assert.doesNotMatch(hasil, /ucapan hangatnya/);
+  assert.ok(hasil.endsWith(dasar));
+  assert.match(pilihBalasan({ ...item, pesan: 'Semoga anak sholehah' }), /doa baik untuk keluarga/);
+  assert.match(pilihBalasan({ ...item, pesan: 'Dimudahkan sampai hari H' }), /persiapan dan acara/);
+});
+
+test('Tanda Kasih tetap berterima kasih dan mengenali variasi doa keberkahan', () => {
+  for (const pesan of ['barakallah', 'baarakallah', 'Baarakallaahu laka', 'barakallahu laka']) {
+    assert.match(pilihBalasanHadiah(pesan), /^Terima kasih atas tanda kasihnya\. Aamiin, .*keberkahan/);
+  }
+  assert.match(pilihBalasanHadiah('peci'), /memudahkan segala urusan/);
+  assert.match(pilihBalasanHadiah('sakinah', true), /^Contoh doa:/);
 });

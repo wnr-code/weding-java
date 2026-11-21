@@ -1390,4 +1390,9 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   }
 }
 
-.section--turut__icon { display: block; width: 64px; height: 64px; object-fit: contain; margin: 0 auto .5rem; }
+.section--turut__icon { display: block; width: min(190px, 100%); height: auto; margin: 0 auto .5rem; }
+.plaque-btn { display: block; width: min(185px, 100%); margin: .6rem auto; padding: 0; border: 0; background: none; color: var(--gold-deep); cursor: pointer; }
+.plaque-btn img { display: block; width: 100%; height: auto; }
+.plaque-btn:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; border-radius: 1rem; }
+.plaque-btn--submit:not(:disabled) #btnKirimLabel { display: none; }
+.plaque-btn--submit:disabled img { opacity: .65; }

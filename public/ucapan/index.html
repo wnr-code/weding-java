@@ -6,14 +6,14 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=potret-42" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=panel-44" />
 </head>
 <body class="page-ucapan">
   <main class="main">
     <div class="wrap page-ucapan__back"><a class="btn btn--outline" id="kembaliUndangan" href="/#salam">← Kembali ke undangan</a></div>
     <section class="section section--ucapan" id="ucapan" hidden>
       <div class="wrap">
-        <figure class="wishes-cover">
+        <figure class="wishes-cover gold-glow">
           <div class="wishes-cover__portraits">
             <img src="/assets/img/mempelai-pria.jpg" alt="Ja’far" width="92" height="106" />
             <img src="/assets/img/mempelai-wanita.jpg" alt="Iklimah" width="92" height="106" />
@@ -34,38 +34,49 @@
           <div class="stats__item"><strong id="statTidakHadir">0</strong><span>Berhalangan</span></div>
         </div>
 
-        <form class="wish-form" id="formUcapan" novalidate>
-          <div class="field">
-            <label for="inNama">Nama</label>
-            <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+        <div class="wish-form-entry gold-glow">
+          <button class="btn btn--outline sheet-trigger" type="button" data-sheet-open="sheetUcapan" aria-haspopup="dialog" aria-controls="sheetUcapan"><img class="gold-icon" src="/assets/img/ikon/ucapan.webp" alt="" width="44" height="44" /><span>Tulis Ucapan &amp; Konfirmasi Kehadiran</span></button>
+        </div>
+        <dialog class="bottom-sheet" id="sheetUcapan" aria-labelledby="sheetUcapanJudul">
+          <div class="bottom-sheet__panel">
+            <header class="bottom-sheet__head">
+              <h2 id="sheetUcapanJudul">Ucapan &amp; Kehadiran</h2>
+              <button class="sheet-close" type="button" data-sheet-close aria-label="Tutup Ucapan &amp; Kehadiran" autofocus><img class="gold-icon" src="/assets/img/ikon/tutup.webp" alt="" width="44" height="44" /></button>
+            </header>
+            <form class="wish-form" id="formUcapan" novalidate>
+              <div class="field">
+                <label for="inNama">Nama</label>
+                <input id="inNama" name="nama" type="text" autocomplete="name" placeholder="Nama Anda" maxlength="60" required />
+              </div>
+
+              <div class="field">
+                <label for="inKota">Nama kota <span class="muted">(opsional)</span></label>
+                <input id="inKota" name="kota" type="text" autocomplete="address-level2" placeholder="Contoh: Tasikmalaya" maxlength="60" aria-describedby="petunjukKota" />
+                <small id="petunjukKota" class="wish__city">Jika diisi, kota akan tampil bersama ucapan.</small>
+              </div>
+
+              <fieldset class="field">
+                <legend>Konfirmasi kehadiran</legend>
+                <div class="pills" role="radiogroup" aria-label="Konfirmasi kehadiran">
+                  <label class="pill"><input type="radio" name="kehadiran" value="hadir" checked /><span>Hadir</span></label>
+                  <label class="pill"><input type="radio" name="kehadiran" value="ragu" /><span>Masih Ragu</span></label>
+                  <label class="pill"><input type="radio" name="kehadiran" value="tidak_hadir" /><span>Tidak Hadir</span></label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="inPesan">Ucapan &amp; doa <span class="muted">(opsional)</span></label>
+                <textarea id="inPesan" name="pesan" rows="4" maxlength="500" placeholder="Tulis doa dan ucapan untuk kedua mempelai…"></textarea>
+                <span class="counter" id="counterPesan">0/500</span>
+              </div>
+
+              <button class="btn btn--gold btn--block" type="submit" id="btnKirim">
+                <span id="btnKirimLabel">Kirim Ucapan</span>
+              </button>
+              <p class="form-status" id="formStatus" role="status"></p>
+            </form>
           </div>
-
-          <div class="field">
-            <label for="inKota">Nama kota <span class="muted">(opsional)</span></label>
-            <input id="inKota" name="kota" type="text" autocomplete="address-level2" placeholder="Contoh: Tasikmalaya" maxlength="60" aria-describedby="petunjukKota" />
-            <small id="petunjukKota" class="wish__city">Jika diisi, kota akan tampil bersama ucapan.</small>
-          </div>
-
-          <fieldset class="field">
-            <legend>Konfirmasi kehadiran</legend>
-            <div class="pills" role="radiogroup" aria-label="Konfirmasi kehadiran">
-              <label class="pill"><input type="radio" name="kehadiran" value="hadir" checked /><span>Hadir</span></label>
-              <label class="pill"><input type="radio" name="kehadiran" value="ragu" /><span>Masih Ragu</span></label>
-              <label class="pill"><input type="radio" name="kehadiran" value="tidak_hadir" /><span>Tidak Hadir</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field">
-            <label for="inPesan">Ucapan &amp; doa <span class="muted">(opsional)</span></label>
-            <textarea id="inPesan" name="pesan" rows="4" maxlength="500" placeholder="Tulis doa dan ucapan untuk kedua mempelai…"></textarea>
-            <span class="counter" id="counterPesan">0/500</span>
-          </div>
-
-          <button class="btn btn--gold btn--block" type="submit" id="btnKirim">
-            <span id="btnKirimLabel">Kirim Ucapan</span>
-          </button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </form>
+        </dialog>
 
         <div class="wishes">
           <div class="wishes__head">
@@ -136,5 +147,6 @@
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
   <script type="module" src="/assets/js/app.js?v=potret-42"></script>
   <script type="module" src="/assets/js/footer.js"></script>
+  <script type="module" src="/assets/js/sheets.js"></script>
 </body>
 </html>

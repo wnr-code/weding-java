@@ -1396,3 +1396,14 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .plaque-btn:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; border-radius: 1rem; }
 .plaque-btn--submit:not(:disabled) #btnKirimLabel { display: none; }
 .plaque-btn--submit:disabled img { opacity: .65; }
+
+/* Cokelat hangat untuk judul; emas tetap menjadi aksen. */
+:root { --heading-warm: #57391f; }
+.section__title, .event__name, .person__name,
+.cover__names [data-bind], .closing__names [data-bind],
+.wishes-cover figcaption strong, .wishes__head h3, .bottom-sheet__head h2 {
+  color: var(--heading-warm);
+}
+.dock__item[data-nav="peta"] .gold-icon { width: 39px; height: 39px; }
+.dock__item[data-nav="turut"] .gold-icon { width: 34px; height: 34px; }
+.section--turut__icon { filter: saturate(.82) contrast(.94); }

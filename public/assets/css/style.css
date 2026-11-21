@@ -1369,6 +1369,35 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .ucapan-float .gold-icon { width: 32px; height: 32px; }
 .sheet-trigger { gap: .5rem; white-space: normal; text-align: center; }
 .wish-form-entry { position: relative; text-align: center; margin: 1rem 0; padding: .85rem; border-radius: var(--radius); border: 1px solid var(--gold-line); background: #fffaf0; }
+.wish-form-entry::before {
+  content: "";
+  position: absolute;
+  inset: .55rem;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 9% 82%, #fffef8 1px, #e9dcc0 3px, transparent 4px),
+    radial-gradient(circle at 15% 91%, #fffdf6 1px, #eadcbe 2px, transparent 3px),
+    radial-gradient(circle at 6% 93%, #fffdf6 1px, #e8d7b5 2px, transparent 3px),
+    radial-gradient(circle at 91% 16%, #fffef8 1px, #e9dcc0 3px, transparent 4px),
+    radial-gradient(circle at 84% 9%, #fffdf6 1px, #eadcbe 2px, transparent 3px),
+    radial-gradient(circle at 95% 6%, #fffdf6 1px, #e8d7b5 2px, transparent 3px);
+}
+.wish-form-entry__glints {
+  position: absolute;
+  inset: .55rem;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 76%, #bd8b35 1px, #f0d68a88 2px, transparent 4px),
+    radial-gradient(circle at 95% 24%, #bd8b35 1px, #f0d68a88 2px, transparent 4px);
+  opacity: .55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wish-form-entry__glints { animation: wish-glints 7s ease-in-out infinite; }
+  @keyframes wish-glints { 0%, 55%, 100% { opacity: .25; } 72% { opacity: .95; } }
+}
+.wish-form-entry .plaque-btn { position: relative; }
+
 .bottom-sheet .wish-form { margin: 0; padding: 1rem 0 0; border: 0; background: transparent; box-shadow: none; }
 .bottom-sheet .map__card { margin-top: .75rem; }
 .bottom-sheet .map iframe { display: block; width: 100%; }

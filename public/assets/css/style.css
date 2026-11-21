@@ -1441,19 +1441,23 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   gap: .25rem; margin: 0; padding: 0; min-width: 0;
 }
 #carouselUcapan .wish__reply-bubble p { line-height: 1.45; overflow-wrap: anywhere; }
+/* Gold Verified Badge — dekorasi pengirim, bukan status verifikasi. */
 .wish__sender-check {
   display: inline-grid; place-items: center; vertical-align: .08em;
-  width: 1.12em; height: 1.12em; margin-inline-start: .35em;
-  border-radius: 50%; border: 1px solid #956522;
-  background: linear-gradient(135deg, #fff0ad, #d3a448 60%, #ad7421);
-  color: #432a10; font-size: .92em; font-weight: 800; line-height: 1;
+  width: 1.18em; height: 1.18em; margin-inline-start: .35em;
+  border-radius: 50%; border: 1px solid #a47a26;
+  background: linear-gradient(120deg, #986720 12%, #D4AF37 34%, #f9e4a0 48%, #D4AF37 62%, #986720 86%);
+  background-size: 240% 100%; background-position: right center;
+  color: #fff8db; text-shadow: 0 1px 2px #624214;
+  font-size: .92em; font-weight: 800; line-height: 1;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .wish--terlihat .wish__sender-check { animation: kilauPengirim 4s ease-in-out infinite; }
+  .wish--terlihat .wish__sender-check { animation: kilauPengirim 5.5s ease-in-out infinite; }
 }
 @keyframes kilauPengirim {
-  0%, 62%, 100% { box-shadow: none; }
-  76% { box-shadow: 0 0 .65rem #c89637a8; }
+  0%, 58% { background-position: right center; transform: scale(1); box-shadow: none; }
+  73% { transform: scale(1.06); box-shadow: 0 0 .38rem #d4af3766; }
+  88%, 100% { background-position: left center; transform: scale(1); box-shadow: none; }
 }
 .page-ucapan .hadiah-float { bottom: calc(.85rem + env(safe-area-inset-bottom)); }
 

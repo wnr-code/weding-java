@@ -8,7 +8,7 @@ import { pilihBalasan } from "./balasan.js?v=konteks-6";
 import CONFIG from "./config.js?v=bahasa-10";
 import { injectOrnaments, icons } from "./ornament.js";
 import { Music } from "./music.js";
-import * as api from "./api.js?v=kota-12";
+import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
 document.documentElement.classList.add("js");
@@ -18,8 +18,8 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const on = (node, ev, fn, opt) => node && node.addEventListener(ev, fn, opt);
 
-const kurangiGerak = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const mediaGerak = window.matchMedia("(prefers-reduced-motion: reduce)");
+const kurangiGerak = () => mediaGerak.matches;
 
 function toast(pesan, ms = 2600) {
   const box = $("#toast");
@@ -450,7 +450,7 @@ function pasangHadiah() {
 
 /* -------------------------- Ucapan & kehadiran --------------------------- */
 const U = CONFIG.ucapan;
-const state = { offset: 0, limit: 6, total: 0, memuat: false };
+const state = { offset: 0, limit: 6, total: 0, memuat: null };
 
 function badgeKehadiran(item) {
   const map = {
@@ -616,6 +616,9 @@ function pasangCarousel(id) {
   let indeksTerakhir = -1;
   let frame = 0;
   let waktuLalu = null;
+  let pemulai = 0;
+  let perubahanSentuh = false;
+  let sedangHover = false;
   let gerakanManual = null;
   let radius = 0;
   const mediaHover = matchMedia("(hover: hover)");
@@ -665,9 +668,17 @@ function pasangCarousel(id) {
     gambar();
   };
 
+  function bolehPutar() {
+    return diputar && dalamLayar && !sentuhan && !sedangHover && !track.contains(document.activeElement)
+      && track.children.length > 0;
+  }
   function jadwalkan() {
-    if (!frame && !document.hidden && (gerakanManual || (diputar && dalamLayar && track.children.length > 0))) {
+    clearTimeout(pemulai);
+    if (frame || document.hidden) return;
+    if (gerakanManual || perubahanSentuh || (bolehPutar() && performance.now() >= tahanSampai)) {
       frame = requestAnimationFrame(putar);
+    } else if (bolehPutar()) {
+      pemulai = setTimeout(jadwalkan, Math.max(0, tahanSampai - performance.now()));
     }
   }
   function putar(now) {
@@ -683,8 +694,10 @@ function pasangCarousel(id) {
       tilt = m.tiltDari + (m.tiltKe - m.tiltDari) * progres;
       if (t === 1) gerakanManual = null;
       gambar();
-    } else if (diputar && dalamLayar && !sentuhan && !(mediaHover.matches && stage.matches(":hover"))
-      && !track.contains(document.activeElement) && now >= tahanSampai) {
+    } else if (perubahanSentuh) {
+      perubahanSentuh = false;
+      gambar();
+    } else if (bolehPutar() && now >= tahanSampai) {
       const n = track.children.length;
       if (n > 0) {
         // Kecepatan tetap, tanpa jeda di antara kartu; sudut bebas melewati 360°.
@@ -724,7 +737,8 @@ function pasangCarousel(id) {
   on(zona, "pointerdown", (e) => {
     if (!e.isPrimary || e.button !== 0 || !track.children.length) return;
     gerakanManual = null;
-    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY, mulai: langkah, tilt, sudut: 0, bergerak: false };
+    sentuhan = { id: e.pointerId, x: e.clientX, y: e.clientY, mulai: langkah, tilt, sudut: 0,
+      jarak: Math.max(90, zona.clientWidth * .44), bergerak: false };
     tahanSampai = performance.now() + 10_000;
     zona.setPointerCapture(e.pointerId);
   });
@@ -738,16 +752,18 @@ function pasangCarousel(id) {
       stage.classList.add("wish-carousel__stage--dragging");
     }
     const sudut = (nilai) => Math.max(-360, Math.min(360, nilai));
-    const jarak = Math.max(90, zona.clientWidth * .44);
+    const { jarak } = sentuhan;
     sentuhan.sudut = sudut(-dx * 180 / jarak);
     langkah = sentuhan.mulai + (sentuhan.sudut * track.children.length) / 360;
     tilt = sentuhan.tilt - sudut(dy * 180 / jarak);
-    gambar();
+    perubahanSentuh = true;
+    jadwalkan();
   });
   const selesaiTarik = (e, batal = false) => {
     if (sentuhan?.id !== e.pointerId) return;
     const { mulai, sudut } = sentuhan;
     sentuhan = null;
+    perubahanSentuh = false;
     stage.classList.remove("wish-carousel__stage--dragging");
     tahanSampai = performance.now() + 10_000;
     const asal = Math.round(mulai);
@@ -756,6 +772,7 @@ function pasangCarousel(id) {
       tujuan = asal + Math.sign(sudut);
     }
     menuju(tujuan);
+    jadwalkan();
   };
   on(window, "pointerup", (e) => selesaiTarik(e));
   on(window, "pointercancel", (e) => selesaiTarik(e, true));
@@ -763,6 +780,22 @@ function pasangCarousel(id) {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     e.preventDefault();
     manual(e.key === "ArrowLeft" ? -1 : 1);
+  });
+  on(stage, "pointerenter", (e) => {
+    sedangHover = mediaHover.matches && e.pointerType === "mouse";
+    jadwalkan();
+  });
+  on(stage, "pointerleave", () => {
+    sedangHover = false;
+    jadwalkan();
+  });
+  on(track, "blur", () => queueMicrotask(jadwalkan));
+  on(mediaGerak, "change", () => {
+    if (!kurangiGerak() || !diputar) return;
+    diputar = false;
+    menuju(Math.round(langkah));
+    perbaruiPutar();
+    jadwalkan();
   });
   on(document, "visibilitychange", () => {
     waktuLalu = null;
@@ -778,6 +811,7 @@ function pasangCarousel(id) {
       jumlahTerakhir = n;
       tilt = 0;
       gerakanManual = null;
+      perubahanSentuh = false;
     }
     sinkron();
     jadwalkan();
@@ -788,29 +822,43 @@ let sinkronUcapan = () => {};
 
 async function muatUcapan({ reset = false } = {}) {
   const list = $("#daftarUcapan");
-  if (!list || state.memuat) return;
-  state.memuat = true;
-  if (reset) state.offset = 0;
-
-  try {
-    const data = await api.ambilUcapan({ limit: state.limit, offset: state.offset });
-    if (reset) list.innerHTML = "";
-    (data.items || []).forEach((it, i) => list.appendChild(buatKartuUcapan(it, state.offset + i)));
-    sinkronUcapan(reset);
-    state.offset += (data.items || []).length;
-    state.total = data.total ?? 0;
-    perbaruiStatistik(data);
-
-    const kosong = $("#wishesEmpty");
-    if (kosong) kosong.hidden = (data.total ?? 0) > 0;
-    const lagi = $("#btnMuatLagi");
-    if (lagi) lagi.hidden = state.offset >= state.total;
-  } catch (err) {
-    console.warn("Gagal memuat ucapan:", err);
-    toast("Ucapan belum dapat dimuat. Coba lagi nanti.");
-  } finally {
-    state.memuat = false;
+  if (!list) return;
+  if (state.memuat) {
+    // Refresh sesudah kirim tidak boleh hilang jika daftar masih dimuat.
+    if (!reset) return state.memuat;
+    await state.memuat;
+    return muatUcapan({ reset: true });
   }
+  const lagi = $("#btnMuatLagi");
+  state.memuat = (async () => {
+    const offset = reset ? 0 : state.offset;
+    if (lagi) lagi.disabled = true;
+    list.setAttribute("aria-busy", "true");
+    try {
+      const data = await api.ambilUcapan({ limit: state.limit, offset });
+      const items = data.items || [];
+      const kartu = document.createDocumentFragment();
+      items.forEach((it, i) => kartu.append(buatKartuUcapan(it, offset + i)));
+      if (reset) list.replaceChildren(kartu);
+      else list.append(kartu);
+      sinkronUcapan(reset);
+      state.offset = offset + items.length;
+      state.total = data.total ?? 0;
+      perbaruiStatistik(data);
+
+      const kosong = $("#wishesEmpty");
+      if (kosong) kosong.hidden = state.total > 0;
+      if (lagi) lagi.hidden = state.offset >= state.total;
+    } catch (err) {
+      console.warn("Gagal memuat ucapan:", err);
+      toast("Ucapan belum dapat dimuat. Coba lagi nanti.");
+    } finally {
+      if (lagi) lagi.disabled = false;
+      list.removeAttribute("aria-busy");
+      state.memuat = null;
+    }
+  })();
+  return state.memuat;
 }
 
 function pasangFormUcapan() {
@@ -838,6 +886,7 @@ function pasangFormUcapan() {
 
   on(form, "submit", async (e) => {
     e.preventDefault();
+    if (btn.disabled) return;
     const namaVal = (nama.value || "").trim();
     const kehadiran = form.querySelector('input[name="kehadiran"]:checked')?.value || "ragu";
     const pesanVal = (pesan.value || "").trim();
@@ -854,6 +903,7 @@ function pasangFormUcapan() {
       return;
     }
 
+    btn.disabled = true;
     btn.classList.add("is-busy");
     label.textContent = "Mengirim…";
     status.textContent = "";
@@ -878,6 +928,7 @@ function pasangFormUcapan() {
       status.className = "form-status is-err";
       console.warn(err);
     } finally {
+      btn.disabled = false;
       btn.classList.remove("is-busy");
       label.textContent = "Kirim Ucapan";
     }

@@ -15,6 +15,6 @@
     "deploy": "npx --yes wrangler@4.165.0 deploy",
     "deploy:dry": "npx --yes wrangler@4.165.0 deploy --dry-run"
   },
-  "engines": { "node": ">=20" },
+  "engines": { "node": ">=22.13.0" },
   "license": "ISC"
 }

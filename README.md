@@ -61,7 +61,7 @@ Tambahan yang sudah termasuk:
 │  └─ ucapan.js                   # validasi bersama (dipakai server dev & tes)
 ├─ migrations/0001_ucapan.sql     # skema D1
 ├─ server/dev.mjs                 # server lokal tanpa dependency
-├─ tests/api.test.mjs             # 19 tes (node --test)
+├─ tests/api.test.mjs             # tes API (node --test)
 ├─ wrangler.toml
 └─ package.json
 ```
@@ -70,7 +70,7 @@ Tambahan yang sudah termasuk:
 
 ## 1. Coba dulu di komputer
 
-Tidak perlu `npm install` — server pengembangan hanya memakai modul bawaan Node.
+Gunakan Node.js 22.13 atau lebih baru. Tidak perlu `npm install` — server pengembangan hanya memakai modul bawaan Node.
 
 ```bash
 node server/dev.mjs          # buka http://localhost:4321

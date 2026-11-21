@@ -20,7 +20,9 @@ const bacaLokal = () => {
 const simpanLokal = (arr) => {
   try {
     localStorage.setItem(KUNCI_LOKAL, JSON.stringify(arr.slice(-200)));
-  } catch { /* kuota penuh — abaikan */ }
+  } catch {
+    throw new Error("Ucapan belum tersimpan. Penyimpanan perangkat tidak tersedia; silakan coba lagi.");
+  }
 };
 
 function ringkas(items) {

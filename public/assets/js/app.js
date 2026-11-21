@@ -195,16 +195,19 @@ function pasangLightbox() {
   const cap = $("#lightboxCap");
   if (!lb || !img) return;
 
-  const buka = (i, capOverride) => {
-    galeriIndex = (i + CONFIG.galeri.length) % CONFIG.galeri.length;
-    const g = CONFIG.galeri[galeriIndex];
-    img.src = g.src;
-    img.alt = g.judul;
-    cap.textContent = capOverride || `${g.judul} — ${g.ket}`;
+  const tampilkan = (src, judul, keterangan) => {
+    img.src = src;
+    img.alt = judul;
+    cap.textContent = keterangan;
     lb.hidden = false;
     requestAnimationFrame(() => lb.classList.add("is-open"));
     document.body.classList.add("is-locked");
     $("#lightboxClose").focus();
+  };
+  const buka = (i, capOverride) => {
+    galeriIndex = (i + CONFIG.galeri.length) % CONFIG.galeri.length;
+    const g = CONFIG.galeri[galeriIndex];
+    tampilkan(g.src, g.judul, capOverride || `${g.judul} — ${g.ket}`);
   };
   const tutup = () => {
     lb.classList.remove("is-open");
@@ -216,6 +219,7 @@ function pasangLightbox() {
   bukaFoto = (src, capOverride) => {
     const i = CONFIG.galeri.findIndex((g) => g.src === src);
     if (i >= 0) buka(i, capOverride);
+    else if (src) tampilkan(src, capOverride, capOverride);
   };
 
   on($("#gallery"), "click", (e) => {

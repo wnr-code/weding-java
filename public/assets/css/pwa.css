@@ -15,7 +15,7 @@
   overflow: hidden; pointer-events: none; text-align: center; color: #634419;
   background: radial-gradient(ellipse at 50% 42%, #fffdf6 0%, #f6efe1 64%, #ebdabc 100%);
   transition: opacity .28s ease, visibility .28s;
-  animation: pwa-splash-failsafe .25s 3.4s both;
+  animation: pwa-splash-failsafe .25s 4.3s both;
 }
 .pwa-splash-start .pwa-splash.is-done { animation: none; opacity: 0; visibility: hidden; }
 @keyframes pwa-splash-failsafe { to { opacity: 0; visibility: hidden; } }
@@ -41,7 +41,7 @@
 .pwa-splash__rule { position: relative; margin-top: .7rem; width: 8rem; height: 1px; background: linear-gradient(90deg, transparent, #a67936, transparent); }
 .pwa-splash__rule::after { content: ''; position: absolute; inset: -2px auto auto calc(50% - 2px); width: 5px; height: 5px; background: #a67936; transform: rotate(45deg); }
 @media (prefers-reduced-motion: no-preference) {
-  .pwa-splash__orbit { animation: pwa-splash-orbit 2.2s cubic-bezier(.16,.7,.25,1) both; }
+  .pwa-splash__orbit { animation: pwa-splash-orbit 3s cubic-bezier(.16,.7,.25,1) both; }
   .pwa-splash__flower { animation: pwa-splash-bloom 1.45s ease-out both; }
   .pwa-splash__sparkles { animation: pwa-splash-sparkle 1.65s .2s ease-in-out both; }
   @keyframes pwa-splash-sparkle { 0%, 100% { opacity: .25; } 55% { opacity: 1; } }

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#f6efe1" />
   <title>Ucapan &amp; Kehadiran · Ja'far &amp; Iklimah</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/style.css?v=palet-48" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=kado-49" />
 </head>
 <body class="page-ucapan">
   <main class="main">
@@ -109,6 +109,39 @@
       </div>
     </section>
 
+    <!-- Tanda kasih -->
+    <section class="section section--hadiah" id="hadiah" hidden>
+      <div class="wrap">
+        <header class="section__head reveal">
+          <span class="eyebrow">Dengan Hormat</span>
+          <h2 class="section__title">Tanda Kasih</h2>
+          <div class="divider" data-orn="divider" aria-hidden="true"></div>
+        </header>
+        <p class="lead reveal" data-bind="hadiahPembuka"></p>
+
+        <a class="trakteer reveal" id="linkTrakteer" href="https://trakteer.id/lanteraku/tip?open=" target="_blank" rel="noopener noreferrer">
+          <span class="trakteer__glow" aria-hidden="true"></span>
+          <span class="trakteer__icon" aria-hidden="true">
+            <img class="gold-icon" src="/assets/img/ikon/hadiah.webp" alt="" width="44" height="44" />
+          </span>
+          <span class="trakteer__body">
+            <strong data-bind="trakteerLabel">Tautan Tanda Kasih</strong>
+            <small data-bind="trakteerKet"></small>
+          </span>
+          <span class="trakteer__arrow" aria-hidden="true">→</span>
+        </a>
+
+        <div class="rekening" id="rekeningList" hidden></div>
+
+        <div class="kado reveal" id="kadoFisik" hidden>
+          <p class="kado__label">Kirim kado</p>
+          <p class="kado__addr" data-bind="kadoAlamat"></p>
+          <p class="kado__name" data-bind="kadoNama"></p>
+          <button class="btn btn--ghost btn--sm" id="btnSalinKado" type="button">Salin Alamat</button>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--kiriman" id="kirimanHadiah" hidden>
       <div class="wrap">
         <header class="section__head">
@@ -146,7 +179,7 @@
   </main>
   <div class="toast" id="toast" role="status"></div>
   <noscript><p class="noscript">Aktifkan JavaScript untuk mengisi formulir ucapan dan kehadiran.</p></noscript>
-  <script type="module" src="/assets/js/app.js?v=potret-42"></script>
+  <script type="module" src="/assets/js/app.js?v=kado-49"></script>
   <script type="module" src="/assets/js/footer.js"></script>
   <script type="module" src="/assets/js/sheets.js"></script>
 </body>

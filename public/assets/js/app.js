@@ -397,6 +397,10 @@ function pasangPeta() {
 }
 
 /* ------------------------------ Tanda kasih ------------------------------- */
+function hadiahTersedia() {
+  const H = CONFIG.hadiah;
+  return H.aktif && Boolean(H.trakteer?.url || H.rekening?.length || H.kadoFisik?.alamat);
+}
 function pasangHadiah() {
   const H = CONFIG.hadiah;
   const section = $("#hadiah");
@@ -404,7 +408,7 @@ function pasangHadiah() {
   const adaTrakteer = Boolean(H.trakteer && H.trakteer.url);
   const adaRekening = Array.isArray(H.rekening) && H.rekening.length > 0;
   const adaKado = Boolean(H.kadoFisik && H.kadoFisik.alamat);
-  if (!H.aktif || (!adaTrakteer && !adaRekening && !adaKado)) return;
+  if (!hadiahTersedia()) return;
 
   section.hidden = false;
 
@@ -1054,6 +1058,8 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
   document.body.classList.remove("is-locked");
   if (main) main.hidden = false;
   if (dock) dock.hidden = false;
+  const hadiahFloat = $("#hadiahFloat");
+  if (hadiahFloat && hadiahTersedia()) hadiahFloat.hidden = false;
   const ucapanFloat = $("#ucapanFloat");
   if (ucapanFloat && U.aktif !== false) ucapanFloat.hidden = false;
   cover?.classList.add("is-open");
@@ -1184,11 +1190,17 @@ function mulai() {
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
+    pasangHadiah();
+    pasangPeta();
+    siapkanReveal();
+    if (location.hash === "#hadiah" && hadiahTersedia()) {
+      requestAnimationFrame(() => $("#hadiah")?.scrollIntoView({ behavior: "instant" }));
+    }
     tampilkanTandaKasih(pasangCarousel("carouselHadiah"));
     return;
   }
   $$("[data-ucapan-link]").forEach((a) => {
-    a.hidden = U.aktif === false || a.id === "ucapanFloat";
+    a.hidden = U.aktif === false || a.id === "ucapanFloat" || a.id === "hadiahFloat";
     a.href = personalisasi(a.getAttribute("href"));
   });
   const ajakanUcapan = $("#ucapan");
@@ -1202,7 +1214,6 @@ function mulai() {
   pasangHitungMundur();
   pasangKalender();
   pasangPeta();
-  pasangHadiah();
   pasangMusik();
   pasangPartikel();
   pasangGulir();

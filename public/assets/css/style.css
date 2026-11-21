@@ -1407,3 +1407,6 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .dock__item[data-nav="peta"] .gold-icon { width: 39px; height: 39px; }
 .dock__item[data-nav="turut"] .gold-icon { width: 34px; height: 34px; }
 .section--turut__icon { filter: saturate(.82) contrast(.94); }
+
+.hadiah-float { left: .9rem; right: auto; }
+.page-ucapan #hadiah { scroll-margin-top: .75rem; }

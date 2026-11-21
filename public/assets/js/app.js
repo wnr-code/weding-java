@@ -1192,7 +1192,6 @@ function mulai() {
   });
   const ajakanUcapan = $("#ucapan");
   if (ajakanUcapan) ajakanUcapan.hidden = U.aktif === false;
-  $$(".cover__rosette svg").forEach((s) => s.classList.add("spin-slow"));
   $$(".loader__ring svg").forEach((s) => s.classList.add("spin-slow"));
 
   renderAcara();

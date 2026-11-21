@@ -1497,3 +1497,18 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   color: #80612f; font-size: .68rem; line-height: 1.15; cursor: pointer;
 }
 .cover .share-float--cover[hidden] { display: none; }
+
+.share-sheet__card {
+  margin: .75rem auto; padding: .6rem .6rem .85rem; text-align: center;
+  border: 1px solid var(--gold-line); border-radius: var(--radius); background: #fff6e3;
+}
+.share-sheet__photo {
+  display: block; width: 100%; height: auto; max-height: 33dvh;
+  object-fit: contain; border-radius: .75rem;
+}
+.share-sheet__card h3 { color: #57391f; font: 700 1.65rem/1.15 'Cormorant Garamond', serif; margin-top: .5rem; }
+.share-sheet__message { color: #695131; font-size: .86rem; line-height: 1.45; margin-top: .25rem; }
+.share-sheet__status { text-align: center; font-size: .76rem; color: var(--gold-deep); }
+.share-sheet__status:empty { display: none; }
+.share-sheet__footer { text-align: center; color: #80612f; font-size: .7rem; margin-top: .65rem; }
+.share-sheet [data-share-native][hidden] { display: none; }

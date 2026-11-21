@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="/assets/css/style.css?v=kado-101" />
   <link rel="apple-touch-icon" href="/assets/img/pwa/ornamen-192.png" />
   <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="stylesheet" href="/assets/css/pwa.css?v=splash-3" />
+  <link rel="stylesheet" href="/assets/css/pwa.css?v=splash-4" />
   <script>
     if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
       document.documentElement.classList.add('pwa-standalone');
@@ -51,6 +51,7 @@
             <path id="pwaSplashPetal" d="M60 60Q37 44 60 22Q83 44 60 60Z"/>
           </defs>
           <circle cx="60" cy="60" r="54" stroke="url(#pwaSplashGold)" stroke-width="1.5"/>
+          <path class="pwa-splash__filigree" d="M60 5Q81 14 90 30Q106 39 115 60Q106 81 90 90Q81 106 60 115Q39 106 30 90Q14 81 5 60Q14 39 30 30Q39 14 60 5Z" stroke="url(#pwaSplashGold)" stroke-width="1.7"/>
           <g class="pwa-splash__orbit" stroke="url(#pwaSplashGold)">
             <circle cx="60" cy="60" r="47" stroke-width="1.5" stroke-dasharray="1 7" stroke-linecap="round"/>
             <path d="M60 8l3 5-3 5-3-5zM60 102l3 5-3 5-3-5zM8 60l5-3 5 3-5 3zM102 60l5-3 5 3-5 3z" fill="#d4a44d"/>
@@ -61,11 +62,16 @@
             <use href="#pwaSplashPetal" transform="rotate(240 60 60)"/><use href="#pwaSplashPetal" transform="rotate(300 60 60)"/>
             <path d="m60 53 7 7-7 7-7-7z" fill="#f6d888"/>
           </g>
+          <g class="pwa-splash__sparkles" fill="#fff3b4" stroke="#b18336" stroke-width=".5">
+            <path d="m88 21 2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>
+            <path d="m29 84 1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z"/>
+          </g>
         </svg>
       </span>
       <p class="pwa-splash__eyebrow">Undangan Pernikahan</p>
       <p class="pwa-splash__names">Ja’far <span>&amp;</span> Iklimah</p>
       <span class="pwa-splash__rule"></span>
+      <p class="pwa-splash__fullnames">Dikdik Ja’far Shiddik<br />Risva Iklimah Adawiyah</p>
     </div>
   </div>
   <div class="ambient" aria-hidden="true">
@@ -282,6 +288,6 @@
     </ul>
     <form method="dialog"><button type="submit" autofocus>Tutup</button></form>
   </dialog>
-  <script type="module" src="/assets/js/pwa.js?v=splash-3"></script>
+  <script type="module" src="/assets/js/pwa.js?v=splash-4"></script>
 </body>
 </html>

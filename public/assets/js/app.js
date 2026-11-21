@@ -62,17 +62,6 @@ const inisial = (nama = "") =>
     .join("")
     .toUpperCase() || "?";
 
-function waktuRelatif(iso) {
-  const t = new Date(iso).getTime();
-  if (!Number.isFinite(t)) return "";
-  const beda = Math.max(0, Date.now() - t) / 1000;
-  if (beda < 60) return "baru saja";
-  if (beda < 3600) return `${Math.floor(beda / 60)} menit lalu`;
-  if (beda < 86400) return `${Math.floor(beda / 3600)} jam lalu`;
-  if (beda < 86400 * 7) return `${Math.floor(beda / 86400)} hari lalu`;
-  return new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric" }).format(new Date(t));
-}
-
 /* ------------------------------ Data & teks ------------------------------- */
 const ayatPilihan = [{ ...CONFIG.pembuka.ayat, surah: 30, nomor: 21 }, ...AYAT_PERNIKAHAN];
 const ayat = ayatPilihan[Math.floor(Math.random() * ayatPilihan.length)];
@@ -539,12 +528,15 @@ function buatKartuUcapan(item, urutan) {
   li.dataset.kehadiran = item.kehadiran;
   badge.textContent = b.teks;
 
-  const time = document.createElement("span");
-  time.className = "wish__time";
-  time.textContent = waktuRelatif(item.created_at);
-
-  top.append(nm, badge, time);
+  top.append(nm, badge);
   body.append(labelKiriman("Ucapan & Doa", "doa"), top);
+  const waktu = buatWaktuKiriman(item.created_at);
+  if (waktu) {
+    const meta = document.createElement("p");
+    meta.className = "wish__reply-label";
+    meta.append("Dikirim · ", waktu);
+    body.append(meta);
+  }
   if (item.kota) {
     const kota = document.createElement("p");
     kota.className = "wish__city";

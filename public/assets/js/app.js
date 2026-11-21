@@ -1162,10 +1162,12 @@ async function tampilkanTandaKasih(sinkron) {
       pesan.textContent = item.pesan;
       isi.append(labelKiriman(data.uji ? "Kiriman Uji · Bukan Hadiah" : "Tanda Kasih", data.uji ? "uji" : "hadiah"), nama);
       if (item.pesan) isi.append(pesan);
-      isi.append(buatReaksi(), buatBalasan(data.uji
+      isi.append(buatReaksi());
+      const balasan = buatBalasan(data.uji
         ? "Contoh doa: Semoga Allah membalas kebaikan Bapak dan Ibu, melimpahkan keberkahan, serta memudahkan segala urusan. Aamiin."
-        : "Terima kasih atas tanda kasih yang Bapak dan Ibu sampaikan. Semoga Allah membalas kebaikan ini, melimpahkan keberkahan dalam rezeki dan keluarga, serta memudahkan segala urusan. Aamiin."));
+        : "Terima kasih atas tanda kasihnya. Semoga Allah membalas kebaikan Bapak dan Ibu, memberkahi keluarga, dan memudahkan segala urusan. Aamiin.");
       pasangWajahKartu(kartu, avatar, isi, i + 1);
+      kartu.querySelector(".wish__front").append(balasan);
       daftar.append(kartu);
     }
     bagian.hidden = false;

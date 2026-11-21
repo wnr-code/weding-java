@@ -1424,3 +1424,13 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 .gift-refresh { margin-inline-start: auto; color: var(--gold-deep); font-size: 1.5rem; }
 .qris-note { margin: 0; padding: .6rem .75rem; background: #fffaf0eb; color: #57391f; font-size: .78rem; line-height: 1.45; }
 #sheetTandaKasih .tanda-kasih-frame { height: calc(95vh - 12.5rem); height: calc(95dvh - 12.5rem - env(safe-area-inset-bottom)); min-height: 14rem; }
+/* Kiriman hadiah tetap setinggi isi, dengan balasan selebar kartu. */
+.wish-slot.wish--hadiah .wish__front,
+.wish-slot.wish--hadiah .wish__back { --sudut-hadiah: clamp(2rem, 8vw, 3rem); }
+.wish--hadiah .wish__front > .wish__reply {
+  grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr);
+  gap: .25rem; margin: 0; padding: 0; min-width: 0;
+}
+.wish--hadiah .wish__reply::before { content: none; }
+.wish--hadiah .wish__reply-bubble p { line-height: 1.45; overflow-wrap: anywhere; }
+#carouselHadiah .wish-carousel__stage { padding-top: 1.75rem; }

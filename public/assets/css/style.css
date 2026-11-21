@@ -82,6 +82,7 @@
 /* -------------------------------- Reset ---------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { overflow-x: clip; overscroll-behavior-x: none; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html.ucapan-pull-refresh { overscroll-behavior-y: none; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {

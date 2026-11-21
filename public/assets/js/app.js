@@ -957,6 +957,33 @@ function pasangFormUcapan() {
   muatUcapan({ reset: true });
 }
 
+/* Tarik dari puncak halaman Ucapan, bukan dari carousel atau popup. */
+function pasangTarikMuatUlang() {
+  let awal = null;
+  let memuat = false;
+  const diPuncak = () => window.scrollY <= 0;
+  document.addEventListener("touchstart", (e) => {
+    awal = null;
+    if (memuat || e.touches.length !== 1 || !diPuncak()) return;
+    if (e.target.closest?.("dialog, .wish-carousel__stage, button, a, input, textarea, select, iframe")) return;
+    const { identifier, clientX, clientY } = e.touches[0];
+    awal = { identifier, clientX, clientY };
+  }, { passive: true });
+  document.addEventListener("touchmove", () => {
+    if (!diPuncak()) awal = null;
+  }, { passive: true });
+  document.addEventListener("touchcancel", () => { awal = null; }, { passive: true });
+  document.addEventListener("touchend", (e) => {
+    const mulai = awal;
+    awal = null;
+    if (!mulai || !diPuncak() || e.touches.length) return;
+    const akhir = Array.from(e.changedTouches).find((t) => t.identifier === mulai.identifier);
+    if (!akhir || akhir.clientY - mulai.clientY < 90 || Math.abs(akhir.clientX - mulai.clientX) > 50) return;
+    memuat = true;
+    window.location.reload();
+  }, { passive: true });
+}
+
 /* --------------------------------- Musik --------------------------------- */
 let musik = null;
 const musicUI = () => $$("#musicToggle, #musicToggleCover");
@@ -1259,6 +1286,7 @@ function mulai() {
     document.title = `Ucapan & Kehadiran · ${CONFIG.meta.judul}`;
     sinkronUcapan = pasangCarousel("carouselUcapan");
     pasangFormUcapan();
+    pasangTarikMuatUlang();
     pasangPartikel();
     pasangMusik();
     pasangHadiah();

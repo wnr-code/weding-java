@@ -1057,6 +1057,8 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
   document.body.classList.remove("is-locked");
   if (main) main.hidden = false;
   if (dock) dock.hidden = false;
+  const ucapanFloat = $("#ucapanFloat");
+  if (ucapanFloat && U.aktif !== false) ucapanFloat.hidden = false;
   cover?.classList.add("is-open");
   musicFloat?.classList.add("is-visible");
 
@@ -1074,7 +1076,7 @@ function bukaUndangan({ mulaiMusik = true } = {}) {
 }
 
 /* --------------------------- Gulir & navigasi ---------------------------- */
-const SECTION_NAV = ["salam", "mempelai", "acara", "peta"];
+const SECTION_NAV = ["salam", "mempelai", "acara", "peta", "turut"];
 let ticking = false;
 
 function perbaruiGulir() {
@@ -1187,7 +1189,7 @@ function mulai() {
     return;
   }
   $$("[data-ucapan-link]").forEach((a) => {
-    a.hidden = U.aktif === false;
+    a.hidden = U.aktif === false || a.id === "ucapanFloat";
     a.href = personalisasi(a.getAttribute("href"));
   });
   const ajakanUcapan = $("#ucapan");

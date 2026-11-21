@@ -1245,3 +1245,19 @@ select { appearance: none; background-image: linear-gradient(45deg, transparent 
   76% { filter: brightness(1.22) drop-shadow(0 0 3px #d9ad5899); }
   87% { filter: brightness(1.06); }
 }
+
+/* Akses cepat ke ucapan, terpisah dari dock. */
+.ucapan-float {
+  position: fixed; z-index: 31; right: .9rem;
+  bottom: calc(var(--dock-h) + 1.4rem + env(safe-area-inset-bottom));
+  display: inline-flex; align-items: center; gap: .45rem;
+  min-height: 44px; padding: .45rem .9rem; border: 1px solid #a78446;
+  border-radius: 999px; background: #765523; color: #fffdf8;
+  font-size: .88rem; font-weight: 700; box-shadow: 0 5px 16px #50381e40;
+}
+.ucapan-float svg { width: 20px; height: 20px; }
+.ucapan-float[hidden] { display: none; }
+.ucapan-float:not([hidden]) ~ .to-top {
+  bottom: calc(var(--dock-h) + 4.65rem + env(safe-area-inset-bottom));
+}
+.dock__item[data-nav="turut"] span { text-align: center; font-size: clamp(.58rem, 2.65vw, .75rem); }

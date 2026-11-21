@@ -90,6 +90,7 @@ export class Music {
       this.el.volume = this.baseVolume;
       await this.el.play();
       this.playing = true;
+      this.#pasangMetadata();
       this.#notify();
     } catch (err) {
       if (err.name !== "NotAllowedError" && err.name !== "AbortError") {
@@ -99,6 +100,17 @@ export class Music {
       this.#notify();
     }
     return this.playing;
+  }
+
+  #pasangMetadata() {
+    if (!globalThis.navigator?.mediaSession || typeof globalThis.MediaMetadata !== "function") return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: "Ney Dinletisi",
+        artist: "Ja’far & Iklimah",
+        artwork: [{ src: "/assets/img/ikon/mempelai-192.png", sizes: "192x192", type: "image/png" }],
+      });
+    } catch { /* Metadata opsional; musik tetap diputar. */ }
   }
 
   async #startSynth() {

@@ -4,6 +4,27 @@ for (const trigger of document.querySelectorAll('[data-sheet-open]')) {
   const giftFrame = sheet.querySelector('.tanda-kasih-frame');
   const giftOrigin = 'https://trakteer.id';
   if (giftFrame) {
+    const refresh = () => {
+      const src = giftFrame.getAttribute('src');
+      if (sheet.open && src && window.confirm('Muat ulang formulir? Isian yang belum dikirim bisa hilang.')) {
+        giftFrame.src = src;
+      }
+    };
+    sheet.querySelector('[data-gift-refresh]').addEventListener('click', refresh);
+    const head = sheet.querySelector('.bottom-sheet__head');
+    let start;
+    head.addEventListener('pointerdown', (e) => {
+      if (!e.isPrimary || e.pointerType !== 'touch' || e.target.closest('button')) return;
+      start = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      head.setPointerCapture(e.pointerId);
+    });
+    head.addEventListener('pointerup', (e) => {
+      if (start?.id !== e.pointerId) return;
+      const pull = e.clientY - start.y >= 64 && Math.abs(e.clientX - start.x) < 45;
+      start = undefined;
+      if (pull) refresh();
+    });
+    head.addEventListener('pointercancel', () => { start = undefined; });
     giftFrame.addEventListener('load', () => {
       giftFrame.contentWindow?.postMessage({ type: 'embed.openModal' }, giftOrigin);
     });

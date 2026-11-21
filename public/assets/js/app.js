@@ -936,8 +936,10 @@ function pasangFormUcapan() {
       pesan.value = "";
       const c = $("#counterPesan");
       if (c) c.textContent = `0/${pesan.maxLength}`;
-      await muatUcapan({ reset: true });
+      const panel = form.closest("dialog");
+      if (panel?.open) panel.close();
       toast(hasil.mode === "lokal" ? "Tersimpan di perangkat (mode pratinjau)" : "Terima kasih atas doanya 🤍");
+      await muatUcapan({ reset: true });
     } catch (err) {
       status.textContent = err?.message && err.message !== "Failed to fetch"
         ? err.message

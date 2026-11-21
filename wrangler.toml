@@ -22,8 +22,8 @@ database_id = "309cf1bd-987c-4841-a442-f4d96e2a63ff"
 migrations_dir = "migrations"
 
 [vars]
-# Mode uji menolak transaksi nyata. Ubah ke live hanya setelah memakai akun khusus undangan.
-TRAKTEER_MODE = "test"
+# Mode live sementara untuk menguji kiriman pembayaran nyata dari Lanteraku.
+TRAKTEER_MODE = "live"
 # Garam untuk anonimisasi IP (pembatasan laju). Ubah menjadi kalimat acak Anda.
 IP_SALT = "ganti-dengan-kalimat-acak-anda"
 

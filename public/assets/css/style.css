@@ -1473,6 +1473,10 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 
 .hadiah-float { left: .9rem; right: auto; }
 .page-ucapan #hadiah { scroll-margin-top: .75rem; }
+.page-ucapan #hadiah .section__head { margin-bottom: 1.05rem; }
+.page-ucapan #hadiah .section__head .divider { margin-block: .65rem .5rem; }
+.page-ucapan #hadiah .trakteer { background: linear-gradient(135deg, #8b6226, #74501d 52%, #896022); }
+.page-ucapan #hadiah .trakteer__body small { opacity: 1; }
 .tanda-kasih-frame { display: block; width: 100%; height: min(62vh, 62dvh); border: 0; }
 [data-gift-fallback] { text-decoration: underline; }
 

@@ -146,7 +146,7 @@ export const CONFIG = {
       "Kehadiran dan doa restu Bapak, Ibu, dan Saudara sekalian merupakan anugerah yang sangat berarti bagi kami.",
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
-      label: "Tautan Tanda Kasih",
+      label: "Buka Tanda Kasih",
       url: "https://trakteer.id/-java/tip?open=",
       keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
     },

@@ -458,7 +458,7 @@ function labelKiriman(teks, gaya) {
   return label;
 }
 
-const ilustrasiMempelai = ["taman", "pelaminan", "senja"];
+const ilustrasiMempelai = ["taman", "pelaminan", "senja", "bintang", "ngaji"];
 for (let i = ilustrasiMempelai.length - 1; i > 0; i--) {
   const j = Math.floor(Math.random() * (i + 1));
   [ilustrasiMempelai[i], ilustrasiMempelai[j]] = [ilustrasiMempelai[j], ilustrasiMempelai[i]];

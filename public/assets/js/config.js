@@ -172,11 +172,11 @@ export const CONFIG = {
   /* -------------------------------- Musik -------------------------------- */
   musik: {
     aktif: true,
-    judul: "Doa Bahagia",
+    judul: "Wedding Ceremony",
     // Jika diisi (mis. "assets/audio/nasheed.mp3"), berkas itu yang diputar.
     // Bila kosong, undangan memakai musik instrumental islami yang dibangkitkan
     // langsung di peramban (Web Audio) sehingga tanpa berkas & bebas royalti.
-    berkas: "assets/audio/doa-bahagia.mp3",
+    berkas: "assets/audio/wedding-ceremony.mp3",
     volume: 0.65,
   },
 

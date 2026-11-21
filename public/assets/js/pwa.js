@@ -26,6 +26,6 @@ if ('serviceWorker' in navigator) {
 const splash = document.querySelector('#pwaSplash');
 if (splash && document.documentElement.classList.contains('pwa-splash-start')) {
   // Jangan menunggu foto, musik, atau layanan pihak ketiga.
-  const tunda = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : Math.max(0, 700 - performance.now());
+  const tunda = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : Math.max(0, 1000 - performance.now());
   setTimeout(() => splash.classList.add('is-done'), tunda);
 }

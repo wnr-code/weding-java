@@ -21,23 +21,26 @@
 @keyframes pwa-splash-failsafe { to { opacity: 0; visibility: hidden; } }
 .pwa-splash__plate { display: grid; justify-items: center; gap: .4rem; }
 .pwa-splash__crest {
-  display: grid; place-items: center; width: clamp(92px, 28vw, 124px); aspect-ratio: 1;
-  margin-bottom: .7rem; border-radius: 50%; border: 1px solid #a67936;
-  outline: 1px solid #c4a56a; outline-offset: 6px;
-  background: linear-gradient(118deg, transparent 42%, #fffdf0ba 50%, transparent 58%) 100% 0 / 250% 100%,
-    radial-gradient(circle, #fff9ea 46%, #d1ad65 48%, #fff2cf 52%, #b2843f 72%);
-  box-shadow: inset 0 0 0 4px #fff3d3, 0 .65rem 2rem #92724530;
-  font: 2.5rem/1 Georgia, serif; color: #68451c;
+  display: block; width: clamp(108px, 32vw, 142px); aspect-ratio: 1;
+  margin-bottom: .55rem; border-radius: 50%;
+  background: radial-gradient(circle, #fff8dd 32%, #f4dfae75 62%, transparent 74%);
+  filter: drop-shadow(0 .35rem .6rem #92724533);
 }
-.pwa-splash__amp { font-size: .46em; padding-inline: .1em; color: #8a632a; }
+.pwa-splash__crest svg { display: block; width: 100%; height: 100%; }
+.pwa-splash__orbit, .pwa-splash__flower { transform-origin: 60px 60px; }
 .pwa-splash__eyebrow { margin: 0; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; }
 .pwa-splash__names { margin: 0; font: clamp(2rem, 9vw, 3rem)/1.12 Georgia, serif; }
 .pwa-splash__names span { color: #8a632a; }
 .pwa-splash__rule { position: relative; margin-top: .7rem; width: 8rem; height: 1px; background: linear-gradient(90deg, transparent, #a67936, transparent); }
 .pwa-splash__rule::after { content: ''; position: absolute; inset: -2px auto auto calc(50% - 2px); width: 5px; height: 5px; background: #a67936; transform: rotate(45deg); }
 @media (prefers-reduced-motion: no-preference) {
-  .pwa-splash__crest { animation: pwa-crest-glint .95s ease-out both; }
-  @keyframes pwa-crest-glint { to { background-position: 0 0, 0 0; } }
+  .pwa-splash__orbit { animation: pwa-splash-orbit 1s cubic-bezier(.16,.7,.25,1) both; }
+  .pwa-splash__flower { animation: pwa-splash-bloom .75s ease-out both; }
+  @keyframes pwa-splash-orbit { from { transform: rotate(-65deg); } to { transform: rotate(25deg); } }
+  @keyframes pwa-splash-bloom {
+    from { opacity: .28; transform: scale(.65) rotate(22deg); }
+    to { opacity: 1; transform: scale(1) rotate(0); }
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .pwa-splash-start .pwa-splash { transition: none; animation-timing-function: step-end; }

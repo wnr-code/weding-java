@@ -1478,3 +1478,10 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
   background: transparent; border-color: transparent; box-shadow: none;
 }
 .ucapan-float .gold-icon, .to-top .gold-icon { filter: drop-shadow(0 2px 2px #76552340); }
+.page-ucapan .share-float {
+  bottom: calc(.85rem + env(safe-area-inset-bottom));
+  display: inline-flex; flex-direction: column; gap: 0;
+  width: auto; min-width: 48px; height: auto; min-height: 48px;
+  color: #80612f; font-size: .68rem; line-height: 1.15; cursor: pointer;
+}
+.page-ucapan .share-float[hidden] { display: none; }

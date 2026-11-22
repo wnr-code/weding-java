@@ -43,7 +43,7 @@ export const CONFIG = {
       ibu: "Ibu Hj. Siti Wafiroh Alfiah",
       // Opsional: tautan Instagram tanpa @ (kosongkan jika tidak dipakai).
       instagram: "",
-      foto: "assets/img/mempelai-pria-baru.jpg",
+      foto: "assets/img/portrait-the-groom-v6.jpg",
     },
     wanita: {
       nama: "Risva Iklimah Adawiyah",
@@ -146,7 +146,7 @@ export const CONFIG = {
       "Kehadiran dan doa restu Bapak, Ibu, dan Saudara sekalian merupakan anugerah yang sangat berarti bagi kami.",
     // Tautan Trakteer yang dihubungkan dengan undangan ini.
     trakteer: {
-      label: "Tautan Tanda Kasih",
+      label: "Buka Tanda Kasih",
       url: "https://trakteer.id/-java/tip?open=",
       keterangan: "Tautan ini kami sediakan hanya bagi yang berkenan. Tidak ada kewajiban untuk memberikan hadiah.",
     },
@@ -172,11 +172,11 @@ export const CONFIG = {
   /* -------------------------------- Musik -------------------------------- */
   musik: {
     aktif: true,
-    judul: "Ney Dinletisi – Fikrimin İnce Gülü",
+    judul: "Qalbi Sajad (قلبي سجد)",
     // Jika diisi (mis. "assets/audio/nasheed.mp3"), berkas itu yang diputar.
     // Bila kosong, undangan memakai musik instrumental islami yang dibangkitkan
     // langsung di peramban (Web Audio) sehingga tanpa berkas & bebas royalti.
-    berkas: "/assets/audio/ney-dinletisi.mp3",
+    berkas: "/assets/audio/qalbi-sajad-12.mp3",
     volume: 0.65,
   },
 

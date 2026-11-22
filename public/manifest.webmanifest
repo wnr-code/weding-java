@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "Undangan Ja’far & Iklimah",
+  "short_name": "Ja’far & Iklimah",
+  "lang": "id",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#f6efe1",
+  "background_color": "#f6efe1",
+  "icons": [
+    { "src": "/assets/img/pwa/ukiran-emas-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/img/pwa/ukiran-emas-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ucapan & Kehadiran", "url": "/ucapan/" },
+    { "name": "Tanda Kasih", "url": "/ucapan/#hadiah" }
+  ]
+}

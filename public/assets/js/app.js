@@ -6,9 +6,9 @@
 
 import { pilihBalasan, pilihBalasanHadiah } from "./balasan.js?v=konteks-89";
 import { AYAT_PERNIKAHAN } from "./ayat-pernikahan.js";
-import CONFIG from "./config.js?v=foto-97";
+import CONFIG from "./config.js?v=tanda-kasih-115";
 import { injectOrnaments, icons } from "./ornament.js";
-import { Music } from "./music.js?v=foto-97";
+import { Music } from "./music.js?v=qalbi-102";
 import * as api from "./api.js?v=audit-29";
 
 /* Tandai bahwa JS aktif: elemen beranimasi baru disembunyikan lewat kelas ini. */
@@ -195,16 +195,19 @@ function pasangLightbox() {
   const cap = $("#lightboxCap");
   if (!lb || !img) return;
 
-  const buka = (i, capOverride) => {
-    galeriIndex = (i + CONFIG.galeri.length) % CONFIG.galeri.length;
-    const g = CONFIG.galeri[galeriIndex];
-    img.src = g.src;
-    img.alt = g.judul;
-    cap.textContent = capOverride || `${g.judul} — ${g.ket}`;
+  const tampilkan = (src, judul, keterangan) => {
+    img.src = src;
+    img.alt = judul;
+    cap.textContent = keterangan;
     lb.hidden = false;
     requestAnimationFrame(() => lb.classList.add("is-open"));
     document.body.classList.add("is-locked");
     $("#lightboxClose").focus();
+  };
+  const buka = (i, capOverride) => {
+    galeriIndex = (i + CONFIG.galeri.length) % CONFIG.galeri.length;
+    const g = CONFIG.galeri[galeriIndex];
+    tampilkan(g.src, g.judul, capOverride || `${g.judul} — ${g.ket}`);
   };
   const tutup = () => {
     lb.classList.remove("is-open");
@@ -216,6 +219,7 @@ function pasangLightbox() {
   bukaFoto = (src, capOverride) => {
     const i = CONFIG.galeri.findIndex((g) => g.src === src);
     if (i >= 0) buka(i, capOverride);
+    else if (src) tampilkan(src, capOverride, capOverride);
   };
 
   on($("#gallery"), "click", (e) => {
@@ -1171,23 +1175,24 @@ const SECTION_NAV = ["salam", "mempelai", "acara", "peta", "turut"];
 let ticking = false;
 
 function perbaruiGulir() {
-  const bar = $("#progressBar");
-  const doc = document.documentElement;
-  const total = doc.scrollHeight - window.innerHeight;
-  const rasio = total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0;
-  if (bar) bar.style.width = `${(rasio * 100).toFixed(2)}%`;
-
-  const toTop = $("#toTop");
-  if (toTop) toTop.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.9);
-
-  const tengah = window.scrollY + window.innerHeight * 0.42;
+  const y = window.scrollY;
+  const tinggi = window.innerHeight;
+  const total = document.documentElement.scrollHeight - tinggi;
+  const rasio = total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
+  const tengah = tinggi * 0.42;
   let aktif = SECTION_NAV[0];
-  SECTION_NAV.forEach((id) => {
+  for (const id of SECTION_NAV) {
     const sec = document.getElementById(id);
-    if (sec && sec.offsetTop <= tengah) aktif = id;
-  });
+    if (sec && sec.getBoundingClientRect().top <= tengah) aktif = id;
+  }
+
+  // Baca geometri lebih dulu; progress memakai transform tanpa mengubah layout.
+  const bar = $("#progressBar");
+  if (bar) bar.style.transform = `scaleX(${rasio.toFixed(4)})`;
+  $("#toTop")?.classList.toggle("is-visible", y > tinggi * 0.9);
   $$(".dock__item").forEach((a) => {
     const terpilih = a.dataset.nav === aktif;
+    if (a.classList.contains("is-active") === terpilih && a.hasAttribute("aria-current") === terpilih) return;
     a.classList.toggle("is-active", terpilih);
     if (terpilih) a.setAttribute("aria-current", "location");
     else a.removeAttribute("aria-current");
@@ -1211,6 +1216,8 @@ function pasangGulir() {
     window.scrollTo({ top: target.offsetTop || 0, behavior: kurangiGerak() ? "auto" : "smooth" });
   });
 
+  let timerPetunjuk;
+  let tombolPetunjuk;
   on($("#dock"), "click", (e) => {
     const a = e.target.closest(".dock__item");
     if (!a) return;
@@ -1219,7 +1226,12 @@ function pasangGulir() {
     const target = document.getElementById(href.slice(1));
     if (!target) return;
     e.preventDefault();
-    window.scrollTo({ top: target.offsetTop - 8, behavior: kurangiGerak() ? "auto" : "smooth" });
+    clearTimeout(timerPetunjuk);
+    if (tombolPetunjuk !== a) tombolPetunjuk?.classList.remove("show-hint");
+    tombolPetunjuk = a;
+    a.classList.add("show-hint");
+    timerPetunjuk = setTimeout(() => a.classList.remove("show-hint"), 1700);
+    window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - 8), behavior: kurangiGerak() ? "auto" : "smooth" });
   });
 }
 

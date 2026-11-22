@@ -4,10 +4,17 @@ const { version } = JSON.parse(await readFile(new URL('../package.json', import.
 const sha = process.env.GITHUB_SHA;
 if (!/^[0-9a-f]{40}$/i.test(sha ?? '')) throw new Error('GITHUB_SHA tidak valid.');
 
+const run = process.env.GITHUB_RUN_NUMBER;
+const attempt = process.env.GITHUB_RUN_ATTEMPT;
+if (![run, attempt].every((value) => /^[1-9][0-9]*$/.test(value ?? ''))) {
+  throw new Error('Nomor build atau percobaan GitHub Actions tidak valid.');
+}
+const label = `Versi ${version} · Build ${run}.${attempt} (${sha.slice(0, 7)})`;
+
 for (const file of ['index.html', 'ucapan/index.html']) {
   const path = new URL(`../public/${file}`, import.meta.url);
   const html = await readFile(path, 'utf8');
   const marker = /(<span data-site-build>)[^<]+(<\/span>)/g;
   if ([...html.matchAll(marker)].length !== 1) throw new Error(`Penanda build tidak ditemukan atau duplikat: ${file}`);
-  await writeFile(path, html.replace(marker, (_, awal, akhir) => `${awal}Versi ${version}+${sha.slice(0, 7)}${akhir}`));
+  await writeFile(path, html.replace(marker, (_, awal, akhir) => `${awal}${label}${akhir}`));
 }

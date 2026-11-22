@@ -25,7 +25,7 @@ migrations_dir = "migrations"
 # Mode live sementara untuk menguji kiriman pembayaran nyata dari Lanteraku.
 TRAKTEER_MODE = "live"
 # Garam untuk anonimisasi IP (pembatasan laju). Ubah menjadi kalimat acak Anda.
-IP_SALT = "ganti-dengan-kalimat-acak-anda"
+IP_SALT = "f72266d9a4ddd853acc45220ccb67317a72276dda0d92daeb3b4a3074c45fda2"
 
 [observability]
 enabled = true

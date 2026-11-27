@@ -1685,8 +1685,9 @@ body:not(.page-ucapan) .hadiah-float {
 
 .page-ucapan .kehadiran-float .gold-icon { width: 40px; height: 40px; }
 
-/* Ikon Bagikan sedikit diperkecil; tombol amplop memakai ukuran visual yang sama. */
-.share-float--main .gold-icon { width: 40px; height: 40px; }
+/* Ikon Bagikan dan pintasan amplop di beranda memakai ukuran yang seimbang. */
+.share-float--main .gold-icon, #ucapanFloat .gold-icon { width: 40px; height: 40px; }
+#ucapanFloat { width: 52px; height: 52px; padding: 0; justify-content: center; }
 
 /* Dock tetap lima sasaran sentuh 44px pada layar ponsel yang sempit. */
 @media (max-width: 320px) {

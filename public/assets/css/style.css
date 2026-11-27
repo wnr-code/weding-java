@@ -1670,7 +1670,7 @@ body:not(.page-ucapan) .hadiah-float {
 }
 .page-ucapan .hadiah-float {
   left: auto; right: .9rem;
-  bottom: calc(12.5rem + env(safe-area-inset-bottom));
+  bottom: calc(9rem + env(safe-area-inset-bottom));
 }
 .page-ucapan .kehadiran-float {
   left: auto; right: .9rem;

@@ -1684,3 +1684,15 @@ body:not(.page-ucapan) .hadiah-float {
 }
 
 .page-ucapan .kehadiran-float .gold-icon { width: 36px; height: 36px; }
+
+/* Ikon amplop di halaman undangan dibuat lebih terbaca. */
+.share-float--main .gold-icon { width: 44px; height: 44px; }
+
+/* Dock tetap lima sasaran sentuh 44px pada layar ponsel yang sempit. */
+@media (max-width: 320px) {
+  .dock {
+    width: min(calc(100% - .5rem), 460px);
+    gap: .05rem;
+    padding: .1rem;
+  }
+}

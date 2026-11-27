@@ -1651,3 +1651,29 @@ html:has(.bottom-sheet[open]) { overflow: hidden; }
 /* Partikel bergerak di belakang kartu, tanpa menangkap sentuhan. */
 .page-ucapan .ambient__petal { opacity: .23; }
 .page-ucapan .main { position: relative; }
+
+
+/* Tombol hadiah dan bagikan: ukuran seragam dan posisi bertumpuk tanpa mengubah panah atas. */
+.hadiah-float { width: 52px; height: 52px; }
+.hadiah-float .gold-icon, .share-float .gold-icon { width: 36px; height: 36px; }
+.share-float--main {
+  position: fixed; z-index: 31; left: .9rem; right: auto;
+  bottom: calc(var(--dock-h) + 1.1rem + env(safe-area-inset-bottom));
+  display: inline-flex; flex-direction: column; gap: 0;
+  width: 52px; min-width: 52px; height: auto; min-height: 52px;
+  padding: 0; color: #80612f; font-size: .62rem; line-height: 1.15;
+  cursor: pointer;
+}
+body:not(.page-ucapan) .hadiah-float {
+  left: .9rem; right: auto;
+  bottom: calc(var(--dock-h) + 4.9rem + env(safe-area-inset-bottom));
+}
+.page-ucapan .hadiah-float {
+  left: auto; right: .9rem;
+  bottom: calc(7.8rem + env(safe-area-inset-bottom));
+}
+.page-ucapan .share-float {
+  left: auto; right: .9rem;
+  bottom: calc(.85rem + env(safe-area-inset-bottom));
+  width: 52px; min-width: 52px; min-height: 52px;
+}

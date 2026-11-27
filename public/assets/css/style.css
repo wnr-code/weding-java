@@ -1670,10 +1670,17 @@ body:not(.page-ucapan) .hadiah-float {
 }
 .page-ucapan .hadiah-float {
   left: auto; right: .9rem;
-  bottom: calc(7.8rem + env(safe-area-inset-bottom));
+  bottom: calc(12.5rem + env(safe-area-inset-bottom));
+}
+.page-ucapan .kehadiran-float {
+  left: auto; right: .9rem;
+  bottom: calc(5.2rem + env(safe-area-inset-bottom));
+  width: 52px; height: 52px; padding: 0; justify-content: center;
 }
 .page-ucapan .share-float {
   left: auto; right: .9rem;
   bottom: calc(.85rem + env(safe-area-inset-bottom));
   width: 52px; min-width: 52px; min-height: 52px;
 }
+
+.page-ucapan .kehadiran-float .gold-icon { width: 36px; height: 36px; }
